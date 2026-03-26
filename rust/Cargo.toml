@@ -1,0 +1,9 @@
+[workspace]
+members = [
+    "idrdesign_core",
+]
+
+[profile.wasm-dev]
+inherits = "dev"
+opt-level = 1
+
