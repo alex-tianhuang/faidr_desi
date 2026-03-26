@@ -26,7 +26,7 @@ impl FeaturizableSeqFeats for RegexMotifs {
         &self,
         sequence: &aa_canonical_str,
         _ctx: Self::Ctx<'a>,
-    ) -> impl Iterator<Item = Result<f32, Self::Err>> {
+    ) -> impl Iterator<Item = Result<f64, Self::Err>> {
         let RegexMotifs {
             counts,
             count_averages,
@@ -44,13 +44,13 @@ impl FeaturizableSeqFeats for RegexMotifs {
                 .or_else(|| {
                     count_averages
                         .next()
-                        .map(|pattern| count_motif(pattern, sequence) / sequence.len() as f32)
+                        .map(|pattern| count_motif(pattern, sequence) / sequence.len() as f64)
                 })
                 .or_else(|| spans.next().map(|pattern| span_of_motif(pattern, sequence)))
                 .or_else(|| {
                     span_averages
                         .next()
-                        .map(|pattern| span_of_motif(pattern, sequence) / sequence.len() as f32)
+                        .map(|pattern| span_of_motif(pattern, sequence) / sequence.len() as f64)
                 })
                 .map(Result::Ok)
         })
@@ -61,17 +61,17 @@ impl FeaturizableSeqFeats for RegexMotifs {
 ///
 /// Count the number of occurrences of the pattern in
 /// the sequence.
-fn count_motif(pattern: &Regex, sequence: &aa_canonical_str) -> f32 {
-    pattern.find_iter(sequence.as_str()).count() as f32
+fn count_motif(pattern: &Regex, sequence: &aa_canonical_str) -> f64 {
+    pattern.find_iter(sequence.as_str()).count() as f64
 }
 
 /// Utility method for [`RegexMotifs::featurize`].
 ///
 /// Count the number of residues spanned by the motif
 /// in the sequence.
-fn span_of_motif(pattern: &Regex, sequence: &aa_canonical_str) -> f32 {
+fn span_of_motif(pattern: &Regex, sequence: &aa_canonical_str) -> f64 {
     pattern
         .find_iter(sequence.as_str())
         .map(|m| m.len())
-        .sum::<usize>() as f32
+        .sum::<usize>() as f64
 }

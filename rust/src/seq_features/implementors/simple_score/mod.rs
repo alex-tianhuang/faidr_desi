@@ -12,8 +12,8 @@ mod render;
 ///
 /// Supports optionally dividing by sequence length.
 pub struct SimpleScore {
-    sums: Vec<AAMap<f32>>,
-    averages: Vec<AAMap<f32>>,
+    sums: Vec<AAMap<f64>>,
+    averages: Vec<AAMap<f64>>,
 }
 impl FeatDim for SimpleScore {
     fn featdim(&self) -> usize {

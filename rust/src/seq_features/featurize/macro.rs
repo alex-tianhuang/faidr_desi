@@ -162,7 +162,7 @@ macro_rules! define_compiler_and_featurizer {
         }
         impl $featurizer_struct {
             $(#[$($docs2)*])*
-            pub fn featurize(&mut self, $sequence: &aa_canonical_str) -> impl Iterator<Item = Result<f32, $t1>> {
+            pub fn featurize(&mut self, $sequence: &aa_canonical_str) -> impl Iterator<Item = Result<f64, $t1>> {
                 use crate::seq_features::functionality::{
                     featdim::FeatDim as _,
                     featurize::FeaturizableSeqFeats as _

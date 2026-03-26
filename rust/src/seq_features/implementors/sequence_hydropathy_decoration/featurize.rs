@@ -19,7 +19,7 @@ impl FeaturizableSeqFeats for SHD {
         &self,
         sequence: &aa_canonical_str,
         mut ctx: Self::Ctx<'a>,
-    ) -> impl Iterator<Item = Result<f32, Self::Err>> {
+    ) -> impl Iterator<Item = Result<f64, Self::Err>> {
         self.enabled
             .then(|| {
                 Ok(compute_shd(
@@ -35,7 +35,7 @@ impl FeaturizableSeqFeats for SHD {
 /// Copied from [Alex Holehouse lab's github].
 ///
 /// [Alex Holehouse lab's github]: https://github.com/idptools/sparrow/blob/57324b7102e08d98e0c4dc4db1813f1c0583a60f/sparrow/patterning/scd.pyx
-const NORMALIZED_KYTE_DOOLITLE_HYDROPHOBICITY: AAMap<f32> = {
+const NORMALIZED_KYTE_DOOLITLE_HYDROPHOBICITY: AAMap<f64> = {
     const_aamap! {
         [
             (_, 0.0),
@@ -63,23 +63,23 @@ const NORMALIZED_KYTE_DOOLITLE_HYDROPHOBICITY: AAMap<f32> = {
     }
 };
 /// Function doing the work for [`SHD::featurize`].
-fn compute_shd(sequence: &aa_canonical_str, hydropathy_scale: &AAMap<f32>, arena: &Bump) -> f32 {
+fn compute_shd(sequence: &aa_canonical_str, hydropathy_scale: &AAMap<f64>, arena: &Bump) -> f64 {
     compute_shd_custom(sequence, hydropathy_scale, arena)
 }
 /// First pass at computing SHD, copied from [Alex Holehouse lab's github].
 ///
 /// [Alex Holehouse lab's github]: https://github.com/idptools/sparrow/blob/57324b7102e08d98e0c4dc4db1813f1c0583a60f/sparrow/patterning/scd.pyx
 #[allow(unused)]
-fn compute_shd_holehouse(sequence: &aa_canonical_str, hydropathy_scale: &AAMap<f32>, arena: &Bump) -> f32 {
+fn compute_shd_holehouse(sequence: &aa_canonical_str, hydropathy_scale: &AAMap<f64>, arena: &Bump) -> f64 {
     let h_scores_buf =
         arena.alloc_slice_fill_iter(sequence.into_iter().map(|aa| hydropathy_scale[aa]));
     let mut shd_sum = 0.0;
     for m in 1..sequence.len() {
         for n in 0..m {
-            shd_sum += (h_scores_buf[n] + h_scores_buf[m]) / (m - n) as f32;
+            shd_sum += (h_scores_buf[n] + h_scores_buf[m]) / (m - n) as f64;
         }
     }
-    shd_sum / sequence.len() as f32
+    shd_sum / sequence.len() as f64
 }
 /// A maybe faster implementation of [`compute_shd_holehouse`]
 /// that is mathematically equivalent.
@@ -89,12 +89,12 @@ fn compute_shd_holehouse(sequence: &aa_canonical_str, hydropathy_scale: &AAMap<f
 /// Mostly I optimized this function for entertainment.
 /// It is not yet tested, and may be harder to maintain.
 /// Oh well!
-fn compute_shd_custom(sequence: &aa_canonical_str, hydropathy_scale: &AAMap<f32>, arena: &Bump) -> f32 {
+fn compute_shd_custom(sequence: &aa_canonical_str, hydropathy_scale: &AAMap<f64>, arena: &Bump) -> f64 {
     let mut harmonic_sum = 0.0;
     let mut harmonic_sums_buf = Vec::with_capacity_in(sequence.len(), arena);
     harmonic_sums_buf.push(0.0);
     for n in 1..sequence.len() {
-        harmonic_sum += 1.0 / n as f32;
+        harmonic_sum += 1.0 / n as f64;
         harmonic_sums_buf.push(harmonic_sum);
     }
     let mut shd_sum = 0.0;
@@ -105,5 +105,5 @@ fn compute_shd_custom(sequence: &aa_canonical_str, hydropathy_scale: &AAMap<f32>
         n += 1;
         m -= 1;
     }
-    shd_sum / sequence.len() as f32
+    shd_sum / sequence.len() as f64
 }

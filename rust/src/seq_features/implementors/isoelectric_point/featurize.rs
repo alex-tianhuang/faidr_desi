@@ -19,7 +19,7 @@ impl FeaturizableSeqFeats for IsoelectricPoint {
         &self,
         _sequence: &crate::datatypes::aa_canonical_str,
         ctx: Self::Ctx<'a>,
-    ) -> impl Iterator<Item = Result<f32, Self::Err>> {
+    ) -> impl Iterator<Item = Result<f64, Self::Err>> {
         self.enabled
             .then(|| compute_isoelectric_point(&ctx))
             .into_iter()
@@ -28,7 +28,7 @@ impl FeaturizableSeqFeats for IsoelectricPoint {
 /// Helper for [`IsoelectricPoint::featurize`].
 ///
 /// Computes the pH at which the sequence is expected to have net zero charge.
-fn compute_isoelectric_point(residue_counts: &ResidueCounts) -> Result<f32, NoIsoelectricPoint> {
+fn compute_isoelectric_point(residue_counts: &ResidueCounts) -> Result<f64, NoIsoelectricPoint> {
     const BASIC_RES: [Aminoacid; 3] = [Aminoacid::K, Aminoacid::R, Aminoacid::H];
     const PKAS_ALL: [(Aminoacid, f64); 7] = [
         (Aminoacid::K, 10.0),
@@ -48,7 +48,7 @@ fn compute_isoelectric_point(residue_counts: &ResidueCounts) -> Result<f32, NoIs
         counts_and_pkas[idx] = (residue_counts[aa] as f64, pka)
     }
     bisect_search_isoelectric_point(|ph| {
-        accurate_net_charge(ph, num_basic_res as f32, &counts_and_pkas)
+        accurate_net_charge(ph, num_basic_res as f64, &counts_and_pkas)
     })
 }
 /// Helper for [`compute_isoelectric_point`].
@@ -57,7 +57,7 @@ fn compute_isoelectric_point(residue_counts: &ResidueCounts) -> Result<f32, NoIs
 /// the number of basic residues and the counts and pKas of charged residues.
 ///
 /// Includes the N-terminal amino group and the C-terminal carboxy group.
-fn accurate_net_charge(ph: f64, num_basic_res: f32, counts_and_pkas: &[(f64, f64); 7]) -> f32 {
+fn accurate_net_charge(ph: f64, num_basic_res: f64, counts_and_pkas: &[(f64, f64); 7]) -> f64 {
     const PKA_N_TERM: f64 = 7.5;
     const PKA_C_TERM: f64 = 3.55;
 
@@ -74,19 +74,19 @@ fn accurate_net_charge(ph: f64, num_basic_res: f32, counts_and_pkas: &[(f64, f64
     let proportion_protonated_c_term = 1.0 / (1.0 + 10.0_f64.powf(ph - PKA_C_TERM));
     free_protons += 1.0 - proportion_protonated_c_term;
 
-    num_basic_res - free_protons as f32
+    num_basic_res - free_protons as f64
 }
 /// Search for the isoelectric point via bisection.
 ///
 /// The `func` argument is a function from the pH to the charge,
 /// which requires information about the amino-acid composition of the sequence.
-fn bisect_search_isoelectric_point(func: impl Fn(f64) -> f32) -> Result<f32, NoIsoelectricPoint> {
-    const CH_TOLERANCE: f32 = 1.0 / 10e_4;
+fn bisect_search_isoelectric_point(func: impl Fn(f64) -> f64) -> Result<f64, NoIsoelectricPoint> {
+    const CH_TOLERANCE: f64 = 1.0 / 10e_4;
     let mut max_ph: f64 = 14.0;
     let mut min_ph: f64 = 0.0;
     let mut guess_ph = 7.0;
     let mut charge = func(guess_ph);
-    while charge.abs() > CH_TOLERANCE && (max_ph - min_ph).abs() > f32::EPSILON as f64 {
+    while charge.abs() > CH_TOLERANCE && (max_ph - min_ph).abs() > f64::EPSILON as f64 {
         if charge > 0.0 {
             min_ph = guess_ph;
         } else {
@@ -98,7 +98,7 @@ fn bisect_search_isoelectric_point(func: impl Fn(f64) -> f32) -> Result<f32, NoI
     if charge.abs() > CH_TOLERANCE {
         Err(NoIsoelectricPoint)
     } else {
-        Ok(guess_ph as f32)
+        Ok(guess_ph as f64)
     }
 }
 /// Returned if the isoelectric point calculation fails to converge.

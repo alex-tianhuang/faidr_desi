@@ -29,7 +29,7 @@ impl FeaturizableSeqFeats for NardiniSpacing {
         &self,
         sequence: &aa_canonical_str,
         mut ctx: Self::Ctx<'a>,
-    ) -> impl Iterator<Item = Result<f32, Self::Err>> {
+    ) -> impl Iterator<Item = Result<f64, Self::Err>> {
         let NardiniSpacing { deltas, omegas } = self;
         let mut deltas = deltas.iter();
         let mut omegas = omegas.iter();
@@ -56,7 +56,7 @@ fn compute_nardini_delta_z_score(
     feature: &NardiniDelta,
     sequence: &aa_canonical_str,
     ctx: &mut Ctx2<'_>,
-) -> Result<f32, NardiniSpacingError> {
+) -> Result<f64, NardiniSpacingError> {
     let NardiniDelta {
         ref res_group_a,
         ref res_group_b,
@@ -70,22 +70,22 @@ fn compute_nardini_delta_z_score(
     if sequence.len() < window_size as usize {
         return Err(NardiniSpacingError::SequenceTooShort);
     }
-    let count_threshold = sequence.len() as f32 * 0.1;
+    let count_threshold = sequence.len() as f64 * 0.1;
     let count_a = ctx.residue_counts.count_residue_group(res_group_a);
-    if (count_a as f32) < count_threshold {
+    if (count_a as f64) < count_threshold {
         return Err(NardiniSpacingError::Depleted {
             res_group: res_group_a.clone(),
         });
     }
     let count_b = ctx.residue_counts.count_residue_group(res_group_b);
-    if (count_b as f32) < count_threshold {
+    if (count_b as f64) < count_threshold {
         return Err(NardiniSpacingError::Depleted {
             res_group: res_group_b.clone(),
         });
     }
     let diff = count_a - count_b;
-    let denom = ((count_a + count_b) * sequence.len()) as f32;
-    let global_sigma = (diff * diff) as f32 / denom;
+    let denom = ((count_a + count_b) * sequence.len()) as f64;
+    let global_sigma = (diff * diff) as f64 / denom;
     let test_delta = compute_unnormalized_delta(
         sequence,
         res_group_a,
@@ -111,7 +111,7 @@ fn compute_nardini_delta_z_score(
         sum_samples += null_sample_delta;
         sum_samples_sqr += null_sample_delta * null_sample_delta;
     }
-    let n = n_scrambled_trials as f32;
+    let n = n_scrambled_trials as f64;
     let num = test_delta * n - sum_samples;
     let denom = (sum_samples_sqr * n - sum_samples * sum_samples).sqrt();
     Ok(num / denom)
@@ -134,14 +134,14 @@ fn compute_unnormalized_delta(
     res_group_a: &AASet,
     res_group_b: &AASet,
     window_size: usize,
-    global_sigma: f32,
-) -> f32 {
+    global_sigma: f64,
+) -> f64 {
     let mut sum_asymmetry_sqr = 0.0;
     for sigma in generate_sliding_window_sigmas(sequence, res_group_a, res_group_b, window_size) {
         let asym = sigma - global_sigma;
         sum_asymmetry_sqr += asym * asym;
     }
-    sum_asymmetry_sqr / (sequence.len() - window_size + 1) as f32
+    sum_asymmetry_sqr / (sequence.len() - window_size + 1) as f64
 }
 /// Helper for [`compute_unnormalized_delta`] and rendering functions.
 ///
@@ -152,7 +152,7 @@ pub(super) fn generate_sliding_window_sigmas(
     res_group_a: &AASet,
     res_group_b: &AASet,
     window_size: usize,
-) -> impl Iterator<Item = f32> {
+) -> impl Iterator<Item = f64> {
     let sequence = sequence.as_slice();
     let first_window = &sequence[..window_size];
     let mut window_a_count = 0;
@@ -169,7 +169,7 @@ pub(super) fn generate_sliding_window_sigmas(
     let mut diff = window_a_count - window_b_count;
     let sigma = if denom > 0 {
         denom *= window_size as i32;
-        (diff * diff) as f32 / denom as f32
+        (diff * diff) as f64 / denom as f64
     } else {
         0.0
     };
@@ -198,7 +198,7 @@ pub(super) fn generate_sliding_window_sigmas(
                 }
                 if denom > 0 {
                     denom *= window_size as i32;
-                    (diff * diff) as f32 / denom as f32
+                    (diff * diff) as f64 / denom as f64
                 } else {
                     0.0
                 }
@@ -219,7 +219,7 @@ fn compute_nardini_omega_z_score(
     feature: &NardiniOmega,
     sequence: &aa_canonical_str,
     ctx: &mut Ctx2<'_>,
-) -> Result<f32, NardiniSpacingError> {
+) -> Result<f64, NardiniSpacingError> {
     let NardiniOmega {
         ref res_group,
         params:
@@ -233,18 +233,18 @@ fn compute_nardini_omega_z_score(
         return Err(NardiniSpacingError::SequenceTooShort);
     }
     let count = ctx.residue_counts.count_residue_group(res_group);
-    let count_threshold = sequence.len() as f32 * 0.1;
-    if (count as f32) < count_threshold {
+    let count_threshold = sequence.len() as f64 * 0.1;
+    if (count as f64) < count_threshold {
         return Err(NardiniSpacingError::Depleted {
             res_group: res_group.clone(),
         });
     }
-    if ((sequence.len() - count) as f32) < count_threshold {
+    if ((sequence.len() - count) as f64) < count_threshold {
         return Err(NardiniSpacingError::Saturated {
             res_group: res_group.clone(),
         });
     }
-    let diff = (2 * count) as f32 / sequence.len() as f32 - 1.0;
+    let diff = (2 * count) as f64 / sequence.len() as f64 - 1.0;
     let global_psi = diff * diff;
     let test_omega =
         compute_unnormalized_omega(sequence, res_group, window_size as usize, global_psi);
@@ -260,7 +260,7 @@ fn compute_nardini_omega_z_score(
         sum_samples += null_sample_omega;
         sum_samples_sqr += null_sample_omega * null_sample_omega;
     }
-    let n = n_scrambled_trials as f32;
+    let n = n_scrambled_trials as f64;
     let num = test_omega * n - sum_samples;
     let denom = (sum_samples_sqr * n - sum_samples * sum_samples).sqrt();
     Ok(num / denom)
@@ -288,14 +288,14 @@ fn compute_unnormalized_omega(
     sequence: &aa_canonical_str,
     res_group: &AASet,
     window_size: usize,
-    global_psi: f32,
-) -> f32 {
+    global_psi: f64,
+) -> f64 {
     let mut sum_asymmetry_sqr = 0.0;
     for psi in generate_sliding_window_psis(sequence, res_group, window_size) {
         let asym = psi - global_psi;
         sum_asymmetry_sqr += asym * asym;
     }
-    sum_asymmetry_sqr / (sequence.len() - window_size + 1) as f32
+    sum_asymmetry_sqr / (sequence.len() - window_size + 1) as f64
 }
 
 /// Helper for [`compute_unnormalized_omega`] and rendering functions.
@@ -306,7 +306,7 @@ pub(super) fn generate_sliding_window_psis(
     sequence: &aa_canonical_str,
     res_group: &AASet,
     window_size: usize,
-) -> impl Iterator<Item = f32> {
+) -> impl Iterator<Item = f64> {
     let sequence = sequence.as_slice();
     let first_window = &sequence[..window_size];
     let window_count: i32 = first_window
@@ -316,7 +316,7 @@ pub(super) fn generate_sliding_window_psis(
         .try_into()
         .expect("failed to convert number of residues into `i32` (sequence too large)");
     let mut diff = 2 * window_count - window_size as i32;
-    let psi = (diff * diff) as f32 / window_size as f32;
+    let psi = (diff * diff) as f64 / window_size as f64;
     let tail = &sequence[..sequence.len() - window_size];
     let head = &sequence[window_size..];
     let mut first_psi = once(psi);
@@ -334,7 +334,7 @@ pub(super) fn generate_sliding_window_psis(
                 } else {
                     diff -= 1;
                 }
-                (diff * diff) as f32 / window_size as f32
+                (diff * diff) as f64 / window_size as f64
             })
         })
     })

@@ -15,14 +15,14 @@ use crate::{
 /// Supports optional averaging.
 #[derive(Deserialize, Serialize)]
 pub struct SimpleScoreUserFacing {
-    weights: JSFacingAAMap<f32>,
+    weights: JSFacingAAMap<f64>,
     take_average: bool,
 }
 /// A compiler type for these weighted residue count features.
 #[derive(Default)]
 pub struct SimpleScoreCompiler<'a> {
-    sums: Vec<(&'a str, AAMap<f32>)>,
-    averages: Vec<(&'a str, AAMap<f32>)>,
+    sums: Vec<(&'a str, AAMap<f64>)>,
+    averages: Vec<(&'a str, AAMap<f64>)>,
 }
 impl<'a> CompilerImplementor<'a> for SimpleScoreCompiler<'a> {
     type Container = SimpleScore;

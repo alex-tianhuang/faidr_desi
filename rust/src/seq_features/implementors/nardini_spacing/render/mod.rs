@@ -92,28 +92,28 @@ fn render_nardini_delta(
     if sequence.len() < window_size as usize {
         return Err(NardiniSpacingError::SequenceTooShort);
     }
-    let count_threshold = sequence.len() as f32 * 0.1;
+    let count_threshold = sequence.len() as f64 * 0.1;
     let count_a = residue_counts.count_residue_group(res_group_a);
-    if (count_a as f32) < count_threshold {
+    if (count_a as f64) < count_threshold {
         return Err(NardiniSpacingError::Depleted {
             res_group: res_group_a.clone(),
         });
     }
     let count_b = residue_counts.count_residue_group(res_group_b);
-    if (count_b as f32) < count_threshold {
+    if (count_b as f64) < count_threshold {
         return Err(NardiniSpacingError::Depleted {
             res_group: res_group_b.clone(),
         });
     }
     let diff = count_a - count_b;
-    let denom = ((count_a + count_b) * sequence.len()) as f32;
-    let global_sigma = (diff * diff) as f32 / denom;
+    let denom = ((count_a + count_b) * sequence.len()) as f64;
+    let global_sigma = (diff * diff) as f64 / denom;
     let mut data = Vec::with_capacity(sequence.len() - window_size as usize + 1);
     data.extend(
         generate_sliding_window_sigmas(sequence, res_group_a, res_group_b, window_size as usize)
             .map(|sigma| sigma - global_sigma),
     );
-    let start = (window_size + 1) as f32 / 2.0;
+    let start = (window_size + 1) as f64 / 2.0;
     Ok(Graphic::LinePlot(LinePlot { data, start }))
 }
 
@@ -137,25 +137,25 @@ pub fn render_nardini_omega(
         return Err(NardiniSpacingError::SequenceTooShort);
     }
     let count = residue_counts.count_residue_group(res_group);
-    let count_threshold = sequence.len() as f32 * 0.1;
-    if (count as f32) < count_threshold {
+    let count_threshold = sequence.len() as f64 * 0.1;
+    if (count as f64) < count_threshold {
         return Err(NardiniSpacingError::Depleted {
             res_group: res_group.clone(),
         });
     }
-    if ((sequence.len() - count) as f32) < count_threshold {
+    if ((sequence.len() - count) as f64) < count_threshold {
         return Err(NardiniSpacingError::Saturated {
             res_group: res_group.clone(),
         });
     }
-    let diff = (2 * count) as f32 / sequence.len() as f32 - 1.0;
+    let diff = (2 * count) as f64 / sequence.len() as f64 - 1.0;
     let global_psi = diff * diff;
     let mut data = Vec::with_capacity(sequence.len() - window_size as usize + 1);
     data.extend(
         generate_sliding_window_psis(sequence, res_group, window_size as usize)
             .map(|psi| psi - global_psi),
     );
-    let start = (window_size + 1) as f32 / 2.0;
+    let start = (window_size + 1) as f64 / 2.0;
     Ok(Graphic::LinePlot(LinePlot { data, start }))
 }
 impl FeatDim for NardiniSpacingRenderable {

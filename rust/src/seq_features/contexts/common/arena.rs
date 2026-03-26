@@ -23,7 +23,7 @@ pub struct WindowTooLargeError;
 /// Take a sliding average over if the sequence is at least
 /// the sliding window length.
 pub fn sliding_average(
-    mut iter: impl ExactSizeIterator<Item = f32>,
+    mut iter: impl ExactSizeIterator<Item = f64>,
     window_size: u32,
     arena: &Bump,
 ) -> Result<LinePlot, WindowTooLargeError> {
@@ -33,17 +33,17 @@ pub fn sliding_average(
         .ok_or(WindowTooLargeError)?
         + 1;
     let buf = arena.alloc_slice_fill_iter((&mut iter).take(window_size as usize));
-    let mut window_sum = buf.iter().sum::<f32>();
+    let mut window_sum = buf.iter().sum::<f64>();
     let mut data = Vec::with_capacity(n_adjusted);
-    data.push(window_sum / window_size as f32);
+    data.push(window_sum / window_size as f64);
     let mut cursor = 0;
     for value in iter {
         window_sum -= buf[cursor];
         buf[cursor] = value;
         window_sum += value;
-        data.push(window_sum / window_size as f32);
+        data.push(window_sum / window_size as f64);
         cursor = (cursor + 1) % window_size as usize;
     }
-    let start = (window_size + 1) as f32 / 2.0;
+    let start = (window_size + 1) as f64 / 2.0;
     Ok(LinePlot { data, start })
 }

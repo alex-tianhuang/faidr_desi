@@ -27,16 +27,16 @@ pub(super) struct FullStatisticsVec {
     /// The slot corresponding to index `i x n + j`
     /// corresponds the sum of the `i`th variable whenever
     /// the `i`th and `j`th variable are simultaneously defined.
-    sums: Vec<f32>,
+    sums: Vec<f64>,
     /// `n x n` size vector of joint sums of squares of each variable.
     ///
     /// The slot corresponding to index `i x n + j`
     /// corresponds the sum of the squared `i`th variable whenever
     /// the `i`th and `j`th variable are simultaneously defined.
-    sums_squared: Vec<f32>,
+    sums_squared: Vec<f64>,
     /// `n x n` symmetric matrix of sums of products
     /// of pairs of variables.
-    sums_of_products: Vec<f32>,
+    sums_of_products: Vec<f64>,
 }
 impl FullStatisticsVec {
     /// The number of variables per row.
@@ -55,7 +55,7 @@ impl FullStatisticsVec {
     ///
     /// This is the sum of variable `i` whenever the
     /// variable `j` was simultaneously defined.
-    pub fn joint_sum_at(&self, i: usize, j: usize) -> f32 {
+    pub fn joint_sum_at(&self, i: usize, j: usize) -> f64 {
         self.sums[i * self.n + j]
     }
     /// Access the joint sum of squared values corresponding
@@ -63,7 +63,7 @@ impl FullStatisticsVec {
     ///
     /// This is the sum of variable `i` squared whenever the
     /// variable `j` was simultaneously defined.
-    pub fn joint_sum_squared_at(&self, i: usize, j: usize) -> f32 {
+    pub fn joint_sum_squared_at(&self, i: usize, j: usize) -> f64 {
         self.sums_squared[i * self.n + j]
     }
     /// Access the joint sum product corresponding
@@ -71,12 +71,12 @@ impl FullStatisticsVec {
     ///
     /// This is the sum of variable `i` times
     /// variable `j` whenever both were defined.
-    pub fn joint_sum_of_products_at(&self, i: usize, j: usize) -> f32 {
+    pub fn joint_sum_of_products_at(&self, i: usize, j: usize) -> f64 {
         self.sums_of_products[i * self.n + j]
     }
     /// Record a sample, which is represented by a "row" of
     /// multiple variables (an iterator of length `n`).
-    pub fn record_row(&mut self, row: impl Clone + Iterator<Item = Option<f32>>) {
+    pub fn record_row(&mut self, row: impl Clone + Iterator<Item = Option<f64>>) {
         let n = self.n;
         for (i, value_i) in row.clone().enumerate() {
             let Some(value_i) = value_i else { continue };

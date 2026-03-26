@@ -179,7 +179,7 @@ mod statistics {
         /// of features.
         counts: PseudoMap<&'a str, FeatureCounts<'a>>,
         /// The average value of each feature (by feature ID).
-        averages: PseudoMap<&'a str, f32>,
+        averages: PseudoMap<&'a str, f64>,
         /// Information about the variance and correlation
         /// of different features.
         covariance_data: PseudoMap<&'a str, FeatureCovariances<'a>>,
@@ -200,11 +200,11 @@ mod statistics {
     #[serde(rename_all = "camelCase")]
     pub struct FeatureCovariances<'a> {
         /// Square root of the variance of the feature.
-        standard_deviation: f32,
+        standard_deviation: f64,
         /// Correlation value of the feature with
         /// another feature (by the feature ID of
         /// the other feature)
-        correlations: PseudoMap<&'a str, f32>,
+        correlations: PseudoMap<&'a str, f64>,
     }
     impl<'a> StandardFeatureStatistics<'a> {
         /// Create a new [`StandardFeatureStatistics`]
@@ -234,7 +234,7 @@ mod statistics {
                 feature_ids
                     .clone()
                     .into_iter()
-                    .map(|feature_id| (feature_id, f32::NAN)),
+                    .map(|feature_id| (feature_id, f64::NAN)),
             );
             let covariance_data =
                 PseudoMap::from_iter(feature_ids.clone().into_iter().enumerate().map(
@@ -246,12 +246,12 @@ mod statistics {
                                 .into_iter()
                                 .enumerate()
                                 .filter(|(j, _)| i != *j)
-                                .map(|(_, other_feature_id)| (other_feature_id, f32::NAN)),
+                                .map(|(_, other_feature_id)| (other_feature_id, f64::NAN)),
                         );
                         (
                             feature_id,
                             FeatureCovariances {
-                                standard_deviation: f32::NAN,
+                                standard_deviation: f64::NAN,
                                 correlations,
                             },
                         )

@@ -21,7 +21,7 @@ impl FeaturizableSeqFeats for SimpleSpacingContainer {
         &self,
         sequence: &aa_canonical_str,
         _ctx: Self::Ctx<'a>,
-    ) -> impl Iterator<Item = Result<f32, Self::Err>> {
+    ) -> impl Iterator<Item = Result<f64, Self::Err>> {
         let SimpleSpacingContainer { deltas, omegas } = self;
         let mut deltas = deltas.iter();
         let mut omegas = omegas.iter();
@@ -47,7 +47,7 @@ impl FeaturizableSeqFeats for SimpleSpacingContainer {
 fn compute_simple_spacing_delta(
     feature: &SimpleSpacingDelta,
     sequence: &aa_canonical_str,
-) -> Result<f32, SimpleSpacingError> {
+) -> Result<f64, SimpleSpacingError> {
     let SimpleSpacingDelta {
         ref res_group_a,
         ref res_group_b,
@@ -109,11 +109,11 @@ fn probability_of_blob_delta(
     b_sites_count: usize,
     sequence_len: usize,
     blob_size: i32,
-) -> f32 {
+) -> f64 {
     let sites_count = a_sites_count + b_sites_count;
     let prob_a_or_b_in_blob = probability_of_blob_omega(sites_count, sequence_len, blob_size);
     let prob_next_a_or_b_is_different =
-        (2 * a_sites_count * b_sites_count) as f32 / (sites_count * sites_count) as f32;
+        (2 * a_sites_count * b_sites_count) as f64 / (sites_count * sites_count) as f64;
     let prob_next_a_or_b_is_same = 1.0 - prob_next_a_or_b_is_different;
     prob_a_or_b_in_blob * prob_next_a_or_b_is_same
 }
@@ -125,7 +125,7 @@ fn probability_of_blob_delta(
 fn compute_simple_spacing_omega(
     feature: &SimpleSpacingOmega,
     sequence: &aa_canonical_str,
-) -> Result<f32, SimpleSpacingError> {
+) -> Result<f64, SimpleSpacingError> {
     let SimpleSpacingOmega {
         ref res_group,
         blob_size,
@@ -163,8 +163,8 @@ fn compute_simple_spacing_omega(
 /// to be part of a "blob". In other words, compute the probability
 /// that the next residue in the residue group appears before
 /// `blob_size` aminoacids.
-fn probability_of_blob_omega(sites_count: usize, sequence_len: usize, blob_size: i32) -> f32 {
-    let res_group_frequency = sites_count as f32 / sequence_len as f32;
+fn probability_of_blob_omega(sites_count: usize, sequence_len: usize, blob_size: i32) -> f64 {
+    let res_group_frequency = sites_count as f64 / sequence_len as f64;
     1.0 - (1.0 - res_group_frequency).powi(blob_size)
 }
 /// Helper functions for simple spacing features.
@@ -172,8 +172,8 @@ fn probability_of_blob_omega(sites_count: usize, sequence_len: usize, blob_size:
 /// Compute a z-score based on the actual number of successes
 /// (`n_successes`) vs. the expected given by the parameters of a
 /// simple binomial model (`p` and `n_trials`).
-fn binomial_z_score(n_successes: usize, p: f32, n_trials: usize) -> f32 {
-    let mean_neighbours = p * n_trials as f32;
-    let sd_neighbours = (p * (1.0 - p) * n_trials as f32).sqrt();
-    (n_successes as f32 - mean_neighbours) / sd_neighbours
+fn binomial_z_score(n_successes: usize, p: f64, n_trials: usize) -> f64 {
+    let mean_neighbours = p * n_trials as f64;
+    let sd_neighbours = (p * (1.0 - p) * n_trials as f64).sqrt();
+    (n_successes as f64 - mean_neighbours) / sd_neighbours
 }

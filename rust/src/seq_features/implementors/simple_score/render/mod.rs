@@ -13,7 +13,7 @@ mod compile;
 /// (weighted count of each aminoacid type), and the window-size
 /// to average out tracks using.
 pub struct SimpleScoreRenderable {
-    data: AAMap<f32>,
+    data: AAMap<f64>,
     window_size: u32,
 }
 

@@ -21,7 +21,7 @@ impl FeaturizableSeqFeats for SCD {
         &self,
         sequence: &aa_canonical_str,
         mut ctx: Self::Ctx<'a>,
-    ) -> impl Iterator<Item = Result<f32, Self::Err>> {
+    ) -> impl Iterator<Item = Result<f64, Self::Err>> {
         self.enabled
             .then(|| 
                 Ok(compute_scd(sequence, &mut ctx))
@@ -31,7 +31,7 @@ impl FeaturizableSeqFeats for SCD {
 }
 
 /// Function that computes sequence decoration for [`SCD::featurize`].
-fn compute_scd(sequence: &aa_canonical_str, ctx: &mut Ctx2<'_>) -> f32 {
+fn compute_scd(sequence: &aa_canonical_str, ctx: &mut Ctx2<'_>) -> f64 {
     const SIMPLIFIED_CHARGED_RESIDUES: [Aminoacid; 4] =
         [Aminoacid::D, Aminoacid::E, Aminoacid::K, Aminoacid::R];
     let num_charged_residues = SIMPLIFIED_CHARGED_RESIDUES
@@ -52,10 +52,10 @@ fn compute_scd(sequence: &aa_canonical_str, ctx: &mut Ctx2<'_>) -> f32 {
         let (idx_i, charge_i) = simplified_charged_sites_and_charges[i];
         for j in 0..i {
             let (idx_j, charge_j) = simplified_charged_sites_and_charges[j];
-            scd_sum += (charge_i * charge_j) as f32 * ((idx_i - idx_j) as f32).sqrt()
+            scd_sum += (charge_i * charge_j) as f64 * ((idx_i - idx_j) as f64).sqrt()
         }
     }
-    scd_sum / sequence.len() as f32
+    scd_sum / sequence.len() as f64
 }
 
 /// Get the simplified charge of an aminoacid for computing SCD.

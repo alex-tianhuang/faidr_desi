@@ -72,7 +72,7 @@ impl StandardStatisticsVec {
         }
     }
     /// The sum of variable `i`.
-    pub fn sum_at(&self, i: usize) -> f32 {
+    pub fn sum_at(&self, i: usize) -> f64 {
         self.joint_sum_at(i, i)
     }
     /// Access the joint sum corresponding to
@@ -80,14 +80,14 @@ impl StandardStatisticsVec {
     ///
     /// This is the sum of variable `i` whenever the
     /// variable `j` was simultaneously defined.
-    pub fn joint_sum_at(&self, i: usize, j: usize) -> f32 {
+    pub fn joint_sum_at(&self, i: usize, j: usize) -> f64 {
         match &self.0 {
             Impl::Compact(v) => v.sum_at(i),
             Impl::Full(v) => v.joint_sum_at(i, j),
         }
     }
     /// The sum of of variable `i` squared.
-    pub fn sum_squared_at(&self, i: usize) -> f32 {
+    pub fn sum_squared_at(&self, i: usize) -> f64 {
         self.joint_sum_of_products_at(i, i)
     }
     /// Access the joint sum of squared values corresponding
@@ -95,7 +95,7 @@ impl StandardStatisticsVec {
     ///
     /// This is the sum of variable `i` squared whenever the
     /// variable `j` was simultaneously defined.
-    pub fn joint_sum_squared_at(&self, i: usize, j: usize) -> f32 {
+    pub fn joint_sum_squared_at(&self, i: usize, j: usize) -> f64 {
         match &self.0 {
             Impl::Compact(v) => v.sum_of_products_at(i, i),
             Impl::Full(v) => v.joint_sum_squared_at(i, j),
@@ -106,7 +106,7 @@ impl StandardStatisticsVec {
     ///
     /// This is the sum of variable `i` times
     /// variable `j` whenever both were defined.
-    pub fn joint_sum_of_products_at(&self, i: usize, j: usize) -> f32 {
+    pub fn joint_sum_of_products_at(&self, i: usize, j: usize) -> f64 {
         match &self.0 {
             Impl::Compact(v) => v.sum_of_products_at(i, j),
             Impl::Full(v) => v.joint_sum_of_products_at(i, j),
@@ -114,7 +114,7 @@ impl StandardStatisticsVec {
     }
     /// Record a sample, which is represented by a "row" of
     /// multiple variables (an iterator of length `n`).
-    pub fn record_row(&mut self, row: impl Clone + Iterator<Item = Option<f32>>) {
+    pub fn record_row(&mut self, row: impl Clone + Iterator<Item = Option<f64>>) {
         match &mut self.0 {
             Impl::Compact(v) => {
                 if row.clone().all(|opt| opt.is_some()) {

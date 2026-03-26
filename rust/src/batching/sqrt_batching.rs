@@ -47,12 +47,12 @@ use crate::batching::BatchingParameters;
 /// [module level docs]: self
 pub fn determine_batching_parameters(
     num_tasks: usize,
-    one_worker_batch_size: f32,
+    one_worker_batch_size: f64,
     max_num_workers: usize,
 ) -> BatchingParameters {
     let num_workers = determine_num_workers(num_tasks, one_worker_batch_size, max_num_workers);
     BatchingParameters {
-        batch_size: (num_workers as f32 * one_worker_batch_size).floor() as u32,
+        batch_size: (num_workers as f64 * one_worker_batch_size).floor() as u32,
         num_workers,
     }
 }
@@ -62,10 +62,10 @@ pub fn determine_batching_parameters(
 /// [module level docs]: self
 fn determine_num_workers(
     num_tasks: usize,
-    one_worker_batch_size: f32,
+    one_worker_batch_size: f64,
     max_num_workers: usize,
 ) -> usize {
-    let num_tasks = num_tasks as f32;
+    let num_tasks = num_tasks as f64;
     if num_tasks < one_worker_batch_size || max_num_workers == 1 {
         return 1;
     };

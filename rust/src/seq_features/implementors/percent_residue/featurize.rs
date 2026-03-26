@@ -31,9 +31,9 @@ impl FeaturizableSeqFeats for PercentResidue {
         &self,
         sequence: &crate::datatypes::aa_canonical_str,
         ctx: Self::Ctx<'a>,
-    ) -> impl Iterator<Item = Result<f32, Self::Err>> {
+    ) -> impl Iterator<Item = Result<f64, Self::Err>> {
         self.residues
             .iter()
-            .map(|aa| Ok(ctx[aa] as f32 / sequence.len() as f32))
+            .map(|aa| Ok(ctx[aa] as f64 / sequence.len() as f64))
     }
 }

@@ -241,8 +241,8 @@ mod batch_work {
     ///
     /// When I ran the IDRome for Yuxi,
     /// it was about 800 iterations/second in python.
-    fn determine_num_sequences_for_one_worker_batch() -> f32 {
-        const NUM_SEQUENCES_FOR_HALF_A_SECOND: f32 = 400.0;
+    fn determine_num_sequences_for_one_worker_batch() -> f64 {
+        const NUM_SEQUENCES_FOR_HALF_A_SECOND: f64 = 400.0;
         NUM_SEQUENCES_FOR_HALF_A_SECOND
     }
     /// See [`construct_workload_for_one_worker`].

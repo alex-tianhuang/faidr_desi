@@ -18,10 +18,10 @@ pub(super) struct CompactStatisticsVec {
     /// `n` size vector.
     /// 
     /// The sums of each variable across all rows.
-    pub(super) sums: Vec<f32>,
+    pub(super) sums: Vec<f64>,
     /// `n x n` symmetric matrix representing the sum of products
     /// of variables `i` and `j` at slot `i * n + j`.
-    pub(super) sums_of_products: Vec<f32>
+    pub(super) sums_of_products: Vec<f64>
 }
 impl CompactStatisticsVec {
     /// Make a new vector sampler of
@@ -57,16 +57,16 @@ impl CompactStatisticsVec {
         self.count
     }
     /// The sum of variable `i`.
-    pub fn sum_at(&self, i: usize) -> f32 {
+    pub fn sum_at(&self, i: usize) -> f64 {
         self.sums[i]
     }
     /// The sum of variable `i` times variable `j`.
-    pub fn sum_of_products_at(&self, i: usize, j: usize) -> f32 {
+    pub fn sum_of_products_at(&self, i: usize, j: usize) -> f64 {
         self.sums_of_products[i * self.len() + j]
     }
     /// Record a sample, which is represented by a "row" of
     /// multiple variables (an iterator of length `n`).
-    pub fn record_row(&mut self, row: impl Clone + Iterator<Item = f32>) {
+    pub fn record_row(&mut self, row: impl Clone + Iterator<Item = f64>) {
         let n = self.len();
         self.count += 1;
         for (i, value_i) in row.clone().enumerate() {

@@ -20,5 +20,5 @@ pub(crate) trait FeaturizableSeqFeats: Sized {
         &self,
         sequence: &aa_canonical_str,
         ctx: Self::Ctx<'a>,
-    ) -> impl Iterator<Item = Result<f32, Self::Err>>;
+    ) -> impl Iterator<Item = Result<f64, Self::Err>>;
 }

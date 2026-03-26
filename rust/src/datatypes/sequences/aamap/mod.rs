@@ -21,7 +21,7 @@ pub use aaweights::AAWeights;
 /// 
 /// Construct like so:
 /// ```
-/// let map = AAMap([0.0_f32; 20]);
+/// let map = AAMap([0.0_f64; 20]);
 /// ```
 /// or like so:
 /// ```

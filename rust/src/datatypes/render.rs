@@ -65,9 +65,9 @@ impl FromIterator<Segment> for Graphic {
 pub struct LinePlot {
     /// Numeric values which are expected to be
     /// spaced by 1 residue per value.
-    pub data: Vec<f32>,
+    pub data: Vec<f64>,
     /// The 1-indexed start coordinate, such that
     /// 1 will be plotted in the middle of the first
     /// residue.
-    pub start: f32,
+    pub start: f64,
 }

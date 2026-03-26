@@ -15,9 +15,9 @@ impl FeaturizableSeqFeats for PercentResidueGroup {
             &self,
             sequence: &crate::datatypes::aa_canonical_str,
             ctx: Self::Ctx<'a>,
-        ) -> impl Iterator<Item = Result<f32, Self::Err>> {
+        ) -> impl Iterator<Item = Result<f64, Self::Err>> {
         self.residue_groups.iter().map(|res_group| {
-            Ok(res_group.iter().map(|aa| ctx[aa]).sum::<usize>() as f32 / sequence.len() as f32)
+            Ok(res_group.iter().map(|aa| ctx[aa]).sum::<usize>() as f64 / sequence.len() as f64)
         })
     }
 }

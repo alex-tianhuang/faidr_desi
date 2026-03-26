@@ -15,7 +15,7 @@ use crate::{
 /// as a sliding average of residue scores.
 #[derive(Deserialize, Clone)]
 pub struct SimpleScoreRenderableUserFacing {
-    weights: JSFacingAAMap<f32>,
+    weights: JSFacingAAMap<f64>,
     window_size: u32,
 }
 #[derive(Default)]
