@@ -50,7 +50,7 @@ pub async fn webworker_featurize(
         }
         sender = progress.flush_progress(sender).await?;
     }
-    Ok(())
+    sender.send_close(&()).await
 }
 /// A struct for accumulating and sending the current batch results.
 struct ProgressManager {
