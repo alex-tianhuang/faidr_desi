@@ -161,6 +161,7 @@ class Wk1BlockingWorker<R> {
     }
     if (active.waiters !== null) {
       const [resolve, reject] = active.waiters;
+      active.waiters = null;
       if (msg.case === "ack/syn") {
         resolve(active.conn);
       } else {
