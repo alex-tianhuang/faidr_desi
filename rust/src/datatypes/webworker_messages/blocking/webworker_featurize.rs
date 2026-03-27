@@ -58,7 +58,6 @@ pub enum RequestPayload {
         /// Validated sequences to featurize.
         sequences: Vec<AACanonicalStringStrict>,
         /// Features to compute.
-        #[serde(flatten)]
         feature_configuration: FeatureContainerUserFacing,
         /// Whether or not to return feature statistics.
         statistics_included: bool
@@ -78,7 +77,7 @@ pub enum RequestPayload {
         /// but the features typically remain the same, you can serialize
         /// the featurizer once and then reuse the `JsValue` to avoid
         /// duplicate work.
-        #[serde(rename = "featureConfiguration", flatten)]
+        #[serde(rename = "featureConfiguration")]
         feature_configuration_preserialized: JsValuePreserved,
         /// Whether or not to return feature statistics.
         statistics_included: bool
