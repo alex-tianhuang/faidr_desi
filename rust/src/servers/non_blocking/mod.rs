@@ -12,6 +12,7 @@ use wasm_bindgen::{JsValue, prelude::wasm_bindgen};
 mod common;
 mod featurize;
 mod forward;
+mod generate_mimic;
 
 /// Shorthand for taking a future with output type `Result<(), JsValue>`
 /// and turning that into a future with unit output type for
@@ -86,6 +87,9 @@ pub async fn non_blocking_server(
         match request {
             RequestPayload::Featurize(request) => {
                 new_task!(featurize::featurize(request, task_spawner.clone(), sender))
+            },
+            RequestPayload::GenerateMimic(request) => {
+                new_task!(generate_mimic::generate_mimic(request, sender))
             }
         }
     }

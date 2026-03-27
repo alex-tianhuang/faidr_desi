@@ -3,6 +3,7 @@ mod batching;
 mod datatypes;
 mod deserializer;
 mod rng;
+mod seq_generator;
 mod seq_features;
 mod servers;
 mod statistics;
