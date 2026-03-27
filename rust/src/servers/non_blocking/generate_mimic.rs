@@ -63,6 +63,13 @@ pub async fn generate_mimic(request: RequestPayload, sender: SenderHandle) -> Re
                 batch_iterations.clear();
             }
         }
+    if !batch_iterations.is_empty() {
+        let msg = YieldPayload::Progress(Progress {
+            iterations: &batch_iterations
+        });
+        sender = sender.send_data(&msg).await?;
+        batch_iterations.clear();
+    }
     sender.send_close(&ClosePayload::Ok).await
 }
 mod init_job {
