@@ -39,9 +39,13 @@ pub struct RequestPayload {
     /// ```
     /// {
     ///     "sequenceByFeatureMatrix": {
-    ///         "0": { /* Features or errors for 1st sequence in list */ },
-    ///         "1": { /* Features or errors for 2nd sequence in list */ },
-    ///         /* ... */
+    ///         "0": {
+    ///             // Features or errors for 1st sequence in list
+    ///         },
+    ///         "1": { 
+    ///             // Features or errors for 2nd sequence in list
+    ///         },
+    ///         // ...
     ///     }
     /// }
     /// ```
