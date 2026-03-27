@@ -1,6 +1,6 @@
 use crate::{
     Receiver, Sender,
-    datatypes::webworker_messages::{blocking::RequestPayload, get_connection_id},
+    datatypes::{Request, webworker_messages::{blocking::RequestPayload, get_connection_id}},
 };
 use serde_wasm_bindgen::from_value;
 use wasm_bindgen::{JsValue, prelude::wasm_bindgen};
@@ -59,7 +59,7 @@ pub async fn blocking_server(receiver: Receiver, sender: Sender) -> Result<JsVal
                 .into());
             }
         };
-        let request = match from_value::<RequestPayload>(received) {
+        let request = match from_value::<Request<RequestPayload>>(received) {
             Ok(request) => request,
             Err(err) => {
                 new_task!(sender.send_error(&format!(
@@ -69,7 +69,7 @@ pub async fn blocking_server(receiver: Receiver, sender: Sender) -> Result<JsVal
                 continue;
             }
         };
-        match request {
+        match request.data {
             RequestPayload::WebworkerFeaturize(request) => {
                 new_task!(webworker_featurize::webworker_featurize(request, sender))
             }
