@@ -6,6 +6,7 @@ pub use yield_data::{DesignIteration, Initialized, Progress, YieldPayload};
 
 /// Request payload for the `generate-ko` endpoint.
 #[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct RequestPayload {
     /// The sequence to start from.
     pub initial_sequence: String,

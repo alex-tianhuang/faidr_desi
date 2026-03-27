@@ -8,6 +8,7 @@ pub use yield_data::{DesignIteration, Initialized, Progress, YieldPayload};
 
 /// Request payload for the `generate-mimic` endpoint.
 #[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct RequestPayload {
     /// The sequence to design a mimic for.
     pub target_sequence: String,
