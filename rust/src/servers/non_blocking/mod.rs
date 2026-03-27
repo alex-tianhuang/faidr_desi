@@ -1,10 +1,10 @@
 use crate::{
     Receiver, Sender, TaskSpawner,
     datatypes::{
-        webworker_messages::{
+        Request, webworker_messages::{
             get_connection_id,
             non_blocking::{RequestPayload, request_is_forwardable},
-        },
+        }
     },
 };
 use serde_wasm_bindgen::from_value;
@@ -75,7 +75,7 @@ pub async fn non_blocking_server(
             new_task!(forward::forward_request(received, &task_spawner, sender));
             continue;
         }
-        let request = match from_value::<RequestPayload>(received) {
+        let request = match from_value::<Request<RequestPayload>>(received.clone()) {
             Ok(request) => request,
             Err(err) => {
                 new_task!(sender.send_error(&format!(
@@ -85,7 +85,7 @@ pub async fn non_blocking_server(
                 continue;
             }
         };
-        match request {
+        match request.data {
             RequestPayload::Featurize(request) => {
                 new_task!(featurize::featurize(request, task_spawner.clone(), sender))
             },
