@@ -12,7 +12,7 @@ pub struct StandardError {
     reason: Box<dyn Error + Send + Sync + 'static>
 }
 impl StandardError {
-    /// Construct a standard error from a bare string.
+    /// Construct a standard error from a string.
     pub fn from_str(s: &str) -> Self {
         Self { reason: Box::from(s) }
     }
