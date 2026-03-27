@@ -27,6 +27,7 @@ use crate::{AAStringValidationParameters, seq_features::featurize::FeatureContai
 /// [module level docs]: self
 #[derive(Tsify, Deserialize)]
 #[tsify(from_wasm_abi)]
+#[serde(rename_all = "camelCase")]
 pub struct RequestPayload {
     /// Sequences to featurize.
     ///
