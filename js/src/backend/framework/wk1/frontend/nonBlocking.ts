@@ -95,7 +95,7 @@ export class Wk1NBPool<R> implements ConnPool<R, unknown, unknown> {
     });
     this.base.postMessage({ case: "syn", data: msg.data, connID });
     await acknowledged;
-    this.handlerMap.set(connID, conn.onmessage);
+    this.handlerMap.set(connID, (m) => conn.onmessage(m));
     return conn;
   }
 
