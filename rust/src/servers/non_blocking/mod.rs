@@ -12,6 +12,7 @@ use wasm_bindgen::{JsValue, prelude::wasm_bindgen};
 mod common;
 mod featurize;
 mod forward;
+mod generate_ko;
 mod generate_mimic;
 
 /// Shorthand for taking a future with output type `Result<(), JsValue>`
@@ -90,6 +91,9 @@ pub async fn non_blocking_server(
             },
             RequestPayload::GenerateMimic(request) => {
                 new_task!(generate_mimic::generate_mimic(request, sender))
+            },
+            RequestPayload::GenerateKo(request) => {
+                new_task!(generate_ko::generate_ko(request, sender))
             }
         }
     }
