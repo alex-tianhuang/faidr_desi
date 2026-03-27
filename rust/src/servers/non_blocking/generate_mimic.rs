@@ -124,31 +124,20 @@ mod init_job {
                 return Ok(ControlFlow::Break(()));
             }
         };
-        let feature_weights = match feat_order
-            .iter()
-            .map(|feature_id| {
-                feature_weights
-                    .get(*feature_id)
-                    .ok_or_else(|| {
-                        StandardError::from_str(&format!(
-                            "feature weight not found for feature {}",
-                            feature_id
-                        ))
-                    })
-                    .copied()
-            })
-            .collect::<Result<Vec<f64>, _>>()
-        {
-            Ok(weights) => weights,
-            Err(error) => {
-                let msg = ClosePayload::InitializationError(InitializationError {
-                    error,
-                    feature_compile_errors: PseudoMap::from(compile_errors),
-                });
-                sender.send_close(&msg).await?;
-                return Ok(ControlFlow::Break(()));
-            }
-        };
+        let feature_weights =
+            match convert_feature_map_to_vec(feature_weights, &feat_order, |feature_id| {
+                format!("feature weight not found for feature {}", feature_id)
+            }) {
+                Ok(weights) => weights,
+                Err(error) => {
+                    let msg = ClosePayload::InitializationError(InitializationError {
+                        error,
+                        feature_compile_errors: PseudoMap::from(compile_errors),
+                    });
+                    sender.send_close(&msg).await?;
+                    return Ok(ControlFlow::Break(()));
+                }
+            };
         let feature_origin =
             match validate_one_sequence(&sequence, sequence_validation_settings, &mut featurizer) {
                 Ok(origin) => origin,
@@ -244,5 +233,22 @@ mod init_job {
             "could not generate random starting sequence of length {} after {} attempts",
             seq_len, max_attempts
         )))
+    }
+    /// Helper function for [`init_job_generate_mimic`].
+    /// 
+    /// Turns a map of feature values to a vector using the given feature order.
+    fn convert_feature_map_to_vec(
+        map: HashMap<String, f64>,
+        feat_order: &[&str],
+        error: impl Fn(&str) -> String,
+    ) -> Result<Vec<f64>, StandardError> {
+        feat_order
+            .iter()
+            .map(|feature_id| {
+                map.get(*feature_id)
+                    .ok_or_else(|| StandardError::from_str(&error(*feature_id)))
+                    .copied()
+            })
+            .collect::<Result<Vec<f64>, _>>()
     }
 }
