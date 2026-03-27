@@ -104,7 +104,7 @@ export class Wk1BatchedPool<R> implements ConnPool<
     );
     hupWaiters = hupWaiters!;
     let closed = false;
-    const connUntyped = new Wk1Conn(Promise.resolve);
+    const connUntyped = new Wk1Conn(() => Promise.resolve());
     const conn: Conn<ResponseWithWorkerID, ResponseWithWorkerID> = {
       recv: () =>
         connUntyped.recv().then((msg) => {
