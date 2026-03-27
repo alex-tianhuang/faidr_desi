@@ -21,10 +21,7 @@ pub struct RequestPayload {
     pub rng: RngSpec,
 }
 mod yield_data {
-    use crate::{
-        datatypes::{AACanonicalString, aa_canonical_str},
-        seq_generator::PointMutation,
-    };
+    use crate::{datatypes::AACanonicalString, seq_generator::PointMutation};
     use serde::Serialize;
     /// Progress type returned at the `generate-mimic` endpoint.
     #[derive(Serialize)]
