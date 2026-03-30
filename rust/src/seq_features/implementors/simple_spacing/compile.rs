@@ -30,6 +30,7 @@ pub enum SimpleSpacingUserFacing {
 /// See [`SimpleSpacingDelta`] and [`super`] module
 /// level docs.
 #[derive(Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct SimpleSpacingDeltaUserFacing {
     res_group_a: AACanonicalStringStrict,
     res_group_b: AACanonicalStringStrict,
@@ -41,6 +42,7 @@ pub struct SimpleSpacingDeltaUserFacing {
 /// See [`SimpleSpacingOmega`] and [`super`] module
 /// level docs.
 #[derive(Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct SimpleSpacingOmegaUserFacing {
     res_group: AACanonicalStringStrict,
     blob_size: u32,

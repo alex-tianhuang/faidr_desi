@@ -68,6 +68,7 @@ pub fn deserialize_nardini_omega<'de, D: Deserializer<'de>>(
 /// See [`NardiniOmega`] and [`super`] module
 /// level docs.
 #[derive(Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct NardiniOmegaUserFacing {
     res_group: AACanonicalStringStrict,
     #[serde(flatten)]
