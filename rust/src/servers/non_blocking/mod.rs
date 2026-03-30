@@ -7,6 +7,7 @@ use crate::{
         }
     },
 };
+use super::is_hup_error;
 use serde_wasm_bindgen::from_value;
 use wasm_bindgen::{JsValue, prelude::wasm_bindgen};
 mod common;
@@ -35,7 +36,9 @@ macro_rules! new_task {
             match task.await {
                 Ok(()) => (),
                 Err(err) => {
-                    web_sys::console::error_1(&err);
+                    if !is_hup_error(&err) {
+                        web_sys::console::error_1(&err);
+                    }
                 }
             }
         })

@@ -1,6 +1,10 @@
+use super::is_hup_error;
 use crate::{
     Receiver, Sender,
-    datatypes::{Request, webworker_messages::{blocking::RequestPayload, get_connection_id}},
+    datatypes::{
+        Request,
+        webworker_messages::{blocking::RequestPayload, get_connection_id},
+    },
 };
 use serde_wasm_bindgen::from_value;
 use wasm_bindgen::{JsValue, prelude::wasm_bindgen};
@@ -23,7 +27,9 @@ macro_rules! new_task {
         match $task.await {
             Ok(()) => (),
             Err(err) => {
-                web_sys::console::error_1(&err);
+                if !is_hup_error(&err) {
+                    web_sys::console::error_1(&err);
+                }
             }
         }
     }};
