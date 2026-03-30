@@ -6,7 +6,7 @@ use crate::{datatypes::sequences::AACanonicalStringStrict, seq_features::{functi
 #[derive(Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RepeatSpanUserFacing {
-    res_group: AACanonicalStringStrict,
+    residues: AACanonicalStringStrict,
     take_average: bool
 }
 /// Compiler for repeat span features.
@@ -22,7 +22,7 @@ impl<'a> CompilerImplementor<'a> for RepeatSpanCompiler<'a> {
     /// (see compiler template).
     fn compile(&mut self, data: &Self::UserFacing, feature_id: &'a str) -> Result<(), Self::Err> {
         let feature = RepeatSpan {
-            res_group: data.res_group.into_iter().collect(),
+            residues: data.residues.into_iter().collect(),
             take_average: data.take_average
         };
         if self.repeats
