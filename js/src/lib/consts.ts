@@ -293,7 +293,7 @@ export const FEATURE_CONFIGURATION = {
   },
   D_repeats: {
     compute: "repeat-span",
-    residues: "D",
+    resGroup: "D",
     takeAverage: false,
   },
   ED_ratio: {
@@ -308,12 +308,12 @@ export const FEATURE_CONFIGURATION = {
   },
   E_repeats: {
     compute: "repeat-span",
-    residues: "E",
+    resGroup: "E",
     takeAverage: false,
   },
   FG_repeats: {
     compute: "repeat-span",
-    residues: "FG",
+    resGroup: "FG",
     takeAverage: false,
   },
   FG_rich: {
@@ -333,12 +333,12 @@ export const FEATURE_CONFIGURATION = {
   },
   G_repeats: {
     compute: "repeat-span",
-    residues: "G",
+    resGroup: "G",
     takeAverage: false,
   },
   KAP_repeats: {
     compute: "repeat-span",
-    residues: "KAP",
+    resGroup: "KAP",
     takeAverage: false,
   },
   KL_hydropathy: {
@@ -369,7 +369,7 @@ export const FEATURE_CONFIGURATION = {
   },
   K_repeats: {
     compute: "repeat-span",
-    residues: "K",
+    resGroup: "K",
     takeAverage: false,
   },
   "LIG_14-3-3_CanoR_1": {
@@ -597,7 +597,7 @@ export const FEATURE_CONFIGURATION = {
   },
   N_repeats: {
     compute: "repeat-span",
-    residues: "N",
+    resGroup: "N",
     takeAverage: false,
   },
   PG_rich: {
@@ -607,12 +607,12 @@ export const FEATURE_CONFIGURATION = {
   },
   PR_repeats: {
     compute: "repeat-span",
-    residues: "PR",
+    resGroup: "PR",
     takeAverage: false,
   },
   PTS_repeats: {
     compute: "repeat-span",
-    residues: "PTS",
+    resGroup: "PTS",
     takeAverage: false,
   },
   PY: {
@@ -622,17 +622,17 @@ export const FEATURE_CONFIGURATION = {
   },
   P_repeats: {
     compute: "repeat-span",
-    residues: "P",
+    resGroup: "P",
     takeAverage: false,
   },
   QN_repeats: {
     compute: "repeat-span",
-    residues: "QN",
+    resGroup: "QN",
     takeAverage: false,
   },
   Q_repeats: {
     compute: "repeat-span",
-    residues: "Q",
+    resGroup: "Q",
     takeAverage: false,
   },
   REP_RGG: {
@@ -642,7 +642,7 @@ export const FEATURE_CONFIGURATION = {
   },
   RG_repeats: {
     compute: "repeat-span",
-    residues: "RG",
+    resGroup: "RG",
     takeAverage: false,
   },
   RK_ratio: {
@@ -657,7 +657,7 @@ export const FEATURE_CONFIGURATION = {
   },
   R_repeats: {
     compute: "repeat-span",
-    residues: "R",
+    resGroup: "R",
     takeAverage: false,
   },
   SGFYSG: {
@@ -667,17 +667,17 @@ export const FEATURE_CONFIGURATION = {
   },
   SG_repeats: {
     compute: "repeat-span",
-    residues: "SG",
+    resGroup: "SG",
     takeAverage: false,
   },
   SR_repeats: {
     compute: "repeat-span",
-    residues: "SR",
+    resGroup: "SR",
     takeAverage: false,
   },
   S_repeats: {
     compute: "repeat-span",
-    residues: "S",
+    resGroup: "S",
     takeAverage: false,
   },
   TRG_ER_FFAT_1: {
@@ -709,15 +709,15 @@ export const FEATURE_CONFIGURATION = {
   },
   acidic: {
     compute: "percent-res-group",
-    residues: "DE",
+    resGroup: "DE",
   },
   aliphatic: {
     compute: "percent-res-group",
-    residues: "ALMIV",
+    resGroup: "ALMIV",
   },
   aromatic: {
     compute: "percent-res-group",
-    residues: "FYW",
+    resGroup: "FYW",
   },
   arospacing: {
     compute: "simple-spacing-omega",
@@ -726,11 +726,11 @@ export const FEATURE_CONFIGURATION = {
   },
   basic: {
     compute: "percent-res-group",
-    residues: "RK",
+    resGroup: "RK",
   },
   chain_expanding: {
     compute: "percent-res-group",
-    residues: "DEKRP",
+    resGroup: "DEKRP",
   },
   complexity: {
     compute: "sequence-complexity",
@@ -748,11 +748,11 @@ export const FEATURE_CONFIGURATION = {
   },
   disorder_promoting: {
     compute: "percent-res-group",
-    residues: "TAGRDHQKSEP",
+    resGroup: "TAGRDHQKSEP",
   },
   fcr: {
     compute: "percent-res-group",
-    residues: "DEKR",
+    resGroup: "DEKR",
   },
   isoelectric_point: {
     compute: "isoelectric-point",
@@ -769,7 +769,7 @@ export const FEATURE_CONFIGURATION = {
   },
   polar_fraction: {
     compute: "percent-res-group",
-    residues: "QNSTGCH",
+    resGroup: "QNSTGCH",
   },
   scd: {
     compute: "scd",
