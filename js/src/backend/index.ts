@@ -1,16 +1,46 @@
-import { communicate, type RecvMessage } from "./framework";
+import { useEffect } from "react";
+import { communicate, type RecvMessage as GenericRecvMessage } from "./framework";
 import { Wk1NBPool } from "./framework/wk1";
 import Worker from "./wk1NB.ts?worker&inline";
 const pool = new Wk1NBPool(new Worker(), () => crypto.randomUUID());
-export function backend(
+/** 
+ * Make a request to the backend and cancel on unmount.
+ */ 
+export function useBackend(
   msg: unknown,
-  body: (recv: () => Promise<RecvMessage<unknown, unknown>>) => Promise<void>,
+  body: (recv: () => Promise<RecvMessage>) => Promise<void>,
+  deps: unknown[]
 ) {
-  return communicate(
-    pool,
-    {
-      data: msg,
-    },
-    body,
-  );
+  useEffect(() => {
+    const [unmounted, unmount] = unmountCallbacks();
+    void communicate(
+      pool,
+      {
+        data: msg,
+      },
+      (rawRecv) => {
+        if (unmounted()) return Promise.resolve();
+        const guardedRecv = async () => {
+          const msg = await rawRecv();
+          if (unmounted()) {
+            return { case: "unmounted" as const }
+          } else {
+            return msg
+          }
+        }
+        return body(guardedRecv)
+      },
+    );
+    return unmount
+  }, deps);
+}
+/** Response type, including unmount checks. */
+export type RecvMessage = GenericRecvMessage<unknown, unknown> | { case: "unmounted" }
+/** Some boilerplate for unmount checks. */
+function unmountCallbacks() {
+  const controller = new AbortController()
+  const signal = controller.signal;
+  const unmounted = () => signal.aborted;
+  const unmount = () => controller.abort();
+  return [unmounted, unmount] as const
 }
