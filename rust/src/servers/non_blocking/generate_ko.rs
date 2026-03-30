@@ -41,7 +41,7 @@ pub async fn generate_ko(request: RequestPayload, sender: SenderHandle) -> Resul
         feature_targets,
         sender
     ));
-    const BATCH_SIZE: usize = 100;
+    const BATCH_SIZE: usize = 1;
     let mut batch_iterations = Vec::with_capacity(BATCH_SIZE);
     // Can't figure out how to return an &sequence from the iterator at the moment
     // so I'll just use a mirror of the `sequence`.
