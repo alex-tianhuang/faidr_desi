@@ -40,7 +40,7 @@ pub async fn generate_mimic(request: RequestPayload, sender: SenderHandle) -> Re
         rng,
         sender
     ));
-    const BATCH_SIZE: usize = 100;
+    const BATCH_SIZE: usize = 5;
     let mut batch_iterations = Vec::with_capacity(BATCH_SIZE);
     // Can't figure out how to return an &sequence from the iterator at the moment
     // so I'll just use a mirror of the `sequence`.
