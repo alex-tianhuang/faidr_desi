@@ -41,6 +41,56 @@ impl<A: AALike> aa_str<A> {
         }
         Ok(unsafe { aa_str::from_bytes_unchecked(slice) })
     }
+    /// Parse an [`aa_str`] from the given slice of bytes,
+    /// which may represent a sequence over multiple lines.
+    ///
+    /// Parsing will remove whitespace but will fail on
+    /// other unexpected characters (such as non-`A` bytes
+    /// or lowercase characters).
+    pub fn join_multiline(slice: &mut [u8]) -> Result<&Self, NotAAStrError<A>> {
+        let mut non_aa_start_idx = None;
+        for i in 0..slice.len() {
+            let c = slice[i] as char;
+            if A::try_from(c).is_ok() {
+                continue;
+            }
+            if !c.is_ascii_whitespace() {
+                return Err(NotAAStrError::new(i, c))
+            }
+            non_aa_start_idx = Some(i);
+            break;
+        }
+        let Some(start) = non_aa_start_idx else {
+            // SAFETY: `non_aa_start_idx` is `None` if and only if
+            //         all characters pass `A::try_from` above.
+            return Ok(unsafe {Self::from_bytes_unchecked(slice) })
+        };
+        let mut len = start;
+        let mut chunk_start = start + 1;
+        for i in chunk_start..slice.len() {
+            let c = slice[i] as char;
+            if A::try_from(c).is_ok() {
+                continue;
+            };
+            if !c.is_ascii_whitespace() {
+                return Err(NotAAStrError::new(i, c))
+            }
+            if chunk_start < i {
+                let chunk_range = chunk_start..i;
+                slice.copy_within(chunk_range.clone(), len);
+                len += chunk_range.len();
+            }
+            chunk_start = i + 1;
+        }
+        if chunk_start < slice.len() {
+            let chunk_range = chunk_start..slice.len();
+            slice.copy_within(chunk_range.clone(), len);
+            len += chunk_range.len();
+        }
+        // SAFETY: The loop invariant is that `len` bytes
+        //         are always valid `A`-bytes.
+        return Ok(unsafe {Self::from_bytes_unchecked(&slice[..len]) }) 
+    }
 }
 impl<A> aa_str<A> {
     /// Cast this type as a slice.
