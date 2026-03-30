@@ -4,6 +4,7 @@ pub(crate) mod log_ratio;
 pub(crate) mod nardini_spacing;
 pub(crate) mod percent_resgroup;
 pub(crate) mod percent_residue;
+pub(crate) mod repeat_spans;
 pub(crate) mod regex_motifs;
 pub(crate) mod sequence_charge_decoration;
 pub(crate) mod sequence_complexity;

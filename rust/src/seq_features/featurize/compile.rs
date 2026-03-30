@@ -1,20 +1,14 @@
 use crate::{adapters::PseudoMap, seq_features::{
     functionality::compile::{CompilableSeqFeats, CompilerImplementor},
     implementors::{
-        log_ratio::compile::LogRatioUserFacing,
-        nardini_spacing::compile::{
+        log_ratio::compile::LogRatioUserFacing, nardini_spacing::compile::{
             NardiniSpacingUserFacing, deserialize_nardini_delta, deserialize_nardini_omega,
-        },
-        percent_resgroup::compile::PercentResidueGroupUserFacing,
-        percent_residue::compile::PercentResidueUserFacing,
-        regex_motifs::compile::{
+        }, percent_resgroup::compile::PercentResidueGroupUserFacing, percent_residue::compile::PercentResidueUserFacing, regex_motifs::compile::{
             RegexMotifUserFacing, deserialize_count_motif, deserialize_span_of_motif,
-        },
-        simple_score::compile::SimpleScoreUserFacing,
-        simple_spacing::compile::{
+        }, repeat_spans::compile::RepeatSpanUserFacing, simple_score::compile::SimpleScoreUserFacing, simple_spacing::compile::{
             SimpleSpacingUserFacing, deserialize_simple_spacing_delta,
             deserialize_simple_spacing_omega,
-        },
+        }
     },
 }};
 use serde::{Deserialize, Serialize};
@@ -87,6 +81,7 @@ pub enum SeqFeatureUserFacing {
     NardiniOmega(#[serde(deserialize_with = "deserialize_nardini_omega")] NardiniSpacingUserFacing),
     PercentResGroup(PercentResidueGroupUserFacing),
     PercentResidue(PercentResidueUserFacing),
+    RepeatSpan(RepeatSpanUserFacing),
     RegexMotifCount(#[serde(deserialize_with = "deserialize_count_motif")] RegexMotifUserFacing),
     RegexMotifSpan(#[serde(deserialize_with = "deserialize_span_of_motif")] RegexMotifUserFacing),
     SequenceComplexity,

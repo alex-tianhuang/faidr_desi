@@ -27,7 +27,12 @@ use crate::{
     seq_features::{
         functionality::featdim::FeatDim,
         implementors::{
-            isoelectric_point::IsoelectricPoint, log_ratio::LogRatioContainer, nardini_spacing::NardiniSpacing, percent_resgroup::PercentResidueGroup, percent_residue::PercentResidue, regex_motifs::RegexMotifs, sequence_charge_decoration::SCD, sequence_complexity::SequenceComplexity, sequence_hydropathy_decoration::SHD, simple_score::SimpleScore, simple_spacing::SimpleSpacingContainer
+            isoelectric_point::IsoelectricPoint, log_ratio::LogRatioContainer,
+            nardini_spacing::NardiniSpacing, percent_resgroup::PercentResidueGroup,
+            percent_residue::PercentResidue, regex_motifs::RegexMotifs, repeat_spans::RepeatSpans,
+            sequence_charge_decoration::SCD, sequence_complexity::SequenceComplexity,
+            sequence_hydropathy_decoration::SHD, simple_score::SimpleScore,
+            simple_spacing::SimpleSpacingContainer,
         },
     },
 };
@@ -91,6 +96,9 @@ r#macro::define_compiler_and_featurizer! {
             let percent_residue: PercentResidue;
             #[ftz(context = ())]
             #[ftz(map_err = into_standard_error)]
+            let repeat_spans: RepeatSpans;
+            #[ftz(context = ())]
+            #[ftz(map_err = into_standard_error)]
             let regex_motifs: RegexMotifs;
             #[ftz(context = provider.residue_counts())]
             #[ftz(map_err = into_standard_error)]
@@ -131,6 +139,7 @@ r#macro::define_compiler_and_featurizer! {
                     tri!(percent_res_group.compile(data, feature_id))
                 }
                 SeqFeatureUserFacing::PercentResidue(data) => tri!(percent_residue.compile(data, feature_id)),
+                SeqFeatureUserFacing::RepeatSpan(data) => tri!(repeat_spans.compile(data, feature_id)),
                 SeqFeatureUserFacing::RegexMotifCount(data)
                 | SeqFeatureUserFacing::RegexMotifSpan(data) => tri!(regex_motifs.compile(data, feature_id)),
                 SeqFeatureUserFacing::SequenceComplexity => {
