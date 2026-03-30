@@ -10,7 +10,7 @@ use crate::{
 
 #[derive(Deserialize, Serialize)]
 pub struct PercentResidueGroupUserFacing {
-    res_group: AACanonicalStringStrict,
+    residues: AACanonicalStringStrict,
 }
 #[derive(Default)]
 pub struct PercentResidueGroupCompiler<'a> {
