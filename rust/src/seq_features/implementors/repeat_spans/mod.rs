@@ -17,7 +17,7 @@ pub struct RepeatSpans {
 /// You can divide by sequence length if desired.
 #[derive(PartialEq)]
 pub struct RepeatSpan {
-    residues: AASet,
+    res_group: AASet,
     take_average: bool
 }
 impl FeatDim for RepeatSpans {

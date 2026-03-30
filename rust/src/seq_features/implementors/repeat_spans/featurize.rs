@@ -25,13 +25,13 @@ impl FeaturizableSeqFeats for RepeatSpans {
 /// Compute the number of residues spanned by repeats of residues in a given group.
 fn compute_repeat_span(sequence: &aa_canonical_str, feature: &RepeatSpan) -> f64 {
     let RepeatSpan {
-        ref residues,
+        ref res_group,
         take_average,
     } = *feature;
     let mut total = 0;
     let mut segment_start = None;
     for (i, aa) in sequence.into_iter().enumerate() {
-        if residues.contains(aa) {
+        if res_group.contains(aa) {
             if segment_start.is_none() {
                 segment_start = Some(i)
             }
