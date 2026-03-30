@@ -292,8 +292,9 @@ export const FEATURE_CONFIGURATION = {
     takeAverage: false,
   },
   D_repeats: {
-    compute: "repeats",
+    compute: "repeat-span",
     residues: "D",
+    takeAverage: false,
   },
   ED_ratio: {
     compute: "log-ratio",
@@ -306,12 +307,14 @@ export const FEATURE_CONFIGURATION = {
     takeAverage: true,
   },
   E_repeats: {
-    compute: "repeats",
+    compute: "repeat-span",
     residues: "E",
+    takeAverage: false,
   },
   FG_repeats: {
-    compute: "repeats",
+    compute: "repeat-span",
     residues: "FG",
+    takeAverage: false,
   },
   FG_rich: {
     compute: "regex-motif-span",
@@ -329,16 +332,18 @@ export const FEATURE_CONFIGURATION = {
     takeAverage: true,
   },
   G_repeats: {
-    compute: "repeats",
+    compute: "repeat-span",
     residues: "G",
+    takeAverage: false,
   },
   KAP_repeats: {
-    compute: "repeats",
+    compute: "repeat-span",
     residues: "KAP",
+    takeAverage: false,
   },
   KL_hydropathy: {
-    compute: "score",
-    scoreMap: {
+    compute: "simple-score",
+    weights: {
       A: 1.8,
       C: 2.5,
       D: -3.5,
@@ -363,8 +368,9 @@ export const FEATURE_CONFIGURATION = {
     takeAverage: true,
   },
   K_repeats: {
-    compute: "repeats",
+    compute: "repeat-span",
     residues: "K",
+    takeAverage: false,
   },
   "LIG_14-3-3_CanoR_1": {
     compute: "regex-motif-count",
@@ -590,8 +596,9 @@ export const FEATURE_CONFIGURATION = {
     takeAverage: false,
   },
   N_repeats: {
-    compute: "repeats",
+    compute: "repeat-span",
     residues: "N",
+    takeAverage: false,
   },
   PG_rich: {
     compute: "regex-motif-span",
@@ -599,12 +606,14 @@ export const FEATURE_CONFIGURATION = {
     takeAverage: true,
   },
   PR_repeats: {
-    compute: "repeats",
+    compute: "repeat-span",
     residues: "PR",
+    takeAverage: false,
   },
   PTS_repeats: {
-    compute: "repeats",
+    compute: "repeat-span",
     residues: "PTS",
+    takeAverage: false,
   },
   PY: {
     compute: "regex-motif-span",
@@ -612,16 +621,19 @@ export const FEATURE_CONFIGURATION = {
     takeAverage: true,
   },
   P_repeats: {
-    compute: "repeats",
+    compute: "repeat-span",
     residues: "P",
+    takeAverage: false,
   },
   QN_repeats: {
-    compute: "repeats",
+    compute: "repeat-span",
     residues: "QN",
+    takeAverage: false,
   },
   Q_repeats: {
-    compute: "repeats",
+    compute: "repeat-span",
     residues: "Q",
+    takeAverage: false,
   },
   REP_RGG: {
     compute: "regex-motif-span",
@@ -629,8 +641,9 @@ export const FEATURE_CONFIGURATION = {
     takeAverage: true,
   },
   RG_repeats: {
-    compute: "repeats",
+    compute: "repeat-span",
     residues: "RG",
+    takeAverage: false,
   },
   RK_ratio: {
     compute: "log-ratio",
@@ -643,8 +656,9 @@ export const FEATURE_CONFIGURATION = {
     takeAverage: true,
   },
   R_repeats: {
-    compute: "repeats",
+    compute: "repeat-span",
     residues: "R",
+    takeAverage: false,
   },
   SGFYSG: {
     compute: "regex-motif-span",
@@ -652,16 +666,19 @@ export const FEATURE_CONFIGURATION = {
     takeAverage: true,
   },
   SG_repeats: {
-    compute: "repeats",
+    compute: "repeat-span",
     residues: "SG",
+    takeAverage: false,
   },
   SR_repeats: {
-    compute: "repeats",
+    compute: "repeat-span",
     residues: "SR",
+    takeAverage: false,
   },
   S_repeats: {
-    compute: "repeats",
+    compute: "repeat-span",
     residues: "S",
+    takeAverage: false,
   },
   TRG_ER_FFAT_1: {
     compute: "regex-motif-count",
@@ -703,8 +720,9 @@ export const FEATURE_CONFIGURATION = {
     residues: "FYW",
   },
   arospacing: {
-    compute: "simple-spacing",
-    residues: "FYW",
+    compute: "simple-spacing-omega",
+    resGroup: "FYW",
+    blobSize: 5
   },
   basic: {
     compute: "percent-res-group",
@@ -718,11 +736,15 @@ export const FEATURE_CONFIGURATION = {
     compute: "sequence-complexity",
   },
   custom_kappa: {
-    compute: "custom-kappa",
+    compute: "simple-spacing-delta",
+    resGroupA: "DE",
+    resGroupB: "KR",
+    blobSize: 5
   },
   custom_omega: {
-    compute: "simple-spacing",
-    residues: "DEKRP",
+    compute: "simple-spacing-omega",
+    resGroup: "DEKRP",
+    blobSize: 5
   },
   disorder_promoting: {
     compute: "percent-res-group",
@@ -736,8 +758,8 @@ export const FEATURE_CONFIGURATION = {
     compute: "isoelectric-point",
   },
   net_charge: {
-    compute: "score",
-    scoreMap: {
+    compute: "simple-score",
+    weights: {
       D: -1,
       E: -1,
       K: 1,
