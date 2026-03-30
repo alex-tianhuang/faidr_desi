@@ -6,12 +6,15 @@ const pool = new Wk1NBPool(new Worker(), () => crypto.randomUUID());
 /** 
  * Make a request to the backend and cancel on unmount.
  */ 
-export function useBackend(
-  msg: unknown,
-  body: (recv: () => Promise<RecvMessage>) => Promise<void>,
-  deps: unknown[]
-) {
+export function useBackend(args: {
+  msg: unknown;
+  body: (recv: () => Promise<RecvMessage>) => Promise<void>;
+  setup: () => void;
+  deps: unknown[];
+}) {
+  const { msg, body, setup, deps } = args;
   useEffect(() => {
+    setup();
     const [unmounted, unmount] = unmountCallbacks();
     void communicate(
       pool,
