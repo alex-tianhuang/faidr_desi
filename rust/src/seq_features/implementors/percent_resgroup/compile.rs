@@ -25,7 +25,7 @@ impl<'a> CompilerImplementor<'a> for PercentResidueGroupCompiler<'a> {
     /// Adds a single residue group to the set of residue groups to look at,
     /// checking for uniqueness.
     fn compile(&mut self, data: &Self::UserFacing, feature_id: &'a str) -> Result<(), Self::Err> {
-        let res_group_new = data.res_group.into_iter().collect();
+        let res_group_new = data.residues.into_iter().collect();
         if self
             .data
             .iter()
