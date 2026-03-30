@@ -7,7 +7,7 @@ use web_sys::js_sys::Error;
 pub fn parse_text_as_sequence(text: String) -> Result<String, Error> {
     let mut text = text.into_bytes();
     let seq = if text.starts_with(b">") {
-        let n = end_of_current_header(&text).ok_or_else(|| Error::new("Text area is empty."))?;
+        let n = end_of_current_header(&text).ok_or_else(|| Error::new("Text area contains only header."))?;
         let rest = &mut text[n..];
         let n = next_start_of_header(&rest).unwrap_or(rest.len());
         &mut rest[..n]
