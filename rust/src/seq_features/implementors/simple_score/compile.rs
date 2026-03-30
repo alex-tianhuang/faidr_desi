@@ -14,6 +14,7 @@ use crate::{
 ///
 /// Supports optional averaging.
 #[derive(Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct SimpleScoreUserFacing {
     weights: JSFacingAAMap<f64>,
     take_average: bool,
