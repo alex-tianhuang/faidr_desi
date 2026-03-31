@@ -17,6 +17,7 @@ use crate::seq_features::{
 /// `compute` field, which doesn't fit the pattern of
 /// the other features.
 #[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct RegexMotifUserFacing {
     pattern: String,
     take_average: bool,
@@ -32,9 +33,9 @@ pub enum RegexMotifMode {
 }
 /// The publically visible fields of [`RegexMotifUserFacing`].
 #[derive(Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 struct RegexMotifPublic {
     pattern: String,
-    #[serde(rename = "takeAverage")]
     take_average: bool,
 }
 /// Specify that a [`RegexMotifPublic`] schema be

@@ -3,7 +3,7 @@ use crate::datatypes::StandardError;
 
 /// A single feature result for a single sequence.
 #[derive(Deserialize, Serialize)]
-#[serde(tag = "case")]
+#[serde(tag = "case", rename_all = "kebab-case")]
 pub enum Featurized {
     Ok { value: f64 },
     /// Error coming from featurization
