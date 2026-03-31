@@ -20,6 +20,7 @@ use crate::seq_features::{
 pub struct RegexMotifUserFacing {
     pattern: String,
     take_average: bool,
+    #[serde(skip_serializing)]
     mode: RegexMotifMode,
 }
 /// Whether the feature is computing the count or span
