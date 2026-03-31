@@ -2,6 +2,8 @@
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 pub mod webworker_featurize;
+pub mod generate_ko;
+pub mod generate_mimic;
 
 /// Macro used to define [`RequestPayload`] and [`Endpoint`].
 /// 
@@ -29,5 +31,13 @@ macro_rules! define_variants {
 
 define_variants! {
     /// Private endpoint for computing sequence features of many sequences.
-    WebworkerFeaturize(webworker_featurize::RequestPayload)
+    WebworkerFeaturize(webworker_featurize::RequestPayload),
+    /// Blocking endpoint for designing a single feature mimic.
+    #[serde(skip_serializing)]
+    GenerateMimic(generate_mimic::RequestPayload),
+    /// Blocking endpoint for designing a single feature KO.
+    // Technically allows for design to arbitrary feature vector
+    // but in this project its for feature KOs.
+    #[serde(skip_serializing)]
+    GenerateKo(generate_ko::RequestPayload)
 }

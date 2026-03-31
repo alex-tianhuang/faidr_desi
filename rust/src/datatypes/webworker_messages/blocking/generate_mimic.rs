@@ -48,7 +48,7 @@ mod yield_data {
         pub iterations: &'a [DesignIteration],
         // the latest mutation being worked on
         #[serde(skip_serializing_if = "Option::is_none")]
-        pub current_mutation: Option<PointMutation>
+        pub current_mutation: Option<PointMutation>,
     }
     /// Data associated to a single design iteration.
     #[derive(Serialize)]

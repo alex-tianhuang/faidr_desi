@@ -1,9 +1,9 @@
 use std::time::Duration;
 use web_time::Instant;
 use crate::{
-    adapters::SenderHandle, datatypes::webworker_messages::non_blocking::generate_mimic::{
+    adapters::SenderHandle, datatypes::webworker_messages::blocking::generate_mimic::{
         ClosePayload, DesignIteration, Progress, RequestPayload, YieldPayload,
-    }, seq_generator::DesignProgress, servers::non_blocking::generate_mimic::init_job::{InitializedJob, init_job_generate_mimic}
+    }, seq_generator::DesignProgress, servers::blocking::generate_mimic::init_job::{InitializedJob, init_job_generate_mimic}
 };
 use wasm_bindgen::JsValue;
 
@@ -80,15 +80,15 @@ mod init_job {
         adapters::{PseudoMap, SenderHandle},
         datatypes::{
             AACanonicalString, AMINOACIDS, StandardError, into_standard_error,
-            webworker_messages::non_blocking::{
-                featurize,
+            webworker_messages::blocking::{
                 generate_mimic::{ClosePayload, InitializationError, Initialized, YieldPayload},
             },
+            webworker_messages::non_blocking::featurize
         },
         rng::{Rng, RngSpec},
         seq_features::featurize::{FeatureContainerUserFacing, Featurizer, FeaturizerCompilation},
         seq_generator::{SeqGenerator, euclidean_design_norm},
-        servers::non_blocking::common::compile_and_validate_features,
+        servers::common::compile_and_validate_features,
     };
     use rand::{Rng as _, distr::slice::Choose};
     use std::{collections::HashMap, ops::ControlFlow};

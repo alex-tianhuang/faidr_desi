@@ -71,7 +71,7 @@ mod initialize {
             },
         },
         seq_features::featurize::{FeatureContainerUserFacing, FeaturizerCompilation},
-        servers::non_blocking::common::{
+        servers::common::{
             ValidatedSequences, compile_and_validate_features, merge_sequences, validate_sequences,
         },
     };

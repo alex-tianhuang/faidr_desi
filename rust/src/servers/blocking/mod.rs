@@ -9,6 +9,8 @@ use crate::{
 use serde_wasm_bindgen::from_value;
 use wasm_bindgen::{JsValue, prelude::wasm_bindgen};
 mod webworker_featurize;
+mod generate_ko;
+mod generate_mimic;
 
 /// Shorthand for taking a future with output type `Result<(), JsValue>`
 /// and turning that into a future with unit output type.
@@ -78,6 +80,12 @@ pub async fn blocking_server(receiver: Receiver, sender: Sender) -> Result<JsVal
         match request.data {
             RequestPayload::WebworkerFeaturize(request) => {
                 new_task!(webworker_featurize::webworker_featurize(request, sender))
+            }
+            RequestPayload::GenerateMimic(request) => {
+                new_task!(generate_mimic::generate_mimic(request, sender))
+            },
+            RequestPayload::GenerateKo(request) => {
+                new_task!(generate_ko::generate_ko(request, sender))
             }
         }
     }

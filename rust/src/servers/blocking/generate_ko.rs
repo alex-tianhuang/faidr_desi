@@ -1,9 +1,9 @@
 use std::time::Duration;
 
 use crate::{
-    adapters::SenderHandle, datatypes::webworker_messages::non_blocking::generate_ko::{
+    adapters::SenderHandle, datatypes::webworker_messages::blocking::generate_ko::{
         ClosePayload, DesignIteration, Progress, RequestPayload, YieldPayload,
-    }, seq_generator::DesignProgress, servers::non_blocking::generate_ko::init_job::{InitializedJob, init_job_generate_ko}
+    }, seq_generator::DesignProgress, servers::blocking::generate_ko::init_job::{InitializedJob, init_job_generate_ko}
 };
 use wasm_bindgen::JsValue;
 
@@ -81,14 +81,16 @@ mod init_job {
         adapters::{PseudoMap, SenderHandle},
         datatypes::{
             AACanonicalString, StandardError, into_standard_error,
-            webworker_messages::non_blocking::{
-                featurize,
+            webworker_messages::blocking::{
+                
                 generate_ko::{ClosePayload, InitializationError, Initialized, YieldPayload},
             },
+            webworker_messages::non_blocking::featurize
         },
+
         seq_features::featurize::{FeatureContainerUserFacing, Featurizer, FeaturizerCompilation},
         seq_generator::{SeqGenerator, euclidean_design_norm},
-        servers::non_blocking::common::compile_and_validate_features,
+        servers::common::compile_and_validate_features,
     };
     use std::{collections::HashMap, ops::ControlFlow};
     use wasm_bindgen::JsValue;

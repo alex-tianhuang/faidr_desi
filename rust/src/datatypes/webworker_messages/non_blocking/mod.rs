@@ -4,8 +4,6 @@ use serde_wasm_bindgen::from_value;
 use tsify::Tsify;
 use wasm_bindgen::JsValue;
 pub mod featurize;
-pub mod generate_mimic;
-pub mod generate_ko;
 
 #[derive(Tsify, Deserialize)]
 #[serde(tag = "endpoint", rename_all = "kebab-case")]
@@ -15,15 +13,7 @@ pub enum RequestPayload {
     /// See [featurize module docs] for endpoint behaviour.
     ///
     /// [featurize module docs]: featurize
-    #[serde(rename_all = "camelCase")]
     Featurize(featurize::RequestPayload),
-    /// Endpoint for generating a single feature mimic.
-    #[serde(rename_all = "camelCase")]
-    GenerateMimic(generate_mimic::RequestPayload),
-    /// Endpoint for generating a sequence to fit a given target vector.
-    /// (in the current project scope, to generate feature knockout)
-    #[serde(rename_all = "camelCase")]
-    GenerateKo(generate_ko::RequestPayload)
 }
 
 /// Determine if a request can be forwarded to a blocking

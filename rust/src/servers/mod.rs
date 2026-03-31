@@ -1,5 +1,6 @@
 mod blocking;
 mod non_blocking;
+mod common;
 pub use non_blocking::non_blocking_server;
 pub use blocking::blocking_server;
 use wasm_bindgen::{JsCast, JsValue};
