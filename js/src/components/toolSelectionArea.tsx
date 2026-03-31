@@ -23,6 +23,7 @@ export default function ToolSelectionArea(props: {
       {TOOL_INFO.map(([tool, label]) => {
         return (
           <ToolButton
+            key={tool}
             tool={tool}
             setTool={setTool}
             disabled={disabled}
