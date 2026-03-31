@@ -1,8 +1,8 @@
 import { useBackend, type RecvMessage } from "@/backend";
 import { SEQUENCE_VALIDATION_PARAMETERS } from "@/lib/consts";
 import { useState } from "react";
-import { InitializationError, Initialized, Progress } from "./types";
-import { mutationToString, type Mutation } from "@/lib/utils";
+import { InitializationError, Initialized, Progress, type ProgressRaw } from "./types";
+import { mutationToString } from "@/lib/utils";
 
 export default function useGenerateMimicEndpoint(args: {
   sequence: string;
@@ -27,6 +27,7 @@ export default function useGenerateMimicEndpoint(args: {
   const [initError, setInitError] = useState<string | null>(null);
   const [progressData, setProgressData] = useState<Progress>(() => ({
     done: false,
+    currentMutation: null,
     iterations: [],
   }));
   const [progressError, setProgressError] = useState<string | null>(null);
@@ -47,20 +48,21 @@ export default function useGenerateMimicEndpoint(args: {
           return;
         }
         if (r.data.done) {
-          setProgressData(({ iterations }) => ({ done: true, iterations }));
+          setProgressData(({ iterations }) => ({ done: true, currentMutation: null, iterations }));
           return;
         }
-        setProgressData(({ iterations }) => {
+        setProgressData(({ currentMutation, iterations }) => {
+          const nextMutation = r.data.currentMutation ?? currentMutation;
           if (r.data.iterations.length === 0) {
-            // should never happen but treating as ok for now
             return {
               done: false,
+              currentMutation: nextMutation,
               iterations,
             };
           }
           if (iterations.length === 0) {
             const firstRow = r.data.iterations[0];
-            const {mutation, sequence} = firstRow;
+            const { mutation, sequence } = firstRow;
             const initialSequence =
               sequence.substring(0, mutation.pos) +
               mutation.from +
@@ -76,6 +78,7 @@ export default function useGenerateMimicEndpoint(args: {
           }
           return {
             done: false,
+            currentMutation: nextMutation,
             iterations: [
               ...iterations,
               ...r.data.iterations.map((it, n) => ({
@@ -93,6 +96,7 @@ export default function useGenerateMimicEndpoint(args: {
       setInitError(null);
       setProgressData({
         done: false,
+        currentMutation: null,
         iterations: [],
       });
       setProgressError(null);
@@ -155,14 +159,7 @@ function parseInit(init: RecvMessage):
 function parseProgress(progress: RecvMessage):
   | {
       ctrl: "continue";
-      data: {
-        done: boolean;
-        iterations: {
-          mutation: Mutation;
-          sequence: string;
-          featureDistance: number;
-        }[];
-      };
+      data: ProgressRaw
     }
   | {
       ctrl: "break";
@@ -184,10 +181,12 @@ function parseProgress(progress: RecvMessage):
       ctrl: "continue",
       data: {
         done: true,
+        currentMutation: undefined,
         iterations: [],
       },
     };
   }
+  console.log(progress);
   const de = Progress.safeParse(progress.data);
   if (!de.success) {
     const reason = de.error.message;
@@ -200,6 +199,7 @@ function parseProgress(progress: RecvMessage):
       ctrl: "continue",
       data: {
         done: false,
+        currentMutation: de.data.currentMutation,
         iterations: de.data.iterations,
       },
     };

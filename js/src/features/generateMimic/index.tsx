@@ -3,6 +3,7 @@ import useGenerateMimicEndpoint from "./hook";
 import RngPicker from "@/components/rngPicker";
 import { Button } from "@/components/ui/button";
 import { DesignIterationsTable } from "@/components/designIterationsTable";
+import { mutationToString } from "@/lib/utils";
 
 export default function GenerateMimicArea(props: {
   sequence: string;
@@ -69,6 +70,7 @@ function GenerateMimicResultsArea(props: {
     <div>
       <span>Rng: {props.rng.seed}</span>
       {initError !== null ? <div>initError: {JSON.stringify(initError)}</div> : null}
+      {progressData.currentMutation !== null && <span>Current Mutation: {mutationToString(progressData.currentMutation)}</span>}
       <span>Done: {JSON.stringify(progressData.done)}</span>
       <DesignIterationsTable data={progressData.iterations}></DesignIterationsTable>
       {progressError !== null ? <div>progressError: {JSON.stringify(progressError)}</div> : null}

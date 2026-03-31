@@ -1,10 +1,10 @@
 import { useBackend, type RecvMessage } from "@/backend";
 import { SEQUENCE_VALIDATION_PARAMETERS } from "@/lib/consts";
 import { useState } from "react";
-import { InitializationError, Initialized, Progress } from "./types";
-import { mutationToString, type Mutation } from "@/lib/utils";
+import { InitializationError, Initialized, Progress, type ProgressRaw } from "./types";
+import { mutationToString } from "@/lib/utils";
 
-export default function useFeaturizeEndpoint(args: {
+export default function useGenerateKOEndpoint(args: {
   sequence: string;
   featureConfiguration: unknown;
   featureWeights: unknown;
@@ -30,6 +30,7 @@ export default function useFeaturizeEndpoint(args: {
   const [initError, setInitError] = useState<string | null>(null);
   const [progressData, setProgressData] = useState<Progress>(() => ({
     done: false,
+    currentMutation: null,
     iterations: [],
   }));
   const [progressError, setProgressError] = useState<string | null>(null);
@@ -50,14 +51,15 @@ export default function useFeaturizeEndpoint(args: {
           return;
         }
         if (r.data.done) {
-          setProgressData(({ iterations }) => ({ done: true, iterations }));
+          setProgressData(({ iterations }) => ({ done: true, currentMutation: null, iterations }));
           return;
         }
-        setProgressData(({ iterations }) => {
+        setProgressData(({ currentMutation, iterations }) => {
+          const nextMutation = r.data.currentMutation ?? currentMutation;
           if (r.data.iterations.length === 0) {
-            // should never happen but treating as ok for now
             return {
               done: false,
+              currentMutation: nextMutation,
               iterations,
             };
           }
@@ -79,6 +81,7 @@ export default function useFeaturizeEndpoint(args: {
           }
           return {
             done: false,
+            currentMutation: nextMutation,
             iterations: [
               ...iterations,
               ...r.data.iterations.map((it, n) => ({
@@ -96,6 +99,7 @@ export default function useFeaturizeEndpoint(args: {
       setInitError(null);
       setProgressData({
         done: false,
+        currentMutation: null,
         iterations: [],
       });
       setProgressError(null);
@@ -158,14 +162,7 @@ function parseInit(init: RecvMessage):
 function parseProgress(progress: RecvMessage):
   | {
       ctrl: "continue";
-      data: {
-        done: boolean;
-        iterations: {
-          mutation: Mutation;
-          sequence: string;
-          featureDistance: number;
-        }[];
-      };
+      data: ProgressRaw;
     }
   | {
       ctrl: "break";
@@ -187,6 +184,7 @@ function parseProgress(progress: RecvMessage):
       ctrl: "continue",
       data: {
         done: true,
+        currentMutation: undefined,
         iterations: [],
       },
     };
@@ -203,6 +201,7 @@ function parseProgress(progress: RecvMessage):
       ctrl: "continue",
       data: {
         done: false,
+        currentMutation: de.data.currentMutation,
         iterations: de.data.iterations,
       },
     };

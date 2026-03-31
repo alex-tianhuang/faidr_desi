@@ -6,6 +6,7 @@ import type { Featurized } from "../featurize/types";
 import TransferList from "@/components/transferList";
 import { Button } from "@/components/ui/button";
 import { FEATURE_MEANS } from "@/lib/consts";
+import { mutationToString } from "@/lib/utils";
 
 type FeatureCard = { propKey: string; selected: boolean; searchKey: string; value: number }
 export default function GenerateKOArea(props: {
@@ -166,6 +167,7 @@ function GenerateKOResultsArea(props: {
         <div>initError: {JSON.stringify(initError)}</div>
       ) : null}
       <span>Done: {JSON.stringify(progressData.done)}</span>
+      {progressData.currentMutation !== null && <span>Current Mutation: {mutationToString(progressData.currentMutation)}</span>}
       <DesignIterationsTable
         data={progressData.iterations}
       ></DesignIterationsTable>
