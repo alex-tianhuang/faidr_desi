@@ -1,9 +1,3 @@
-import { useMemo, useState } from "react";
-import useGenerateMimicEndpoint from "./hook";
-import RngPicker from "@/components/rngPicker";
-import { Button } from "@/components/ui/button";
-import { DesignIterationsTable } from "@/components/designIterationsTable";
-import useGenerateKOEndpoint from "./hook";
 import useFeaturizeEndpoint from "./hook";
 import { FeaturesTable } from "@/components/featuresTable";
 
