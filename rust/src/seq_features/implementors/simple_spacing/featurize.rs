@@ -69,7 +69,7 @@ fn compute_simple_spacing_delta(
     for (site, grp_a) in sites {
         a_sites_count += grp_a as usize;
         b_sites_count += (!grp_a) as usize;
-        if site - prev_site < blob_size as usize && prev_grp_a == grp_a {
+        if site - prev_site <= blob_size as usize && prev_grp_a == grp_a {
             blobs_count += 1;
         }
         prev_site = site;
@@ -144,7 +144,7 @@ fn compute_simple_spacing_omega(
     let mut blobs_count = 0;
     for site in sites {
         sites_count += 1;
-        if site - prev_site < blob_size as usize {
+        if site - prev_site <= blob_size as usize {
             blobs_count += 1;
         }
         prev_site = site;

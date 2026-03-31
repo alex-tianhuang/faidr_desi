@@ -4,8 +4,9 @@
 //!
 //! For a given residue group (say, charged), if two
 //! residues of that group (e.g. charged residues)
-//! are within 5 units of each other (e.g. DXXXR
-//! but not DXXXXR), then that defines a blob.
+//! are separated by less than 5 units of each other
+//! (e.g. DXXXXR but not DXXXXXR), then that defines
+//! a blob.
 //!
 //! The actual number of these blobs in a sequence
 //! vs. the expected number as computed by a binomial

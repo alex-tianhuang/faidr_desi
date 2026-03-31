@@ -37,12 +37,12 @@ fn compute_repeat_span(sequence: &aa_canonical_str, feature: &RepeatSpan) -> f64
             }
         } else {
             if let Some(start) = segment_start.take() {
-                total += i - 1 + start
+                total += i - 1 - start
             }
         }
     }
     if let Some(start) = segment_start.take() {
-        total += sequence.len() - 1 + start
+        total += sequence.len() - 1 - start
     }
     if take_average {
         total as f64 / sequence.len() as f64
