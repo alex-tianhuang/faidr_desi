@@ -4,7 +4,7 @@ use std::time::Duration;
 use web_time::Instant;
 use serde::Serialize;
 use crate::{
-    datatypes::{AACanonicalString, AMINOACIDS, Aminoacid, StandardError, aa_canonical_str},
+    datatypes::{AACanonicalString, AAIndex, Aminoacid, StandardError, aa_canonical_str},
     seq_features::{featurize::Featurizer, functionality::featdim::FeatDim},
 };
 
@@ -13,12 +13,18 @@ pub struct SeqGenerator {
     featurizer: Featurizer,
 }
 /// A point mutation.
-#[derive(Copy, Clone, Serialize)]
+#[derive(Copy, Clone, Serialize, Debug)]
 pub struct PointMutation {
     pub from: Aminoacid,
     // 0-indexed.
     pub pos: usize,
     pub to: Aminoacid,
+}
+/// Iterator over all point mutations bounded by a given length.
+pub struct PointMutationGenerator {
+    pub bound: usize,
+    pub pos: usize,
+    pub to: AAIndex
 }
 /// A notification from [`SeqGenerator::design_iter`].
 /// 
@@ -29,29 +35,33 @@ pub enum DesignProgress {
     CompletedIter {
         best_norm: f64,
         best_mutation: PointMutation,
-        current_mutation: PointMutation
     },
     /// A timeout was triggered.
     Timeout {
         current_mutation: PointMutation
     }
 }
-impl PointMutation {
-    /// Get the next mutation, equivalent to two for loops:
-    /// for pos in 0..sequence.len() {
-    ///     for to in AMINOACIDS {
-    ///         /* ... */
-    ///     }
-    /// }
-    fn next_mutation(self, sequence: &aa_canonical_str) -> Option<Self> {
-        let Self { from, pos, to } = self;
-        if let Some(aaindex) = to.to_aaindex().step() {
-            return Some(Self { from, pos, to: aaindex.to_aminoacid() })
-        }
-        let pos = pos + 1;
-        let from = sequence.as_slice().get(pos).copied()?;
-        let aa0 = AMINOACIDS[0];
-        Some(Self { from, pos, to: aa0 })
+impl PointMutationGenerator {
+    pub fn new(seq_len: usize) -> Self {
+        Self { bound: seq_len, pos: 0, to: AAIndex::MIN }
+    }
+    pub fn reset(&mut self) {
+        self.pos = 0;
+        self.to = AAIndex::MIN;
+    }
+}
+impl Iterator for PointMutationGenerator {
+    type Item = (usize, Aminoacid);
+    fn next(&mut self) -> Option<Self::Item> {
+        let Self { bound, pos, to } = self;
+        if pos == bound {return None};
+        let next_to = *to;
+        let next_pos= *pos;
+        *to = next_to.step().unwrap_or_else(|| {
+            *pos += 1;
+            AAIndex::MIN
+        });
+        Some((next_pos, next_to.to_aminoacid()))
     }
 }
 impl SeqGenerator {
@@ -90,38 +100,33 @@ impl SeqGenerator {
             euclidean_design_norm(featurizer, &sequence, origin, weights)
         };
         let mut best_norm = seq_norm_of(&sequence)?;
-        let aa0 =  AMINOACIDS[0];
-        let mutation0 = PointMutation {
-          from: sequence[0],
-          pos: 0,
-          to: if aa0 == sequence[0] {AMINOACIDS[1]} else {aa0}
-        };
-        let mut current_mutation = mutation0;
+        let mut mutation_generator = PointMutationGenerator::new(sequence.len());
         let mut best_mutation = None;
         let iter = std::iter::from_fn(move || {
             let timer = Instant::now();
-            'outer: loop {
-                if timer.elapsed() > notification_interval { return Some(DesignProgress::Timeout { current_mutation })}
-                sequence.as_mut()[current_mutation.pos] = current_mutation.to;
-                if let Ok(candidate_norm) = seq_norm_of(&sequence) {
-                    if candidate_norm < best_norm {
-                        best_norm = candidate_norm;
-                        best_mutation = Some(current_mutation);
-                    }
+            for (pos, to) in mutation_generator.by_ref() {
+                let from = sequence[pos];
+                let current_mutation = PointMutation {
+                    from,
+                    pos,
+                    to
                 };
-                sequence.as_mut()[current_mutation.pos] = current_mutation.from;
-                while let Some(next_mutation) = current_mutation.next_mutation(&sequence) {
-                    current_mutation = next_mutation;
-                    if next_mutation.to != sequence[next_mutation.pos] {
-                        continue 'outer
-                    }
+                if sequence[pos] != to {
+                    sequence.as_mut()[pos] = to;
+                    if let Ok(candidate_norm) = seq_norm_of(&sequence) {
+                        if candidate_norm < best_norm {
+                            best_norm = candidate_norm;
+                            best_mutation = Some(current_mutation);
+                        }
+                    };
+                    sequence.as_mut()[pos] = from;
                 }
-                break 'outer
+                if timer.elapsed() > notification_interval { return Some(DesignProgress::Timeout { current_mutation })};
             }
-            current_mutation = mutation0;
-            let best_mutation = best_mutation?;
+            let best_mutation = best_mutation.take()?;
+            mutation_generator.reset();
             sequence.as_mut()[best_mutation.pos] = best_mutation.to;
-            Some(DesignProgress::CompletedIter { best_norm, best_mutation, current_mutation })
+            Some(DesignProgress::CompletedIter { best_norm, best_mutation })
         });
         Ok(iter)
     }
