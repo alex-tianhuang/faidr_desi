@@ -13,6 +13,7 @@ import SequenceArea from "./components/sequenceArea";
 import ToolSelectionArea from "./components/toolSelectionArea";
 import GenerateMimicArea from "./features/generateMimic";
 import { FEATURE_CONFIGURATION, FEATURE_WEIGHTS } from "./lib/consts";
+import FeaturizeArea from "./features/featurize";
 
 // const TABS = [
 //   {
@@ -336,6 +337,14 @@ function PageFooter(props: {
         featureWeights={FEATURE_WEIGHTS}
         requestStartedState={requestStartedState}
       ></GenerateMimicArea>
+    );
+  }
+  if (tool === "feats") {
+    return (
+      <FeaturizeArea
+        sequence={sequence}
+        featureConfiguration={FEATURE_CONFIGURATION}
+      ></FeaturizeArea>
     );
   }
 }
