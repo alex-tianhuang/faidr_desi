@@ -186,7 +186,6 @@ function parseProgress(progress: RecvMessage):
       },
     };
   }
-  console.log(progress);
   const de = Progress.safeParse(progress.data);
   if (!de.success) {
     const reason = de.error.message;
