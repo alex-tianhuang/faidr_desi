@@ -30,7 +30,7 @@ impl<'a> CompilerImplementor<'a> for PercentResidueGroupCompiler<'a> {
         if self
             .data
             .iter()
-            .any(|(_, res_group_old)| res_group_old.ne(&res_group_new))
+            .any(|(_, res_group_old)| res_group_old.eq(&res_group_new))
         {
             Err(DuplicateFeatureError)
         } else {
