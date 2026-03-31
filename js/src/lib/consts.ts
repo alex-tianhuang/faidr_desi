@@ -459,7 +459,7 @@ export const FEATURE_CONFIGURATION = {
   FRG: {
     compute: "regex-motif-span",
     pattern: "[FR]G",
-    takeAverage: true,
+    takeAverage: false,
   },
   G_repeats: {
     compute: "repeat-span",
@@ -733,7 +733,7 @@ export const FEATURE_CONFIGURATION = {
   PG_rich: {
     compute: "regex-motif-span",
     pattern: "G..[GP][PG]",
-    takeAverage: true,
+    takeAverage: false,
   },
   PR_repeats: {
     compute: "repeat-span",
@@ -783,7 +783,7 @@ export const FEATURE_CONFIGURATION = {
   R_plus_Y: {
     compute: "regex-motif-span",
     pattern: "[RY]",
-    takeAverage: true,
+    takeAverage: false
   },
   R_repeats: {
     compute: "repeat-span",
