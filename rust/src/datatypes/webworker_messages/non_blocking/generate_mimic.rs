@@ -43,8 +43,12 @@ mod yield_data {
     }
     /// Response containing data for a batch of design iterations.
     #[derive(Serialize)]
+    #[serde(rename_all = "camelCase")]
     pub struct Progress<'a> {
         pub iterations: &'a [DesignIteration],
+        // the latest mutation being worked on
+        #[serde(skip_serializing_if = "Option::is_none")]
+        pub current_mutation: Option<PointMutation>
     }
     /// Data associated to a single design iteration.
     #[derive(Serialize)]

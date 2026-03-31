@@ -1,9 +1,9 @@
+use std::time::Duration;
+use web_time::Instant;
 use crate::{
-    adapters::SenderHandle,
-    datatypes::webworker_messages::non_blocking::generate_mimic::{
+    adapters::SenderHandle, datatypes::webworker_messages::non_blocking::generate_mimic::{
         ClosePayload, DesignIteration, Progress, RequestPayload, YieldPayload,
-    },
-    servers::non_blocking::generate_mimic::init_job::{InitializedJob, init_job_generate_mimic},
+    }, seq_generator::DesignProgress, servers::non_blocking::generate_mimic::init_job::{InitializedJob, init_job_generate_mimic}
 };
 use wasm_bindgen::JsValue;
 
@@ -40,36 +40,38 @@ pub async fn generate_mimic(request: RequestPayload, sender: SenderHandle) -> Re
         rng,
         sender
     ));
-    const BATCH_SIZE: usize = 1;
-    let mut batch_iterations = Vec::with_capacity(BATCH_SIZE);
+    const NOTIFICATION_INTERVAL: Duration = Duration::from_millis(200);
     // Can't figure out how to return an &sequence from the iterator at the moment
     // so I'll just use a mirror of the `sequence`.
-    for iteration in seq_generator.design_iter(&sequence, &feature_origin, &feature_weights)
+    for progress in seq_generator.design_iter(&sequence, &feature_origin, &feature_weights, NOTIFICATION_INTERVAL)
         .expect(
-            "sequence feature validation of `initial_sequence` should have been validated in `init_job_generate_mimic`",
+            "sequence feature validation of `initial_sequence` should have been validated in `init_job_generate_ko`",
         ) {
-            let (norm, mutation) = iteration;
-            sequence.as_mut()[mutation.pos] = mutation.to;
-            batch_iterations.push(DesignIteration {
-                mutation,
-                feature_distance: norm.sqrt(),
-                sequence: sequence.to_owned()
-            });
-            if batch_iterations.len() == BATCH_SIZE {
-                let msg = YieldPayload::Progress(Progress {
-                    iterations: &batch_iterations
-                });
-                sender = sender.send_data(&msg).await?;
-                batch_iterations.clear();
+            match progress {
+                DesignProgress::CompletedIter { best_norm, best_mutation, current_mutation } => {
+                    sequence.as_mut()[best_mutation.pos] = best_mutation.to;
+                    let msg = YieldPayload::Progress(Progress {
+                        iterations: &[
+                            DesignIteration {
+                                mutation: best_mutation,
+                                feature_distance: best_norm.sqrt(),
+                                sequence: sequence.to_owned()
+                            }
+                        ],
+                        current_mutation: None
+                    });
+                    sender = sender.send_data(&msg).await?;
+                },
+                DesignProgress::Timeout { current_mutation } => {
+                    let msg = YieldPayload::Progress(Progress {
+                        iterations: &[],
+                        current_mutation: Some(current_mutation)
+                    });
+                    sender = sender.send_data(&msg).await?;
+                }
             }
+            
         }
-    if !batch_iterations.is_empty() {
-        let msg = YieldPayload::Progress(Progress {
-            iterations: &batch_iterations
-        });
-        sender = sender.send_data(&msg).await?;
-        batch_iterations.clear();
-    }
     sender.send_close(&ClosePayload::Ok).await
 }
 mod init_job {
