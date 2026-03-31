@@ -1,19 +1,10 @@
-import { useMemo, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState } from "react";
 import SequenceArea from "./components/sequenceArea";
 import ToolSelectionArea from "./components/toolSelectionArea";
 import GenerateMimicArea from "./features/generateMimic";
-import { FEATURE_CONFIGURATION, FEATURE_WEIGHTS } from "./lib/consts";
+import { FEATURE_CONFIGURATION, FEATURE_MEANS, FEATURE_WEIGHTS } from "./lib/consts";
 import FeaturizeArea from "./features/featurize";
+import GenerateKOArea from "./features/generateKO";
 
 // const TABS = [
 //   {
@@ -345,6 +336,17 @@ function PageFooter(props: {
         sequence={sequence}
         featureConfiguration={FEATURE_CONFIGURATION}
       ></FeaturizeArea>
+    );
+  }
+  if (tool === "ko") {
+    return (
+      <GenerateKOArea
+        sequence={sequence}
+        featureConfiguration={FEATURE_CONFIGURATION}
+        featureWeights={FEATURE_WEIGHTS}
+        requestStartedState={requestStartedState}
+        KOFeatureTargets={FEATURE_MEANS}
+      ></GenerateKOArea>
     );
   }
 }
