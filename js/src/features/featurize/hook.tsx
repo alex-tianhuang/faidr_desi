@@ -1,7 +1,7 @@
 import { useBackend, type RecvMessage } from "@/backend";
 import { SEQUENCE_VALIDATION_PARAMETERS } from "@/lib/consts";
 import { useState } from "react";
-import { Featurized, Progress } from "./types";
+import { Featurized, Initialized, Progress } from "./types";
 
 export default function useFeaturizeEndpoint(args: {
   sequence: string;
@@ -70,6 +70,14 @@ function parseInit(init: RecvMessage):
       ctrl: "break",
       error: reason,
     };
+  }
+  const r = Initialized.safeParse(init.data);
+  if (!r.success) {
+    const reason = `${r.error}`;
+    return {
+      ctrl: "break",
+      error: reason
+    }
   }
   return {
     ctrl: "continue",
