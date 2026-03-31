@@ -35,6 +35,7 @@ mod yield_data {
     /// Response yielded after sequence validation
     /// and featurizer compilation.
     #[derive(Serialize)]
+    #[serde(rename_all = "camelCase")]
     pub struct Initialized {
         pub feature_distance: f64,
     }
