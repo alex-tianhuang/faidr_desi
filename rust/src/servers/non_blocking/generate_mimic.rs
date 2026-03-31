@@ -48,7 +48,7 @@ pub async fn generate_mimic(request: RequestPayload, sender: SenderHandle) -> Re
             "sequence feature validation of `initial_sequence` should have been validated in `init_job_generate_ko`",
         ) {
             match progress {
-                DesignProgress::CompletedIter { best_norm, best_mutation, current_mutation } => {
+                DesignProgress::CompletedIter { best_norm, best_mutation } => {
                     sequence.as_mut()[best_mutation.pos] = best_mutation.to;
                     let msg = YieldPayload::Progress(Progress {
                         iterations: &[
