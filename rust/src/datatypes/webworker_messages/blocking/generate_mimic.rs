@@ -22,7 +22,7 @@ pub struct RequestPayload {
     pub rng: RngSpec,
 }
 mod yield_data {
-    use crate::{datatypes::AACanonicalString, seq_generator::PointMutation};
+    use crate::{datatypes::{AACanonicalString, aa_canonical_str}, seq_generator::PointMutation};
     use serde::Serialize;
     /// Progress type returned at the `generate-mimic` endpoint.
     #[derive(Serialize)]
@@ -30,7 +30,7 @@ mod yield_data {
     pub enum YieldPayload<'a> {
         /// Response yielded after sequence validation
         /// and featurizer compilation.
-        Initialized(Initialized),
+        Initialized(Initialized<'a>),
         /// Response yielded for the rest of the job.
         Progress(Progress<'a>),
     }
@@ -38,8 +38,9 @@ mod yield_data {
     /// and featurizer compilation.
     #[derive(Serialize)]
     #[serde(rename_all = "camelCase")]
-    pub struct Initialized {
+    pub struct Initialized<'a> {
         pub feature_distance: f64,
+        pub sequence: &'a aa_canonical_str
     }
     /// Response containing data for a batch of design iterations.
     #[derive(Serialize)]

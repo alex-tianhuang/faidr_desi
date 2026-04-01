@@ -188,6 +188,7 @@ mod init_job {
         let seq_generator = SeqGenerator::new(featurizer);
         let msg = YieldPayload::Initialized(Initialized {
             feature_distance: initial_norm.sqrt(),
+            sequence: &initial_sequence
         });
         let sender = sender.send_data(&msg).await?;
         Ok(ControlFlow::Continue(InitializedJob {
