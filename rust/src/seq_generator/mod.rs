@@ -102,8 +102,9 @@ impl SeqGenerator {
         let mut best_norm = seq_norm_of(&sequence)?;
         let mut mutation_generator = PointMutationGenerator::new(sequence.len());
         let mut best_mutation = None;
+        let mut timer = Instant::now();
         let iter = std::iter::from_fn(move || {
-            let timer = Instant::now();
+            
             for (pos, to) in mutation_generator.by_ref() {
                 let from = sequence[pos];
                 let current_mutation = PointMutation {
@@ -121,7 +122,10 @@ impl SeqGenerator {
                     };
                     sequence.as_mut()[pos] = from;
                 }
-                if timer.elapsed() > notification_interval { return Some(DesignProgress::Timeout { current_mutation })};
+                if timer.elapsed() > notification_interval { 
+                    timer = Instant::now();
+                    return Some(DesignProgress::Timeout { current_mutation })
+                };
             }
             let best_mutation = best_mutation.take()?;
             mutation_generator.reset();
