@@ -273,7 +273,7 @@ export default function Page() {
   const [tool, setTool] = useState<"mimic" | "ko" | "feats" | null>(null);
   const [requestStarted, setRequestStarted] = useState<boolean>(false);
   return (
-    <>
+    <div className="flex flex-col m-5">
       <PageHeader
         sequenceState={[sequence, setSequence]}
         toolState={[tool, setTool]}
@@ -284,7 +284,7 @@ export default function Page() {
         tool={tool}
         requestStartedState={[requestStarted, setRequestStarted]}
       ></PageFooter>
-    </>
+    </div>
   );
 }
 function PageHeader(props: {
