@@ -15,7 +15,7 @@ pub(crate) use validators::{AAStringParser, AAStringValidator};
 pub use validators::{
     AAStringParsingParameters, AAStringValidationParameters, CapitalizeMode, OmitMode,
 };
-pub use utils::{parse_first_sequence_of_fasta, parse_text_as_sequence};
+pub use utils::{ParsedSequence, parse_text_as_sequence};
 
 /// Turn a size-hint from a possibly untrusted source to a reasonable one.
 ///
