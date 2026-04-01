@@ -18,11 +18,17 @@ const COLUMNS: ColumnDef<DesignIteration>[] = [
   {
     accessorKey: "sequence",
     header: "Sequence",
+    cell: ({ getValue }) => (
+      <span className="block max-w-50 truncate" title={getValue<string>()}>
+        {getValue<string>()}
+      </span>
+    ),
   },
 ];
 
-
 export function DesignIterationsTable(props: { data: DesignIteration[] }) {
   const { data } = props;
-  return <DataTable columns={COLUMNS} data={data} filename="designs"></DataTable>;
+  return (
+    <DataTable columns={COLUMNS} data={data} filename="designs"></DataTable>
+  );
 }
