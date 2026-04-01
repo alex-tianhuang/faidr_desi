@@ -905,3 +905,5 @@ export const FEATURE_CONFIGURATION = {
     compute: "scd",
   },
 };
+/** Number of features in `FEATURE_CONFIGURATION`. */
+export const NUM_FEATURES = Object.keys(FEATURE_CONFIGURATION).length
