@@ -25,22 +25,20 @@ export default function GenerateMimicArea(props: {
   const [reqTimestamp, setReqTimestamp] = useState(() => Date.now());
   const rng = useMemo(() => ({ seed: rngSeed }), [rngSeed]);
   return (
-    <>
+    <div className="flex flex-col">
       <RngPicker timestamp={reqTimestamp} disabled={requestStarted} setRngSeed={setRngSeed}></RngPicker>
       <Button
-        value="Click to design"
         onClick={() => {
           setRequestStarted(true);
           setReqTimestamp(Date.now());
         }}
-      ></Button>
+      >Click to design</Button>
       <Button
         disabled={!requestStarted}
-        value="Edit design job"
         onClick={() => {
           setRequestStarted(false);
         }}
-      ></Button>
+      >Edit design job</Button>
       {requestStarted ? (
         <GenerateMimicResultsArea
           sequence={sequence}
@@ -52,7 +50,7 @@ export default function GenerateMimicArea(props: {
       ) : (
         <>Design results will appear here.</>
       )}
-    </>
+    </div>
   );
 }
 function GenerateMimicResultsArea(props: {
