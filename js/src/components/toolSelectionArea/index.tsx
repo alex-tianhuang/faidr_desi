@@ -38,7 +38,7 @@ export default function ToolSelectionArea(props: {
     disabled,
   } = props;
   return (
-    <div className={cn("border-t py-2 flex flex-row gap-4", disabled ? "border-input" : "border-primary")}>
+    <div className={cn("border-t py-5 flex flex-row gap-4", disabled ? "border-input" : "border-primary")}>
       {TOOL_INFO.map(({ propKey, label, helpTitle, helpDivFactory }) => {
         const isActive = activeTool === propKey
         const isInactive = (activeTool !== null) && (!isActive);
