@@ -113,7 +113,7 @@ function GenerateMimicResultsArea(props: {
       {progressData.iterations.length > 0 && (
         <details className="text-sm">
           <summary className="cursor-pointer text-muted-foreground hover:text-foreground">
-            Show all iterations ({progressData.iterations.length})
+            Show all iterations ({progressData.iterations.length - 1})
           </summary>
           <div className="mt-2">
             <DesignIterationsTable data={progressData.iterations} />
