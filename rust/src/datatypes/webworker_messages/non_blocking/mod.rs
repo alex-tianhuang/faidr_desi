@@ -1,4 +1,4 @@
-use crate::datatypes::webworker_messages::blocking;
+use crate::datatypes::{Request, webworker_messages::blocking};
 use serde::Deserialize;
 use serde_wasm_bindgen::from_value;
 use tsify::Tsify;
@@ -27,5 +27,5 @@ pub fn request_is_forwardable(request: JsValue) -> bool {
         #[allow(unused)]
         endpoint: blocking::Endpoint,
     }
-    from_value::<ForwardableRequest>(request).is_ok()
+    from_value::<Request<ForwardableRequest>>(request).is_ok()
 }
