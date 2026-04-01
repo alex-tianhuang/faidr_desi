@@ -9,10 +9,11 @@ import { StateField, StateEffect } from "@codemirror/state";
 import CodeMirror from "@uiw/react-codemirror";
 import ErrorDiv from "./errorDiv";
 import { cn } from "@/lib/utils";
+import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 
 /**
  * Text area / file upload that allows for sequence editing.
- * 
+ *
  * Will parse the first sequence in a FASTA file (if the text area starts with `>`)
  * or will parse the whole text area as one sequence (ignores whitespace).
  */
@@ -20,17 +21,17 @@ export default function SequenceArea(props: {
   disabled: boolean;
   sequenceState: [string | null, (_: string | null) => void];
 }) {
-  const { disabled, sequenceState: [sequence, setSequence] } = props;
+  const {
+    disabled,
+    sequenceState: [sequence, setSequence],
+  } = props;
   const [text, setText] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [highlightedSpan, setHighlightedSpan] = useState<[number, number]>([
     0, 0,
   ]);
   const viewRef = useRef<EditorView | null>(null);
-  const { setHighlight, extensions } = useMemo(
-    setupTextEditor,
-    [],
-  );
+  const { setHighlight, extensions } = useMemo(setupTextEditor, []);
   useEffect(() => {
     if (!viewRef.current) return;
     viewRef.current.dispatch({
@@ -77,14 +78,20 @@ export default function SequenceArea(props: {
       setError(error.message);
       setSequence(null);
     }
-  }, [text]); 
+  }, [text]);
   return (
     <div className="flex flex-col gap-2 my-5">
-      <div className={cn(
-        "border-b py-2",
-        sequence ? "border-primary": (error ? "border-destructive" : "border-input"),
-        disabled && "opacity-50 cursor-not-allowed",
-      )}>
+      <div
+        className={cn(
+          "border-b py-2",
+          sequence
+            ? "border-primary"
+            : error
+              ? "border-destructive"
+              : "border-input",
+          disabled && "opacity-50 cursor-not-allowed",
+        )}
+      >
         <CodeMirror
           editable={!disabled}
           placeholder="Paste your protein sequence of interest here"
@@ -96,12 +103,25 @@ export default function SequenceArea(props: {
         />
       </div>
       <span className="text-center">OR</span>
-      <Button className="w-fit self-center" disabled={disabled} {...getRootProps()}>
+      <Button
+        className="w-fit self-center"
+        disabled={disabled}
+        {...getRootProps()}
+      >
         Upload a FASTA file (and the first sequence will be used)
         <Input {...getInputProps()}></Input>
       </Button>
-      {error !== null && <ErrorDiv title="Cannot parse sequence" message={error}></ErrorDiv>}
-      
+      {error !== null && (
+        <ErrorDiv title="Cannot parse sequence" message={error}></ErrorDiv>
+      )}
+      {sequence !== null && (
+        <Alert variant="default" className="overflow-scroll">
+          <AlertTitle>
+            Successfully parsed sequence (highlighted in yellow)
+          </AlertTitle>
+          <AlertDescription>{sequence}</AlertDescription>
+        </Alert>
+      )}
     </div>
   );
 }
