@@ -71,7 +71,7 @@ pub async fn blocking_server(receiver: Receiver, sender: Sender) -> Result<JsVal
             Ok(request) => request,
             Err(err) => {
                 new_task!(sender.send_error(&format!(
-                    "[nonBlockingServer] failed to deserialize request ({})",
+                    "[blockingServer] failed to deserialize request ({})",
                     err
                 )));
                 continue;
