@@ -82,9 +82,11 @@ export default function SequenceArea(props: {
     <div className="flex flex-col gap-2 m-5">
       <div className={cn(
         "border-b py-2",
-        sequence ? "border-primary": (error ? "border-destructive" : "border-input")
+        sequence ? "border-primary": (error ? "border-destructive" : "border-input"),
+        disabled && "opacity-50 cursor-not-allowed",
       )}>
         <CodeMirror
+          editable={!disabled}
           placeholder="Paste your protein sequence of interest here"
           onChange={setText}
           extensions={extensions}
@@ -135,11 +137,11 @@ function setupTextEditor() {
       fontSize: "0.875rem", // md:text-sm
     },
     ".cm-scroller": { fontFamily: "inherit" },
-    ".cm-content": { padding: "0.75rem", color: "#9ca3af" }, // match your px-3 py-3
+    ".cm-content": { padding: "0.75rem" },
     ".cm-line": { padding: "0" },
     ".cm-activeLine": { backgroundColor: "transparent" },
     ".cm-activeLineGutter": { backgroundColor: "transparent" },
-    ".cm-highlight": { color: "black" },
+    ".cm-highlight": { backgroundColor: "#fef08a" },
   });
   return {
     setHighlight,
