@@ -79,7 +79,7 @@ export default function SequenceArea(props: {
     }
   }, [text]); 
   return (
-    <div className="flex flex-col gap-2 m-5">
+    <div className="flex flex-col gap-2 my-5">
       <div className={cn(
         "border-b py-2",
         sequence ? "border-primary": (error ? "border-destructive" : "border-input"),
