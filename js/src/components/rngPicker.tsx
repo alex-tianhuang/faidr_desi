@@ -26,6 +26,6 @@ export default function RngPicker(props: {
                 setRngHint(rngHint);
             }}
         />
-        <Button value="Use default seed" disabled={disabled || rngHint.length > 0} onClick={() => setRngHint(`${timestamp}`)}></Button>
+        <Button disabled={disabled || rngHint.length > 0} onClick={() => setRngHint(`${timestamp}`)}>Use default seed</Button>
     </>);
 }
