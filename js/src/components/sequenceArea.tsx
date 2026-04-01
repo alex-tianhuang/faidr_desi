@@ -1,75 +1,148 @@
-import {
-  parseFirstSequenceOfFasta,
-  parseTextAsSequence,
-} from "@/backend/rust/idrdesign_app";
+import { parseTextAsSequence } from "@/backend/rust/idrdesign_app";
 import { Button } from "./ui/button";
-import { Textarea } from "./ui/textarea";
 import { useDropzone } from "react-dropzone";
 import { Input } from "./ui/input";
-import { useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { MIN_SEQUENCE_LENGTH } from "@/lib/consts";
+import { EditorView, Decoration } from "@codemirror/view";
+import { StateField, StateEffect } from "@codemirror/state";
+import CodeMirror from "@uiw/react-codemirror";
+import ErrorDiv from "./errorDiv";
+import { cn } from "@/lib/utils";
 
+/**
+ * Text area / file upload that allows for sequence editing.
+ * 
+ * Will parse the first sequence in a FASTA file (if the text area starts with `>`)
+ * or will parse the whole text area as one sequence (ignores whitespace).
+ */
 export default function SequenceArea(props: {
   disabled: boolean;
-  setSequence: (_: string | null) => void;
+  sequenceState: [string | null, (_: string | null) => void];
 }) {
-  const {
-    disabled,
-    setSequence
-  } = props;
+  const { disabled, sequenceState: [sequence, setSequence] } = props;
   const [text, setText] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [highlightedSpan, setHighlightedSpan] = useState<[number, number]>([
+    0, 0,
+  ]);
+  const viewRef = useRef<EditorView | null>(null);
+  const { setHighlight, extensions } = useMemo(
+    setupTextEditor,
+    [],
+  );
+  useEffect(() => {
+    if (!viewRef.current) return;
+    viewRef.current.dispatch({
+      effects: setHighlight.of(highlightedSpan),
+    });
+  }, [viewRef, highlightedSpan]);
   const checkLengthAndSetSequence = (sequence: string) => {
     if (sequence.length < MIN_SEQUENCE_LENGTH) {
-        setError(`Sequence is required to be at least ${MIN_SEQUENCE_LENGTH} residues long.`);
-        setSequence(null);
+      const lengthError =
+        sequence.length > 0
+          ? `Sequence is required to be at least ${MIN_SEQUENCE_LENGTH} residues long.`
+          : null;
+      setError(lengthError);
+      setSequence(null);
     } else {
-        setError(null);
-        setSequence(sequence);
+      setError(null);
+      setSequence(sequence);
     }
-  }
+  };
   const { getRootProps, getInputProps } = useDropzone({
-    onDrop: ([file]) => file.text().then((text) => {
+    onDrop: ([file]) =>
+      file.text().then((text) => {
+        if (!viewRef.current) return;
+        viewRef.current.dispatch({
+          changes: {
+            from: 0,
+            to: viewRef.current.state.doc.length,
+            insert: text,
+          },
+        });
         setText(text);
-        let sequence;
-        try {
-            sequence = parseFirstSequenceOfFasta(text);
-        } catch (e) {
-            setError(`${e}`);
-            setSequence(null);
-            return
-        }
-        checkLengthAndSetSequence(sequence)
-    }),
+      }),
   });
+  useEffect(() => {
+    const r = parseTextAsSequence(text);
+    if (r.case === "ok") {
+      const { sequence, relevantSpan } = r;
+      setHighlightedSpan(relevantSpan);
+      checkLengthAndSetSequence(sequence);
+    } else {
+      const { error, relevantSpan } = r;
+
+      setHighlightedSpan(relevantSpan);
+      setError(error.message);
+      setSequence(null);
+    }
+  }, [text]); 
   return (
-    <>
-      <Textarea
-        disabled={disabled}
-        placeholder="Paste your protein sequence of interest here."
-        value={text}
-        onChange={(e) => {
-            const text = e.target.value;
-            setText(text);
-            let sequence;
-            try {
-                sequence = parseTextAsSequence(text);
-            } catch (e) {
-                setError(`${e}`);
-                setSequence(null);
-                return
-            }
-            checkLengthAndSetSequence(sequence)
-        }}
-      />
-      <Button
-        disabled={disabled}
-        value="Upload a FASTA file and the first sequence will be used."
-        {...getRootProps()}
-      >
+    <div className="flex flex-col gap-2 m-5">
+      <div className={cn(
+        "border-b py-2",
+        sequence ? "border-primary": (error ? "border-destructive" : "border-input")
+      )}>
+        <CodeMirror
+          placeholder="Paste your protein sequence of interest here"
+          onChange={setText}
+          extensions={extensions}
+          onCreateEditor={(view) => {
+            viewRef.current = view;
+          }}
+        />
+      </div>
+      <span className="text-center">OR</span>
+      <Button className="w-fit self-center" disabled={disabled} {...getRootProps()}>
+        Upload a FASTA file (and the first sequence will be used)
         <Input {...getInputProps()}></Input>
       </Button>
-      {error !== null ? <div>{error}</div> : <></>}
-    </>
+      {error !== null && <ErrorDiv title="Cannot parse sequence" message={error}></ErrorDiv>}
+      
+    </div>
   );
+}
+/**
+ * Define extensions for CodeMirror to highlight spans
+ * set by `setHighlight` and also to look as much as possible
+ * like plaintext.
+ */
+function setupTextEditor() {
+  const setHighlight = StateEffect.define<[number, number]>();
+
+  const highlightField = StateField.define({
+    create: () => Decoration.none,
+    update(deco, tr) {
+      for (let e of tr.effects) {
+        if (e.is(setHighlight)) {
+          const [start, stop] = e.value;
+          const docLength = tr.state.doc.length;
+          if (start >= stop || stop > docLength || start < 0)
+            return Decoration.none;
+          return Decoration.set([
+            Decoration.mark({ class: "cm-highlight" }).range(start, stop),
+          ]);
+        }
+      }
+      return deco.map(tr.changes);
+    },
+    provide: (f) => EditorView.decorations.from(f),
+  });
+  const plainTextArea = EditorView.theme({
+    "&": {
+      height: "100%",
+      fontSize: "0.875rem", // md:text-sm
+    },
+    ".cm-scroller": { fontFamily: "inherit" },
+    ".cm-content": { padding: "0.75rem", color: "#9ca3af" }, // match your px-3 py-3
+    ".cm-line": { padding: "0" },
+    ".cm-activeLine": { backgroundColor: "transparent" },
+    ".cm-activeLineGutter": { backgroundColor: "transparent" },
+    ".cm-highlight": { color: "black" },
+  });
+  return {
+    setHighlight,
+    extensions: [highlightField, plainTextArea, EditorView.lineWrapping],
+  };
 }

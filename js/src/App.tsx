@@ -301,16 +301,16 @@ function PageHeader(props: {
     disabled,
   } = props;
   return (
-    <>
+    <div className="flex flex-col">
       <SequenceArea
         disabled={disabled}
-        setSequence={setSequence}
+        sequenceState={[sequence, setSequence]}
       ></SequenceArea>
       <ToolSelectionArea
         toolState={toolState}
         disabled={disabled || sequence === null}
       ></ToolSelectionArea>
-    </>
+    </div>
   );
 }
 function PageFooter(props: {
