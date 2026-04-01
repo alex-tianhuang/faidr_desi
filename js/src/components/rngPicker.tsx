@@ -16,16 +16,17 @@ export default function RngPicker(props: {
         setRngSeed(rngSeed % (2 ** 32));
     }, [rngHint, timestamp]);
 
-    return (<>
+    return (<div className="flex flex-row gap-3 items-center">
         <Input
             disabled={disabled}
-            placeholder="default RNG seed is a unix timestamp"
+            placeholder="Enter a seed for generating a random sequence (optional)"
             value={rngHint}
             onChange={(e) => {
                 const rngHint = e.target.value;
                 setRngHint(rngHint);
             }}
         />
-        <Button disabled={disabled || rngHint.length > 0} onClick={() => setRngHint(`${timestamp}`)}>Use default seed</Button>
-    </>);
+        <span>OR</span>
+        <Button disabled={disabled || rngHint.length > 0} onClick={() => setRngHint(`${timestamp}`)}>Generate a fixed seed</Button>
+    </div>);
 }
