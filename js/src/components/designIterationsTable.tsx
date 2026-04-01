@@ -29,6 +29,6 @@ const COLUMNS: ColumnDef<DesignIteration>[] = [
 export function DesignIterationsTable(props: { data: DesignIteration[] }) {
   const { data } = props;
   return (
-    <DataTable columns={COLUMNS} data={data} filename="designs"></DataTable>
+    <DataTable columns={COLUMNS} data={data} suggestedFilename="design_iterations.csv"></DataTable>
   );
 }

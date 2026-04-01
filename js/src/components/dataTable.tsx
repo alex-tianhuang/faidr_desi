@@ -4,7 +4,7 @@ import {
   useReactTable,
   type ColumnDef,
 } from "@tanstack/react-table";
-import { download, generateCsv } from "export-to-csv";
+import { generateCsv } from "export-to-csv";
 import type { AcceptedData } from "node_modules/export-to-csv/output/lib/types";
 import { Button } from "./ui/button";
 import {
@@ -15,13 +15,14 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
+import { saveFile } from "@/lib/utils";
 
 export default function DataTable<TData extends Record<string, AcceptedData>, TValue>(props: {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  filename: string;
+  suggestedFilename: string;
 }) {
-  const { columns, data, filename } = props;
+  const { columns, data, suggestedFilename } = props;
   const table = useReactTable({
     data,
     columns,
@@ -49,12 +50,12 @@ export default function DataTable<TData extends Record<string, AcceptedData>, TV
       ),
     );
     const csv = generateCsv({ useKeysAsHeaders: true })(rowData);
-    download({ filename })(csv);
+    saveFile(csv as unknown as string, suggestedFilename)
   };
 
   return (
-    <div className="overflow-hidden rounded-md border">
-      <Button onClick={handleExport}>Download CSV</Button>
+    <div className="flex flex-col overflow-hidden border items-end p-2">
+      <Button className="w-full" onClick={handleExport}>Download CSV</Button>
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
