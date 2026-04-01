@@ -9,14 +9,14 @@ type ToolType = "mimic" | "ko" | "feats";
 const TOOL_INFO = [
   {
     propKey: "mimic",
-    label: "Design Feature Mimic",
+    label: "Design feature mimic",
     helpTitle: "Designing a \"feature mimic\"",
     helpDivFactory:
       GenerateMimicHelp,
   },
   {
     propKey: "ko",
-    label: "Design Feature Knockout",
+    label: "Design feature knockout",
     helpTitle: "Designing a \"feature knockout\"",
     helpDivFactory:
       GenerateKOHelp,
@@ -76,7 +76,7 @@ function ToolButton(props: {
         onClick={() => setTool(isActive ? null : tool)}
         disabled={disabled}
       >
-        {label}
+        {isActive ? "Edit input sequence" : label}
       </Button>
       <Button
         onClick={() => setOpenHelp(true)}
