@@ -1,26 +1,32 @@
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+// import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { GenerateMimicHelp, GenerateKOHelp, FeaturizeHelp } from "./helpPages";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "../ui/sheet";
+import { useState } from "react";
 
 type ToolType = "mimic" | "ko" | "feats";
 const TOOL_INFO = [
   {
     propKey: "mimic",
     label: "Design Feature Mimic",
-    helpDiv:
-      "Lorem ipsum make some feature mimics and stuff\nlots of funky stuff\nwow so cool",
+    helpTitle: "Designing a \"feature mimic\"",
+    helpDivFactory:
+      GenerateMimicHelp,
   },
   {
     propKey: "ko",
     label: "Design Feature Knockout",
-    helpDiv:
-      "Lorem ipsum make some feature KOs and stuff\nlots of funky stuff\nwow so cool",
+    helpTitle: "Designing a \"feature knockout\"",
+    helpDivFactory:
+      GenerateKOHelp,
   },
   {
     propKey: "feats",
     label: "Compute features",
-    helpDiv:
-      "Lorem ipsum make some feature vectors\nlots of funky stuff\nwow so cool",
+    helpTitle: "Computing features",
+    helpDivFactory:
+      FeaturizeHelp
   },
 ] as const;
 export default function ToolSelectionArea(props: {
@@ -33,7 +39,7 @@ export default function ToolSelectionArea(props: {
   } = props;
   return (
     <div className={cn("border-t py-2 flex flex-row mx-5 gap-4", disabled ? "border-input" : "border-primary")}>
-      {TOOL_INFO.map(({ propKey, label, helpDiv }) => {
+      {TOOL_INFO.map(({ propKey, label, helpTitle, helpDivFactory }) => {
         const isActive = activeTool === propKey
         const isInactive = (activeTool !== null) && (!isActive);
         return (
@@ -44,7 +50,8 @@ export default function ToolSelectionArea(props: {
             disabled={disabled || isInactive}
             label={label}
             isActive={propKey === activeTool}
-            helpDiv={helpDiv}
+            helpTitle={helpTitle}
+            helpDiv={helpDivFactory()}
           ></ToolButton>
         );
       })}
@@ -57,9 +64,11 @@ function ToolButton(props: {
   disabled: boolean;
   label: string;
   isActive: boolean;
+  helpTitle: string;
   helpDiv: React.ReactNode;
 }) {
-  const { tool, setTool, disabled, label, isActive, helpDiv } = props;
+  const { tool, setTool, disabled, label, isActive, helpTitle, helpDiv } = props;
+  const [openHelp, setOpenHelp] = useState(false);
   return (
     <div className="flex-1 flex flex-row gap-1">
       <Button
@@ -69,14 +78,20 @@ function ToolButton(props: {
       >
         {label}
       </Button>
-      <Popover>
-        <PopoverTrigger disabled={disabled}>
-          <Button disabled={disabled}>?</Button>
-        </PopoverTrigger>
-        <PopoverContent>
-          {helpDiv}
-        </PopoverContent>
-      </Popover>
+      <Button
+        onClick={() => setOpenHelp(true)}
+        disabled={disabled}
+      >
+        ?
+      </Button>
+      <Sheet open={openHelp} onOpenChange={setOpenHelp}>
+        <SheetContent>
+          <SheetHeader>
+            <SheetTitle>{helpTitle}</SheetTitle>
+            <SheetDescription>{helpDiv}</SheetDescription>
+          </SheetHeader>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }
