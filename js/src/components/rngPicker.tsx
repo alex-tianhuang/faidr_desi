@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 
 export default function RngPicker(props: {
-    reqTimestampState: [number, (_: number) => void];
+    timestamp: number;
     disabled: boolean;
     setRngSeed: (_: number) => void;
     rngHintState: [string, (_: string) => void]
 }) {
-    const { disabled, setRngSeed, reqTimestampState: [timestamp, setTimestamp], rngHintState: [rngHint, setRngHint] } = props
+    const { disabled, setRngSeed, timestamp, rngHintState: [rngHint, setRngHint] } = props
 
     useEffect(() => {
         const hint = Number.parseInt(rngHint);
@@ -28,8 +28,8 @@ export default function RngPicker(props: {
         />
         <span>OR</span>
         <Button disabled={disabled || rngHint.length > 0} onClick={() => {
-            setRngHint(`${timestamp % (2 ** 32)}`);
-            setTimestamp(Date.now())
+            const rngHint = Math.floor(Math.random() * (2 ** 32));
+            setRngHint(`${rngHint % (2 ** 32)}`);
         }}>Generate a fixed seed</Button>
     </div>);
 }
