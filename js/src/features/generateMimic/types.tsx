@@ -9,6 +9,7 @@ export const InitializationError = z.object({
 
 export const Initialized = z.object({
   featureDistance: z.number(),
+  sequence: z.string()
 });
 export type Initialized = z.infer<typeof Initialized>;
 export const Mutation = z.object({
