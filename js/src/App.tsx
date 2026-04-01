@@ -297,17 +297,17 @@ function PageHeader(props: {
 }) {
   const {
     sequenceState: [sequence, setSequence],
-    toolState,
+    toolState: [activeTool, setActiveTool],
     disabled,
   } = props;
   return (
     <div className="flex flex-col">
       <SequenceArea
-        disabled={disabled}
+        disabled={disabled || (activeTool !== null)}
         sequenceState={[sequence, setSequence]}
       ></SequenceArea>
       <ToolSelectionArea
-        toolState={toolState}
+        toolState={[activeTool, setActiveTool]}
         disabled={disabled || sequence === null}
       ></ToolSelectionArea>
     </div>
