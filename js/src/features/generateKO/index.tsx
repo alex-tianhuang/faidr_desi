@@ -153,17 +153,19 @@ export default function GenerateKOArea(props: {
 function GenerateKOHeader(props: { expanded: boolean }) {
   const { expanded } = props;
   return (
-    <div className="flex flex-col border rounded-sm p-2 px-4 py-3 gap-2">
-      <p className="text-xl font-bold text-center pb-2">
-        Designing a "feature knockout"
-      </p>
-      <p>
-        {`Use this program to design a sequence that preserves ${NUM_FEATURES} sequence features of your inputted sequence, `}
-        but sets some sequence features that you want to ablate to the human
-        IDRome average. In other words, it "knocks out" those features.
-      </p>
+    <>
+      <div className="flex flex-col border rounded-sm p-2 px-4 py-3 gap-2">
+        <p className="text-xl font-bold text-center pb-2">
+          Designing a "feature knockout"
+        </p>
+        <p>
+          {`Use this program to design a sequence that preserves ${NUM_FEATURES} sequence features of your inputted sequence, `}
+          but sets some sequence features that you want to ablate to the human
+          IDRome average. In other words, it "knocks out" those features.
+        </p>
+      </div>
       {expanded && (
-        <>
+        <div className="flex flex-col border rounded-sm p-2 px-4 py-3 gap-2">
           <p>
             Select features to knockout by clicking on the cards in the left
             list, then click the{" "}
@@ -184,9 +186,9 @@ function GenerateKOHeader(props: { expanded: boolean }) {
             to get a sequence that sets your selected features to IDRome
             average!
           </p>
-        </>
+        </div>
       )}
-    </div>
+    </>
   );
 }
 function GenerateKOTargetPicker(props: {
@@ -214,29 +216,15 @@ function GenerateKOTargetPicker(props: {
         rightListTitle="Features to set to IDRome average"
         renderItem={(item, toggleSelect, whichList) => (
           <li key={item.propKey}>
-            <button
+            <GenerateKOFeatureCard
               disabled={disabled}
-              onClick={toggleSelect}
-              className={cn(
-                "cursor-pointer w-full rounded-md border px-3 py-2 text-left text-sm transition-colors flex items-center gap-3",
-                item.selected
-                  ? "border-primary bg-primary/10 text-primary"
-                  : "border-input bg-background text-muted-foreground hover:bg-muted",
-              )}
-            >
-              <span className="flex-1 truncate font-medium">
-                {item.searchKey}
-              </span>
-              <span className="shrink-0 text-xs opacity-70 w-20 text-right tabular-nums">
-                {Number(featureVector[item.propKey]).toPrecision(3)}
-                {whichList === "right" && (
-                  <>
-                    {" → "}
-                    {Number(KOFeatureTargets[item.propKey]).toPrecision(3)}
-                  </>
-                )}
-              </span>
-            </button>
+              toggleSelect={toggleSelect}
+              selected={item.selected}
+              featureID={item.propKey}
+              isKOList={whichList === "right"}
+              featureVector={featureVector}
+              KOFeatureTargets={KOFeatureTargets}
+            />
           </li>
         )}
         compareFn={(a: FeatureCard, b: FeatureCard) =>
@@ -244,6 +232,46 @@ function GenerateKOTargetPicker(props: {
         }
       ></TransferList>
     </div>
+  );
+}
+function GenerateKOFeatureCard(props: {
+  disabled: boolean;
+  toggleSelect: () => void;
+  selected: boolean;
+  featureID: string;
+  isKOList: boolean;
+  featureVector: Record<string, number>;
+  KOFeatureTargets: Record<string, number>;
+}) {
+  const {
+    disabled,
+    toggleSelect,
+    selected,
+    featureID,
+    isKOList,
+    featureVector,
+    KOFeatureTargets,
+  } = props;
+  return (
+    <Button
+      disabled={disabled}
+      onClick={toggleSelect}
+      className="items-center gap-3 w-full text-sm rounded-sm"
+      variant={selected ? "default" : "outline"}
+    >
+      <span className="flex-1 truncate font-medium self-left text-left">
+        {featureID}
+      </span>
+      <span className="shrink-0 text-xs opacity-70 text-right self-right">
+        {Number(featureVector[featureID]).toPrecision(3)}
+        {isKOList && (
+          <>
+            {" → "}
+            {Number(KOFeatureTargets[featureID]).toPrecision(3)}
+          </>
+        )}
+      </span>
+    </Button>
   );
 }
 function GenerateKOResultsArea(props: {
