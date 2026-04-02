@@ -46,7 +46,7 @@ export default function FeaturizeArea(props: {
             <br />
             It would help us a lot if you could copy the error below and report
             it to{" "}
-            <Link href={`mailto:${MY_EMAIL}`} className="h-auto p-0 inline">
+            <Link href={`mailto:${MY_EMAIL}`} inline={true}>
               {MY_EMAIL}
             </Link>
             .<br />
