@@ -3,7 +3,7 @@ import { Button } from "./ui/button";
 import { useDropzone } from "react-dropzone";
 import { Input } from "./ui/input";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { MIN_SEQUENCE_LENGTH } from "@/lib/consts";
+import { EXAMPLE_TEXT_INPUT, MIN_SEQUENCE_LENGTH } from "@/lib/consts";
 import { EditorView, Decoration } from "@codemirror/view";
 import { StateField, StateEffect } from "@codemirror/state";
 import CodeMirror from "@uiw/react-codemirror";
@@ -38,6 +38,17 @@ export default function SequenceArea(props: {
       effects: setHighlight.of(highlightedSpan),
     });
   }, [viewRef, highlightedSpan]);
+  const setTextAndUpdateEditor = (text: string) => {
+    if (!viewRef.current) return;
+    viewRef.current.dispatch({
+      changes: {
+        from: 0,
+        to: viewRef.current.state.doc.length,
+        insert: text,
+      },
+    });
+    setText(text);
+  };
   const checkLengthAndSetSequence = (sequence: string) => {
     if (sequence.length < MIN_SEQUENCE_LENGTH) {
       const lengthError =
@@ -52,18 +63,7 @@ export default function SequenceArea(props: {
     }
   };
   const { getRootProps, getInputProps } = useDropzone({
-    onDrop: ([file]) =>
-      file.text().then((text) => {
-        if (!viewRef.current) return;
-        viewRef.current.dispatch({
-          changes: {
-            from: 0,
-            to: viewRef.current.state.doc.length,
-            insert: text,
-          },
-        });
-        setText(text);
-      }),
+    onDrop: ([file]) => file.text().then(setTextAndUpdateEditor),
   });
   useEffect(() => {
     const r = parseTextAsSequence(text);
@@ -103,14 +103,19 @@ export default function SequenceArea(props: {
         />
       </div>
       <span className="text-center">OR</span>
-      <Button
-        className="w-fit self-center"
-        disabled={disabled}
-        {...getRootProps()}
-      >
-        Upload a FASTA file (and the first sequence will be used)
-        <Input {...getInputProps()}></Input>
-      </Button>
+      <div className="flex flex-row self-center">
+        <Button className="w-fit rounded-r-none" disabled={disabled} {...getRootProps()}>
+          Upload a FASTA file (and the first sequence will be used)
+          <Input {...getInputProps()}></Input>
+        </Button>
+        <Button
+          disabled={disabled}
+          className="w-fit rounded-l-none"
+          onClick={() => setTextAndUpdateEditor(EXAMPLE_TEXT_INPUT)}
+        >
+          Try an example
+        </Button>
+      </div>
       {error !== null && (
         <ErrorDiv title="Cannot parse sequence" message={error}></ErrorDiv>
       )}
