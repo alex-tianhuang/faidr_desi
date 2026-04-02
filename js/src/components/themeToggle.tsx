@@ -6,8 +6,8 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 /** Theme switch written by Claude Code. */
 export function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
-  const otherTheme = theme === "dark" ? "light" : "dark";
+  const { resolvedTheme, setTheme } = useTheme();
+  const otherTheme = resolvedTheme === "dark" ? "light" : "dark";
   return (
     <Tooltip>
       <TooltipTrigger>
@@ -16,7 +16,7 @@ export function ThemeToggle() {
           size="icon"
           onClick={() => setTheme(otherTheme)}
         >
-          {theme === "dark" ? (
+          {resolvedTheme === "dark" ? (
             <HugeiconsIcon icon={Sun} />
           ) : (
             <HugeiconsIcon icon={Moon} />

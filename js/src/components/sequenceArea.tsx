@@ -26,7 +26,7 @@ export default function SequenceArea(props: {
     disabled,
     sequenceState: [sequence, setSequence],
   } = props;
-  const { theme } = useTheme();
+  const { resolvedTheme } = useTheme();
   const [text, setText] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [highlightedSpan, setHighlightedSpan] = useState<[number, number]>([
@@ -39,8 +39,8 @@ export default function SequenceArea(props: {
   );
 
   const extensions = useMemo(
-    () => [...extensions_, highlightTheme(theme)],
-    [extensions_, theme],
+    () => [...extensions_, highlightTheme(resolvedTheme)],
+    [extensions_, resolvedTheme],
   );
 
   useEffect(() => {
@@ -105,7 +105,7 @@ export default function SequenceArea(props: {
       >
         <CodeMirror
           editable={!disabled}
-          theme={theme === "dark" ? oneDark : "light"}
+          theme={resolvedTheme === "dark" ? oneDark : "light"}
           placeholder="Paste your protein sequence of interest here"
           onChange={setText}
           extensions={extensions}
