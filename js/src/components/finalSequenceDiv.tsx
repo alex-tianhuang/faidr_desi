@@ -1,3 +1,4 @@
+import { copyToClipboard } from "@/lib/utils";
 import { Copy, CopyCheck } from "lucide-react";
 import { useState } from "react";
 
@@ -8,7 +9,7 @@ export default function FinalSequenceDiv(props: { sequence: string }) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(sequence);
+    copyToClipboard(sequence);
     setCopied(true);
     setTimeout(() => setCopied(false), COPY_COOLDOWN_MS);
   };

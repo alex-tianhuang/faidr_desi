@@ -71,3 +71,32 @@ export function checkAllFeatures(data: Record<string, Featurized> | null) {
     checkError: null,
   };
 }
+/**
+ * Paste to clipboard, even in an `http` server.
+ * Written by Claude Code.
+ */
+export function copyToClipboard(text: string) {
+  // Modern API
+  if (navigator.clipboard && window.isSecureContext) {
+    try {
+      navigator.clipboard.writeText(text);
+      return;
+    } catch (err) {
+      // console.warn('Clipboard API failed:', err);
+    }
+  }
+
+  // Fallback for HTTP or older browsers
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  document.body.appendChild(textarea);
+  textarea.focus();
+  textarea.select();
+  try {
+    document.execCommand('copy'); // deprecated but widely supported
+  } finally {
+    document.body.removeChild(textarea);
+  }
+}
