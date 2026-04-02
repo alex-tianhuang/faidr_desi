@@ -119,7 +119,7 @@ export default function SequenceArea(props: {
           <AlertTitle>
             Successfully parsed sequence (highlighted in yellow)
           </AlertTitle>
-          <AlertDescription>{sequence}</AlertDescription>
+          <AlertDescription className="break-all">{sequence}</AlertDescription>
         </Alert>
       )}
     </div>
