@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SequenceArea from "./components/sequenceArea";
 import ToolSelectionArea from "./components/toolSelectionArea";
 import GenerateMimicArea from "./features/generateMimic";
@@ -15,6 +15,12 @@ export default function Page() {
   const [sequence, setSequence] = useState<string | null>(null);
   const [tool, setTool] = useState<"mimic" | "ko" | "feats" | null>(null);
   const [requestStarted, setRequestStarted] = useState<boolean>(false);
+  // guard because sometimes `requestStarted` gets stuck
+  useEffect(() => {
+    if (sequence === null || tool === null) {
+      setRequestStarted(false)
+    }
+  }, [sequence, tool])
   return (
     <div className="flex flex-col m-5">
       <PageHeader
