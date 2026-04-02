@@ -120,7 +120,7 @@ function GenerateMimicHeader(props: { expanded: boolean }) {
           <p>
             Optionally select an RNG seed to deterministically generate an
             initial random sequence, and then click the button at the bottom to
-            get your sequence!
+            get a new sequence that matches the features of your input sequence!
           </p>
         )}
       </p>
