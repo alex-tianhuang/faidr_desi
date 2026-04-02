@@ -7,7 +7,7 @@ import initWasm, {
   type Sender,
   type TaskSpawner,
 } from "./rust/idrdesign_app.js";
-import Worker from "./wk1BLK.ts?worker&inline";
+import Worker from "./wk1BLK.ts?worker";
 const concurrency = Math.max(navigator.hardwareConcurrency, 1);
 const blockingWorkers = new Wk1BatchedPool(
   new Wk1BLKPool(

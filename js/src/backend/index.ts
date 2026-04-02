@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { communicate, type RecvMessage as GenericRecvMessage } from "./framework";
 import { Wk1NBPool } from "./framework/wk1";
-import Worker from "./wk1NB.ts?worker&inline";
+import Worker from "./wk1NB.ts?worker";
 const pool = new Wk1NBPool(new Worker(), () => crypto.randomUUID());
 /** 
  * Make a request to the backend and cancel on unmount.
