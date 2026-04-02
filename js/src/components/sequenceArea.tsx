@@ -33,14 +33,9 @@ export default function SequenceArea(props: {
     0, 0,
   ]);
   const viewRef = useRef<EditorView | null>(null);
-  const { setHighlight, extensions: extensions_ } = useMemo(
+  const { setHighlight, extensions } = useMemo(
     setupTextEditor,
     [],
-  );
-
-  const extensions = useMemo(
-    () => [...extensions_, highlightTheme(resolvedTheme)],
-    [extensions_, resolvedTheme],
   );
 
   useEffect(() => {
@@ -182,16 +177,12 @@ function setupTextEditor() {
     ".cm-line": { padding: "0" },
     ".cm-activeLine": { backgroundColor: "transparent" },
     ".cm-activeLineGutter": { backgroundColor: "transparent" },
+    ".cm-highlight": {
+      backgroundColor: "var(--text-highlight)"
+    },
   });
   return {
     setHighlight,
     extensions: [highlightField, plainTextArea, EditorView.lineWrapping],
   };
-}
-function highlightTheme(theme: string | undefined) {
-  return EditorView.theme({
-    ".cm-highlight": {
-      backgroundColor: theme === "dark" ? "#854d0e" : "#fef08a",
-    },
-  });
 }
