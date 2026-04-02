@@ -7,11 +7,12 @@ import type { AcceptedData } from "node_modules/export-to-csv/output/lib/types";
 export function FeaturesTable(props: { data: Record<string, Featurized> }) {
   const columns: ColumnDef<Record<string, AcceptedData>>[] = Object.keys(props.data).map((featureID) => ({
     accessorKey: featureID,
-    cell: ({ getValue }) => (
-      <span className="block truncate">
-        {getValue<number>().toPrecision(4)}
+    cell: ({ getValue }) => {
+      const value = getValue<number | string>();
+      return <span className="block truncate">
+        {(typeof value === "number") ? value.toPrecision(4) : value}
       </span>
-    ),
+    },
   }))
   const data = [Object.fromEntries(Object.entries(props.data).map(([featureID, featurized]) => [
     featureID, featurized.case === "ok" ? featurized.value : featurized.value.reason
