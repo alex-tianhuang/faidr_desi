@@ -2,8 +2,6 @@ import useFeaturizeEndpoint from "./hook";
 import { FeaturesTable } from "@/components/featuresTable";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import Link from "@/components/link";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { LoaderPinwheelIcon } from "@hugeicons/core-free-icons";
 import { useMemo, useState } from "react";
 import {
   FEATURE_CONFIGURATION,
@@ -12,6 +10,7 @@ import {
 } from "@/lib/consts";
 import type { Featurized } from "./types";
 import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 const MY_EMAIL = "tianh.huang@mail.utoronto.ca";
 export default function FeaturizeArea(props: {
@@ -79,10 +78,9 @@ export default function FeaturizeArea(props: {
         </>
       ) : (
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <HugeiconsIcon
-            icon={LoaderPinwheelIcon}
+          <Loader2
             className="h-4 w-4 animate-spin"
-          ></HugeiconsIcon>
+          />
           {"Computing sequence features..."}
         </div>
       )}

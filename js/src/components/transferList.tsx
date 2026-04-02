@@ -2,10 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ChevronsLeft, ChevronsRight } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import React, { useMemo } from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import { ChevronsLeft, ChevronsRight } from "lucide-react";
 
 /** Ripped from https://github.com/shadcn-ui/ui/issues/2114#issuecomment-2308012873 */
 export default function TransferList<
@@ -111,7 +110,7 @@ export default function TransferList<
                 size="icon"
                 // variant="default"
               >
-                <HugeiconsIcon icon={ChevronsRight}></HugeiconsIcon>
+                <ChevronsRight/>
               </Button>
             </TooltipTrigger>
             <TooltipContent>
@@ -139,7 +138,7 @@ export default function TransferList<
             onClick={moveToLeft}
             size="icon"
           >
-            <HugeiconsIcon icon={ChevronsLeft}></HugeiconsIcon>
+            <ChevronsLeft/>
           </Button>
             </TooltipTrigger>
             <TooltipContent>

@@ -9,12 +9,11 @@ import {
   mutationToString,
 } from "@/lib/utils";
 import { Alert } from "@/components/ui/alert";
-import { LoaderPinwheelIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import FinalSequenceDiv from "@/components/finalSequenceDiv";
 import ErrorDiv from "@/components/errorDiv";
 import { FEATURE_CONFIGURATION, NUM_FEATURES } from "@/lib/consts";
 import useFeaturizeEndpoint from "../featurize/hook";
+import { Loader2 } from "lucide-react";
 
 export default function GenerateMimicArea(props: {
   sequence: string;
@@ -160,10 +159,9 @@ function GenerateMimicResultsArea(props: {
         <ErrorDiv title="Could not design sequence:" message={error}></ErrorDiv>
       ) : (
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <HugeiconsIcon
-            icon={LoaderPinwheelIcon}
+          <Loader2
             className="h-4 w-4 animate-spin"
-          ></HugeiconsIcon>
+          />
           [{formatTimeElapsed(Date.now() - startTimestamp)}]{" "}
           {progressData.currentMutation
             ? `Trying ${mutationToString(progressData.currentMutation)}...`

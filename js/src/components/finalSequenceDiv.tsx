@@ -1,5 +1,4 @@
-import { Copy, Tick01Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
+import { Copy, CopyCheck } from "lucide-react";
 import { useState } from "react";
 
 const COPY_COOLDOWN_MS = 2000;
@@ -29,12 +28,12 @@ export default function FinalSequenceDiv(props: { sequence: string }) {
           <span
             className={`transition-opacity duration-200 absolute ${copied ? "opacity-100" : "opacity-0"}`}
           >
-            <HugeiconsIcon icon={Tick01Icon} className="h-4 w-4 text-green-500" />
+            <CopyCheck className="h-4 w-4 text-green-500" />
           </span>
           <span
             className={`transition-opacity duration-200 ${copied ? "opacity-0" : "opacity-100"}`}
           >
-            <HugeiconsIcon icon={Copy} className="h-4 w-4" />
+            <Copy className="h-4 w-4" />
           </span>
         </button>
       </div>

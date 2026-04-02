@@ -14,8 +14,6 @@ import {
 } from "@/lib/utils";
 import FinalSequenceDiv from "@/components/finalSequenceDiv";
 import ErrorDiv from "@/components/errorDiv";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { ChevronsRight, LoaderPinwheelIcon } from "@hugeicons/core-free-icons";
 import { Alert } from "@/components/ui/alert";
 import {
   Tooltip,
@@ -23,6 +21,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { ChevronsRight, Loader2 } from "lucide-react";
 
 type FeatureCard = {
   propKey: string;
@@ -135,10 +134,9 @@ export default function GenerateKOArea(props: {
         </>
       ) : (
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <HugeiconsIcon
-            icon={LoaderPinwheelIcon}
+          <Loader2
             className="h-4 w-4 animate-spin"
-          ></HugeiconsIcon>
+          />
           Computing input sequence's features...
         </div>
       )}
@@ -177,10 +175,7 @@ function GenerateKOHeader(props: { expanded: boolean }) {
             Select features to knockout by clicking on the cards in the left
             list, then click the{" "}
             {
-              <HugeiconsIcon
-                className="inline"
-                icon={ChevronsRight}
-              ></HugeiconsIcon>
+              <ChevronsRight/>
             }{" "}
             button to move those to the knockout list.
           </p>
@@ -323,10 +318,9 @@ function GenerateKOResultsArea(props: {
         <FinalSequenceDiv sequence={finalSequence}></FinalSequenceDiv>
       ) : (
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <HugeiconsIcon
-            icon={LoaderPinwheelIcon}
+          <Loader2
             className="h-4 w-4 animate-spin"
-          ></HugeiconsIcon>
+          />
           [{formatTimeElapsed(Date.now() - startTimestamp)}]{" "}
           {progressData.currentMutation
             ? `Trying ${mutationToString(progressData.currentMutation)}...`

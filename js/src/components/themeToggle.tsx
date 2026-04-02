@@ -1,7 +1,6 @@
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Moon, Sun } from "@hugeicons/core-free-icons";
+import { Moon, Sun } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 /** Theme switch written by Claude Code. */
@@ -16,11 +15,7 @@ export function ThemeToggle() {
           size="icon"
           onClick={() => setTheme(otherTheme)}
         >
-          {resolvedTheme === "dark" ? (
-            <HugeiconsIcon icon={Sun} />
-          ) : (
-            <HugeiconsIcon icon={Moon} />
-          )}
+          {resolvedTheme === "dark" ? <Sun /> : <Moon />}
         </Button>
       </TooltipTrigger>
       <TooltipContent>Change to {otherTheme} mode</TooltipContent>
