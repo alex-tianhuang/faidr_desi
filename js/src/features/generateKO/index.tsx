@@ -6,9 +6,18 @@ import type { Featurized } from "../featurize/types";
 import TransferList from "@/components/transferList";
 import { Button } from "@/components/ui/button";
 import { FEATURE_MEANS } from "@/lib/consts";
-import { mutationToString } from "@/lib/utils";
+import { cn, compareStrings, mutationToString } from "@/lib/utils";
+import FinalSequenceDiv from "@/components/finalSequenceDiv";
+import ErrorDiv from "@/components/errorDiv";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { LoaderPinwheelIcon } from "@hugeicons/core-free-icons";
 
-type FeatureCard = { propKey: string; selected: boolean; searchKey: string; value: number }
+type FeatureCard = {
+  propKey: string;
+  selected: boolean;
+  searchKey: string;
+  value: number;
+};
 export default function GenerateKOArea(props: {
   sequence: string;
   featureConfiguration: unknown;
@@ -32,7 +41,7 @@ export default function GenerateKOArea(props: {
     [featurized],
   );
   const error = initError ?? featurizedError ?? checkError;
-  
+
   const [defaultList, setDefaultList] = useState<FeatureCard[]>([]);
   const [KOList, setKOList] = useState<FeatureCard[]>([]);
   const [prevFeatureVector, setPrevFeatureVector] = useState(featureVector);
@@ -43,12 +52,14 @@ export default function GenerateKOArea(props: {
     setDefaultList(
       featureVector === null
         ? []
-        : Object.entries(featureVector).map(([featureID, value]) => ({
-            selected: false,
-            propKey: featureID,
-            searchKey: featureID,
-            value,
-          }))
+        : Object.entries(featureVector)
+            .map(([featureID, value]) => ({
+              selected: false,
+              propKey: featureID,
+              searchKey: featureID,
+              value,
+            }))
+            .sort((a, b) => compareStrings(a.searchKey, b.searchKey)),
     );
   }
 
@@ -59,7 +70,7 @@ export default function GenerateKOArea(props: {
       Object.entries(featureVector).map(([id, val]) => [
         id,
         KOFeatures.has(id) ? KOFeatureTargets[id] : val,
-      ])
+      ]),
     );
   }, [featureVector, KOList]);
   const [reqTimestamp, setReqTimestamp] = useState(() => Date.now());
@@ -82,7 +93,7 @@ export default function GenerateKOArea(props: {
         onClick={() => {
           setRequestStarted(!requestStarted);
           if (!requestStarted) {
-            setReqTimestamp(Date.now())
+            setReqTimestamp(Date.now());
           }
         }}
       ></Button>
@@ -128,27 +139,47 @@ function GenerateKOTargetPicker(props: {
   featureVector: Record<string, number>;
   featureTargets: Record<string, number>;
   defaultListState: [FeatureCard[], (_: FeatureCard[]) => void];
-  KOListState: [FeatureCard[], (_: FeatureCard[]) => void] 
+  KOListState: [FeatureCard[], (_: FeatureCard[]) => void];
 }) {
   const {
     disabled,
-    featureTargets,
+    featureVector,
+    KOFeatureTargets,
     defaultListState,
-    KOListState
+    KOListState,
   } = props;
   return (
     <TransferList
       disabled={disabled}
       leftListState={defaultListState}
       rightListState={KOListState}
-      renderItem={(item, toggleSelect) => (
+      renderItem={(item, toggleSelect, whichList) => (
         <li key={item.propKey}>
-          <Button disabled={disabled} onClick={toggleSelect}>
-            {item.searchKey}; target={featureTargets[item.propKey]} Selected:{" "}
-            {JSON.stringify(item.selected)}
-          </Button>
+          <button
+            disabled={disabled}
+            onClick={toggleSelect}
+            className={cn(
+              "w-full rounded-md border px-3 py-2 text-left text-sm transition-colors flex items-center gap-3",
+              item.selected
+                ? "border-primary bg-primary/10 text-primary"
+                : "border-input bg-background text-muted-foreground hover:bg-muted",
+            )}
+          >
+            <span className="flex-1 truncate font-medium">
+              {item.searchKey}
+            </span>
+            <span className="shrink-0 text-xs opacity-70 w-20 text-right tabular-nums">
+              {Number(featureVector[item.propKey]).toPrecision(3)}
+              {whichList === "right" && (
+                <> → {Number(KOFeatureTargets[item.propKey]).toPrecision(3)}</>
+              )}
+            </span>
+          </button>
         </li>
       )}
+      compareFn={(a: FeatureCard, b: FeatureCard) =>
+        compareStrings(a.searchKey, b.searchKey)
+      }
     ></TransferList>
   );
 }
@@ -161,19 +192,40 @@ function GenerateKOResultsArea(props: {
 }) {
   const { initError, progressData, progressError } =
     useGenerateKOEndpoint(props);
+  const error = initError ?? progressError;
+
+  const finalSequence =
+    (progressData.done ? progressData.iterations.at(-1)?.sequence : null) ??
+    null;
+
   return (
-    <div>
-      {initError !== null ? (
-        <div>initError: {JSON.stringify(initError)}</div>
-      ) : null}
-      <span>Done: {JSON.stringify(progressData.done)}</span>
-      {progressData.currentMutation !== null && <span>Current Mutation: {mutationToString(progressData.currentMutation)}</span>}
-      <DesignIterationsTable
-        data={progressData.iterations}
-      ></DesignIterationsTable>
-      {progressError !== null ? (
-        <div>progressError: {JSON.stringify(progressError)}</div>
-      ) : null}
+    <div className="flex flex-col gap-2">
+      {finalSequence ? (
+        <FinalSequenceDiv sequence={finalSequence}></FinalSequenceDiv>
+      ) : error ? (
+        <ErrorDiv title="Could not design sequence:" message={error}></ErrorDiv>
+      ) : (
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <HugeiconsIcon
+            icon={LoaderPinwheelIcon}
+            className="h-4 w-4 animate-spin"
+          ></HugeiconsIcon>
+          {progressData.currentMutation
+            ? `Trying ${mutationToString(progressData.currentMutation)}...`
+            : "Starting..."}
+        </div>
+      )}
+
+      {progressData.iterations.length > 0 && (
+        <details className="text-sm">
+          <summary className="cursor-pointer text-muted-foreground hover:text-foreground">
+            Show all iterations ({progressData.iterations.length - 1})
+          </summary>
+          <div className="mt-2">
+            <DesignIterationsTable data={progressData.iterations} />
+          </div>
+        </details>
+      )}
     </div>
   );
 }

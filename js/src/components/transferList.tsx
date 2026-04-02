@@ -2,6 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { ChevronsLeft, ChevronsRight } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import React from "react";
 
 /** Ripped from https://github.com/shadcn-ui/ui/issues/2114#issuecomment-2308012873 */
@@ -9,34 +11,44 @@ export default function TransferList<
   Item extends { selected: boolean; propKey: string; searchKey: string },
 >(props: {
   disabled: boolean;
-  renderItem: (item: Item, toggleSelect: () => void) => React.ReactNode;
+  renderItem: (
+    item: Item,
+    toggleSelect: () => void,
+    whichList: "left" | "right",
+  ) => React.ReactNode;
   leftListState: [Item[], (_: Item[]) => void];
   rightListState: [Item[], (_: Item[]) => void];
+  compareFn: (a: Item, b: Item) => number;
 }) {
   const {
     disabled,
     leftListState: [leftList, setLeftList],
     rightListState: [rightList, setRightList],
     renderItem,
+    compareFn,
   } = props;
+
   const [leftSearch, setLeftSearch] = React.useState("");
   const [rightSearch, setRightSearch] = React.useState("");
-
   const moveToRight = () => {
     const selectedItems = leftList.filter((item) => item.selected);
-    setRightList([
-      ...rightList,
-      ...selectedItems.map((item) => ({ ...item, selected: false })),
-    ]);
+    setRightList(
+      [
+        ...rightList,
+        ...selectedItems.map((item) => ({ ...item, selected: false })),
+      ].sort(compareFn),
+    );
     setLeftList(leftList.filter((item) => !item.selected));
   };
 
   const moveToLeft = () => {
     const selectedItems = rightList.filter((item) => item.selected);
-    setLeftList([
-      ...leftList,
-      ...selectedItems.map((item) => ({ ...item, selected: false })),
-    ]);
+    setLeftList(
+      [
+        ...leftList,
+        ...selectedItems.map((item) => ({ ...item, selected: false })),
+      ].sort(compareFn),
+    );
     setRightList(rightList.filter((item) => !item.selected));
   };
 
@@ -55,21 +67,25 @@ export default function TransferList<
     setList(updatedList);
   };
   const renderLeftItem = (item: Item) =>
-    renderItem(item, () =>
-      toggleSelection(leftList, setLeftList, item.propKey),
+    renderItem(
+      item,
+      () => toggleSelection(leftList, setLeftList, item.propKey),
+      "left",
     );
   const renderRightItem = (item: Item) =>
-    renderItem(item, () =>
-      toggleSelection(rightList, setRightList, item.propKey),
+    renderItem(
+      item,
+      () => toggleSelection(rightList, setRightList, item.propKey),
+      "right",
     );
 
   return (
     <div className="flex space-x-4">
-      <div className="w-1/2 shadow-sm bg-background rounded-sm">
+      <div className="w-1/2 bg-background">
         <div className="flex items-center justify-between">
           <Input
             placeholder="Search"
-            className="rounded-br-none rounded-bl-none rounded-tr-none rounded-bl-none focus-visible:ring-0 focus-visible:border-blue-500"
+            className="rounded-br-none rounded-bl-none rounded-tr-none focus-visible:ring-0 focus-visible:border-blue-500"
             value={leftSearch}
             onChange={(e) => setLeftSearch(e.target.value)}
           />
@@ -80,10 +96,10 @@ export default function TransferList<
             size="icon"
             variant="outline"
           >
-            {">>"}
+            <HugeiconsIcon icon={ChevronsRight}></HugeiconsIcon>
           </Button>
         </div>
-        <ul className="h-[200px] border-l border-r border-b rounded-br-sm rounded-bl-sm p-1.5 overflow-y-scroll">
+        <ul className="h-50 border-l border-r border-b p-1.5 overflow-y-scroll">
           {leftList
             .filter((item) =>
               item.searchKey.toLowerCase().includes(leftSearch.toLowerCase()),
@@ -92,7 +108,7 @@ export default function TransferList<
         </ul>
       </div>
 
-      <div className="w-1/2 shadow-sm bg-background rounded-sm">
+      <div className="w-1/2 bg-background">
         <div className="flex items-center justify-between">
           <Button
             disabled={disabled}
@@ -101,16 +117,16 @@ export default function TransferList<
             size="icon"
             variant="outline"
           >
-            {"<<"}
+            <HugeiconsIcon icon={ChevronsLeft}></HugeiconsIcon>
           </Button>
           <Input
             placeholder="Search"
-            className="rounded-bl-none rounded-br-none rounded-tl-none rounded-bl-none focus-visible:ring-0 focus-visible:border-blue-500"
+            className="rounded-bl-none rounded-br-none rounded-tl-none focus-visible:ring-0 focus-visible:border-blue-500"
             value={rightSearch}
             onChange={(e) => setRightSearch(e.target.value)}
           />
         </div>
-        <ul className="h-[200px] border-l border-r border-b rounded-br-sm rounded-bl-sm p-1.5 overflow-y-scroll">
+        <ul className="h-50 border-l border-r border-b p-1.5 overflow-y-scroll">
           {rightList
             .filter((item) =>
               item.searchKey.toLowerCase().includes(rightSearch.toLowerCase()),
