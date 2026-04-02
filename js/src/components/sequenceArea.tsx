@@ -122,7 +122,7 @@ export default function SequenceArea(props: {
       {sequence !== null && (
         <Alert variant="default" className="overflow-scroll">
           <AlertTitle>
-            Successfully parsed sequence (highlighted in yellow)
+            Successfully parsed sequence (highlighted in yellow above)
           </AlertTitle>
           <AlertDescription className="break-all">{sequence}</AlertDescription>
         </Alert>
