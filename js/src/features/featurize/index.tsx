@@ -1,4 +1,3 @@
-import ErrorDiv from "@/components/errorDiv";
 import useFeaturizeEndpoint from "./hook";
 import { FeaturesTable } from "@/components/featuresTable";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
