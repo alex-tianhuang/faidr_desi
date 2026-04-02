@@ -112,7 +112,7 @@ export default function GenerateKOArea(props: {
           ></GenerateKOTargetPicker>
           <Alert>
             {numFeaturesKO > 0
-              ? `Setting ${numFeaturesKO} features to IDRome average`
+              ? `Setting ${numFeaturesKO} feature${numFeaturesKO > 1 ? "s" : ""} to IDRome average`
               : "Please choose at least one feature to knockout (set to IDRome average)"}
           </Alert>
           <Button
@@ -217,7 +217,7 @@ function GenerateKOTargetPicker(props: {
               disabled={disabled}
               onClick={toggleSelect}
               className={cn(
-                "w-full rounded-md border px-3 py-2 text-left text-sm transition-colors flex items-center gap-3",
+                "cursor-pointer w-full rounded-md border px-3 py-2 text-left text-sm transition-colors flex items-center gap-3",
                 item.selected
                   ? "border-primary bg-primary/10 text-primary"
                   : "border-input bg-background text-muted-foreground hover:bg-muted",
