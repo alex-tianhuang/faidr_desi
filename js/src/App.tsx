@@ -2,9 +2,14 @@ import { useState } from "react";
 import SequenceArea from "./components/sequenceArea";
 import ToolSelectionArea from "./components/toolSelectionArea";
 import GenerateMimicArea from "./features/generateMimic";
-import { FEATURE_CONFIGURATION, FEATURE_MEANS, FEATURE_WEIGHTS } from "./lib/consts";
+import {
+  FEATURE_CONFIGURATION,
+  FEATURE_MEANS,
+  FEATURE_WEIGHTS,
+} from "./lib/consts";
 import FeaturizeArea from "./features/featurize";
 import GenerateKOArea from "./features/generateKO";
+import Link from "./components/link";
 
 export default function Page() {
   const [sequence, setSequence] = useState<string | null>(null);
@@ -40,14 +45,41 @@ function PageHeader(props: {
   } = props;
   return (
     <div className="flex flex-col">
+      <Preamble />
       <SequenceArea
-        disabled={disabled || (activeTool !== null)}
+        disabled={disabled || activeTool !== null}
         sequenceState={[sequence, setSequence]}
       ></SequenceArea>
       <ToolSelectionArea
         toolState={[activeTool, setActiveTool]}
         disabled={disabled || sequence === null}
       ></ToolSelectionArea>
+    </div>
+  );
+}
+function Preamble() {
+  return (
+    <div className="flex flex-col gap-2">
+      <p className="text-2xl font-bold text-center underline">
+        Simple IDR Design
+      </p>
+      <p className="text-sm text-muted-foreground">
+        Welcome to a simple webapp that uses a greedy sequence feature matching
+        algorithm to design IDRs. This tool is based on{" "}
+        <Link
+          href="https://www.biorxiv.org/content/10.1101/2023.04.28.538739v1"
+          inline
+        >
+          this 2023 preprint
+        </Link>{" "}
+        by the Julie Forman-Kay and Alan Moses group, who have been using
+        sequence feature-based design as a framework for hypothesis testing IDR
+        functions.
+      </p>
+      <p className="text-sm text-muted-foreground">
+        Try it out by pasting a sequence in the box below, uploading a file, or
+        starting with an example.
+      </p>
     </div>
   );
 }
