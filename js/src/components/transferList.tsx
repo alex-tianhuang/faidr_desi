@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ChevronsLeft, ChevronsRight } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import React from "react";
+import React, { useMemo } from "react";
 
 /** Ripped from https://github.com/shadcn-ui/ui/issues/2114#issuecomment-2308012873 */
 export default function TransferList<
@@ -31,7 +31,8 @@ export default function TransferList<
     renderItem,
     compareFn,
   } = props;
-
+  const disabledLeft = useMemo(() => !Boolean(leftList.find(item => item.selected)), [leftList])
+  const disabledRight = useMemo(() => !Boolean(rightList.find(item => item.selected)), [rightList])
   const [leftSearch, setLeftSearch] = React.useState("");
   const [rightSearch, setRightSearch] = React.useState("");
   const moveToRight = () => {
@@ -95,11 +96,11 @@ export default function TransferList<
             onChange={(e) => setLeftSearch(e.target.value)}
           />
           <Button
-            disabled={disabled}
+            disabled={disabled || disabledLeft}
             className="rounded-tl-none rounded-bl-none rounded-br-none border-l-0"
             onClick={moveToRight}
             size="icon"
-            variant="outline"
+            // variant="default"
           >
             <HugeiconsIcon icon={ChevronsRight}></HugeiconsIcon>
           </Button>
@@ -117,11 +118,10 @@ export default function TransferList<
         <div className="w-full text-center border-b">{rightListTitle}</div>
         <div className="flex items-center justify-between">
           <Button
-            disabled={disabled}
+            disabled={disabled || disabledRight}
             className="rounded-tr-none rounded-br-none rounded-bl-none border-r-0"
             onClick={moveToLeft}
             size="icon"
-            variant="outline"
           >
             <HugeiconsIcon icon={ChevronsLeft}></HugeiconsIcon>
           </Button>
