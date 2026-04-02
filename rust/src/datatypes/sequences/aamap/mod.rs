@@ -6,8 +6,6 @@ use std::{
     fmt::Debug,
     ops::{Index, IndexMut},
 };
-mod aaweights;
-pub use aaweights::AAWeights;
 
 /// A residue mapping type.
 ///

@@ -1,5 +1,4 @@
 use std::time::Duration;
-use web_time::Instant;
 use crate::{
     adapters::SenderHandle, datatypes::webworker_messages::blocking::generate_mimic::{
         ClosePayload, DesignIteration, Progress, RequestPayload, YieldPayload,

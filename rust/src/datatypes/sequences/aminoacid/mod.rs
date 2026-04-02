@@ -2,8 +2,6 @@
 use std::mem;
 use thiserror::Error;
 use tsify::Tsify;
-mod gapped;
-pub use gapped::{AminoacidGapped, NotAminoacidOrGapError};
 
 /// Macro that defines the [`Aminoacid`] enum
 /// and reduces some of the boilerplate.
@@ -128,7 +126,6 @@ macro_rules! derive_aa_as_char_impls {
         }
     };
 }
-pub(crate) use derive_aa_as_char_impls;
 impl From<Aminoacid> for u8 {
     fn from(value: Aminoacid) -> Self {
         value as u8
