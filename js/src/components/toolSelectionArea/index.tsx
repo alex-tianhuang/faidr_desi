@@ -4,6 +4,7 @@ import { Button } from "../ui/button";
 import { GenerateMimicHelp, GenerateKOHelp, FeaturizeHelp } from "./helpPages";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "../ui/sheet";
 import { useState } from "react";
+import { NUM_FEATURES } from "@/lib/consts";
 
 type ToolType = "mimic" | "ko" | "feats";
 const TOOL_INFO = [
@@ -23,7 +24,7 @@ const TOOL_INFO = [
   },
   {
     propKey: "feats",
-    label: "Compute features",
+    label: `Get ${NUM_FEATURES} sequence features`,
     helpTitle: "Computing features",
     helpDivFactory:
       FeaturizeHelp
