@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { ChevronsLeft, ChevronsRight } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import React, { useMemo } from "react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 /** Ripped from https://github.com/shadcn-ui/ui/issues/2114#issuecomment-2308012873 */
 export default function TransferList<
@@ -31,8 +32,14 @@ export default function TransferList<
     renderItem,
     compareFn,
   } = props;
-  const disabledLeft = useMemo(() => !Boolean(leftList.find(item => item.selected)), [leftList])
-  const disabledRight = useMemo(() => !Boolean(rightList.find(item => item.selected)), [rightList])
+  const disabledLeft = useMemo(
+    () => !Boolean(leftList.find((item) => item.selected)),
+    [leftList],
+  );
+  const disabledRight = useMemo(
+    () => !Boolean(rightList.find((item) => item.selected)),
+    [rightList],
+  );
   const [leftSearch, setLeftSearch] = React.useState("");
   const [rightSearch, setRightSearch] = React.useState("");
   const moveToRight = () => {
@@ -95,15 +102,22 @@ export default function TransferList<
             value={leftSearch}
             onChange={(e) => setLeftSearch(e.target.value)}
           />
-          <Button
-            disabled={disabled || disabledLeft}
-            className="rounded-tl-none rounded-bl-none rounded-br-none border-l-0"
-            onClick={moveToRight}
-            size="icon"
-            // variant="default"
-          >
-            <HugeiconsIcon icon={ChevronsRight}></HugeiconsIcon>
-          </Button>
+          <Tooltip>
+            <TooltipTrigger disabled={disabled || disabledLeft}>
+              <Button
+                disabled={disabled || disabledLeft}
+                className="rounded-tl-none rounded-bl-none rounded-br-none border-l-0"
+                onClick={moveToRight}
+                size="icon"
+                // variant="default"
+              >
+                <HugeiconsIcon icon={ChevronsRight}></HugeiconsIcon>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              Click me to move selected items right!
+            </TooltipContent>
+          </Tooltip>
         </div>
         <ul className="h-50 border-l border-r border-b p-1.5 overflow-y-scroll">
           {leftList
@@ -117,7 +131,9 @@ export default function TransferList<
       <div className="flex flex-col gap-2 w-1/2 bg-background">
         <div className="w-full text-center border-b">{rightListTitle}</div>
         <div className="flex items-center justify-between">
-          <Button
+          <Tooltip>
+            <TooltipTrigger disabled={disabled || disabledRight}>
+              <Button
             disabled={disabled || disabledRight}
             className="rounded-tr-none rounded-br-none rounded-bl-none border-r-0"
             onClick={moveToLeft}
@@ -125,6 +141,11 @@ export default function TransferList<
           >
             <HugeiconsIcon icon={ChevronsLeft}></HugeiconsIcon>
           </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              Click me to move selected items left!
+            </TooltipContent>
+          </Tooltip>
           <Input
             placeholder="Search"
             className="rounded-bl-none rounded-br-none rounded-tl-none focus-visible:ring-0 focus-visible:border-blue-500"
