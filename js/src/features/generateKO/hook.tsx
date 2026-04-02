@@ -26,7 +26,6 @@ export default function useGenerateKOEndpoint(args: {
     featureTargets,
     sequenceValidationSettings: SEQUENCE_VALIDATION_PARAMETERS,
   };
-  const [initData, setInitData] = useState<Initialized | null>(null);
   const [initError, setInitError] = useState<string | null>(null);
   const [progressData, setProgressData] = useState<Progress>(() => ({
     done: false,
@@ -42,8 +41,16 @@ export default function useGenerateKOEndpoint(args: {
         r.error !== null && setInitError(r.error);
         return;
       }
-      setInitData(r.data);
-      const initDistance = r.data.featureDistance;
+      setProgressData({
+        done: false,
+        currentMutation: null,
+        iterations: [{
+          sequence,
+          featureDistance: r.data.featureDistance,
+          mutation: "",
+          iteration: 0
+        }]
+      })
       while (true) {
         const r = parseProgress(await recv());
         if (r.ctrl === "break") {
@@ -63,22 +70,6 @@ export default function useGenerateKOEndpoint(args: {
               iterations,
             };
           }
-          if (iterations.length === 0) {
-            const firstRow = r.data.iterations[0];
-            const { mutation, sequence } = firstRow;
-            const initialSequence =
-              sequence.substring(0, mutation.pos) +
-              mutation.from +
-              sequence.substring(mutation.pos + 1);
-            iterations = [
-              {
-                mutation: "",
-                featureDistance: initDistance,
-                iteration: 0,
-                sequence: initialSequence,
-              },
-            ];
-          }
           return {
             done: false,
             currentMutation: nextMutation,
@@ -95,7 +86,6 @@ export default function useGenerateKOEndpoint(args: {
       }
     },
     setup: () => {
-      setInitData(null);
       setInitError(null);
       setProgressData({
         done: false,
@@ -107,7 +97,6 @@ export default function useGenerateKOEndpoint(args: {
     deps: [sequence, featureConfiguration, featureWeights, featureTargets, reqTimestamp],
   });
   return {
-    initData,
     initError,
     progressData,
     progressError,
