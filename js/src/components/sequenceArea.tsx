@@ -89,7 +89,7 @@ export default function SequenceArea(props: {
             : error
               ? "border-destructive"
               : "border-input",
-          disabled && "opacity-50 cursor-not-allowed",
+          disabled && "opacity-50",
         )}
       >
         <CodeMirror
