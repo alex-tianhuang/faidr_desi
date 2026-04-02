@@ -6,7 +6,12 @@ import type { Featurized } from "../featurize/types";
 import TransferList from "@/components/transferList";
 import { Button } from "@/components/ui/button";
 import { FEATURE_MEANS } from "@/lib/consts";
-import { cn, compareStrings, mutationToString } from "@/lib/utils";
+import {
+  cn,
+  compareStrings,
+  formatTimeElapsed,
+  mutationToString,
+} from "@/lib/utils";
 import FinalSequenceDiv from "@/components/finalSequenceDiv";
 import ErrorDiv from "@/components/errorDiv";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -80,7 +85,7 @@ export default function GenerateKOArea(props: {
     if (numFeaturesKO === 0 && requestStarted) {
       setRequestStarted(false);
     }
-  }, [numFeaturesKO])
+  }, [numFeaturesKO]);
   if (error) {
     return (
       <ErrorDiv
@@ -227,7 +232,7 @@ function GenerateKOResultsArea(props: {
   featureTargets: unknown;
   reqTimestamp: number;
 }) {
-  const { initError, progressData, progressError } =
+  const { initError, progressData, progressError, startTimestamp } =
     useGenerateKOEndpoint(props);
   const error = initError ?? progressError;
 
@@ -247,6 +252,7 @@ function GenerateKOResultsArea(props: {
             icon={LoaderPinwheelIcon}
             className="h-4 w-4 animate-spin"
           ></HugeiconsIcon>
+          [{formatTimeElapsed(Date.now() - startTimestamp)}]{" "}
           {progressData.currentMutation
             ? `Trying ${mutationToString(progressData.currentMutation)}...`
             : "Starting..."}

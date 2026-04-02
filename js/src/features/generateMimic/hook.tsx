@@ -30,6 +30,7 @@ export default function useGenerateMimicEndpoint(args: {
     iterations: [],
   }));
   const [progressError, setProgressError] = useState<string | null>(null);
+  const [startTimestamp, setStartTimestamp] = useState(() => Date.now());
   useBackend({
     msg: request,
     body: async (recv) => {
@@ -84,6 +85,7 @@ export default function useGenerateMimicEndpoint(args: {
     },
     setup: () => {
       setInitError(null);
+      setStartTimestamp(Date.now());
       setProgressData({
         done: false,
         currentMutation: null,
@@ -97,6 +99,7 @@ export default function useGenerateMimicEndpoint(args: {
     initError,
     progressData,
     progressError,
+    startTimestamp,
   };
 }
 

@@ -3,7 +3,7 @@ import useGenerateMimicEndpoint from "./hook";
 import RngPicker from "@/components/rngPicker";
 import { Button } from "@/components/ui/button";
 import { DesignIterationsTable } from "@/components/designIterationsTable";
-import { mutationToString } from "@/lib/utils";
+import { formatTimeElapsed, mutationToString } from "@/lib/utils";
 import { Alert } from "@/components/ui/alert";
 import { LoaderPinwheelIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -51,7 +51,9 @@ export default function GenerateMimicArea(props: {
           !requestStarted && setReqTimestamp(Date.now());
         }}
       >
-        {requestStarted ? "Go back to editing sequence or RNG seed" : "Click to design"}
+        {requestStarted
+          ? "Go back to editing sequence or RNG seed"
+          : "Click to design"}
       </Button>
 
       {requestStarted ? (
@@ -88,7 +90,7 @@ function GenerateMimicResultsArea(props: {
   };
   reqTimestamp: number;
 }) {
-  const { initError, progressData, progressError } =
+  const { initError, progressData, progressError, startTimestamp } =
     useGenerateMimicEndpoint(props);
   const error = initError ?? progressError;
 
@@ -99,16 +101,24 @@ function GenerateMimicResultsArea(props: {
   return (
     <div className="flex flex-col gap-2">
       {finalSequence ? (
-        <FinalSequenceDiv sequence={finalSequence}></FinalSequenceDiv> 
+        <FinalSequenceDiv sequence={finalSequence}></FinalSequenceDiv>
+      ) : error ? (
+        <ErrorDiv title="Could not design sequence:" message={error}></ErrorDiv>
       ) : (
-        error ? <ErrorDiv title="Could not design sequence:" message={error}></ErrorDiv>: <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <HugeiconsIcon icon={LoaderPinwheelIcon} className="h-4 w-4 animate-spin"></HugeiconsIcon>
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <HugeiconsIcon
+            icon={LoaderPinwheelIcon}
+            className="h-4 w-4 animate-spin"
+          ></HugeiconsIcon>
+          [{formatTimeElapsed(Date.now() - startTimestamp)}]{" "}
           {progressData.currentMutation
             ? `Trying ${mutationToString(progressData.currentMutation)}...`
             : "Starting..."}
         </div>
       )}
-      <span className="text-xs text-muted-foreground">Used RNG seed: {props.rng.seed}</span>
+      <span className="text-xs text-muted-foreground">
+        Used RNG seed: {props.rng.seed}
+      </span>
 
       {progressData.iterations.length > 0 && (
         <details className="text-sm">

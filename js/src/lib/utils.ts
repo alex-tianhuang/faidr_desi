@@ -38,3 +38,11 @@ export async function saveFile(content: string, suggestedName: string) {
 export function compareStrings(a: string, b: string) {
   return a > b ? 1 : (a < b ? -1 : 0)
 }
+/** Format the time elapsed from `Date.now()` differences. */
+export function formatTimeElapsed(ms: number) {
+  const totalSeconds = Math.floor(ms / 1000);
+  const h = Math.floor(totalSeconds / 3600);
+  const m = Math.floor((totalSeconds % 3600) / 60);
+  const s = totalSeconds % 60;
+  return [h, m, s].map((v) => String(v).padStart(2, "0")).join(":");
+};
