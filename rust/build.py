@@ -2,14 +2,13 @@ import os
 import subprocess as sp
 import toml
 import argparse
+
 ap = argparse.ArgumentParser()
 ap.add_argument("--release", action="store_true")
 release = ap.parse_args().release
 HERE = os.path.dirname(__file__)
 wasm_dir = f"{HERE}/../js/src/backend/rust/"
-pk_name: str = toml.load("Cargo.toml")["package"]["name"].replace(
-    "-", "_"
-)
+pk_name: str = toml.load("Cargo.toml")["package"]["name"].replace("-", "_")
 build_args = [
     "cargo",
     "build",
@@ -27,6 +26,16 @@ else:
 build_path += "/{}.wasm".format(pk_name)
 if not os.path.exists(build_path):
     raise RuntimeError("can't find wasm file: {}".format(build_path))
+if release:
+    wasm_opt_args = [
+        "wasm-opt",
+        "--strip-debug",
+        "--strip-producers",
+        build_path,
+        "-o",
+        build_path,
+    ]
+    sp.run(wasm_opt_args, check=True)
 
 bindgen_args = [
     "wasm-bindgen",
