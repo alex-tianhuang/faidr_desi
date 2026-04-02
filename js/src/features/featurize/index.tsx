@@ -59,10 +59,11 @@ export default function FeaturizeArea(props: {
           <div className="flex flex-row text-sm items-center">
             <div className="flex-1 flex flex-col pl-4 text-start">
               <span>Viewing as:</span>
-              <span>{zscoreEnabled
-                ? "Z-score features compared to the human IDRome"
-                : "Raw feature values"}</span>
-              
+              <span>
+                {zscoreEnabled
+                  ? "Z-score features compared to the human IDRome"
+                  : "Raw feature values"}
+              </span>
             </div>
             <Button
               className="w-fit text-xs"
@@ -90,14 +91,20 @@ export default function FeaturizeArea(props: {
 }
 function FeaturizeHeader() {
   return (
-    <div className="flex flex-col border rounded-sm p-2 px-4 py-3">
-      <p className="text-xl font-bold text-center pb-2">Sequence features</p>
-      <p>View and download a CSV of your sequence features below.</p>
-      <p>
-        Scroll horizontally to see all features, or click the button to change
-        whether you are looking at raw features or feature Z-scores.
-      </p>
-    </div>
+    <>
+      <div className="flex flex-col border rounded-sm p-2 px-4 py-3 gap-2">
+        <p className="text-xl font-bold text-center pb-2">Sequence features</p>
+        <p>View and download a CSV of your sequence features below.</p>
+      </div>
+      <div className="flex flex-col border rounded-sm p-2 px-4 py-3 gap-2">
+        <p className="text-md font-bold underline">Instructions</p>
+        <p>
+          Click the small button on the right to change whether you are looking
+          at raw features or feature Z-scores.
+        </p>
+        <p>Scroll horizontally to see your sequence features!</p>
+      </div>
+    </>
   );
 }
 function featuresToIDRomeZscores(

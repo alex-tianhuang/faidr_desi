@@ -172,6 +172,7 @@ function GenerateKOHeader(props: { expanded: boolean }) {
       </div>
       {expanded && (
         <div className="flex flex-col border rounded-sm p-2 px-4 py-3 gap-2">
+          <p className="text-md font-bold underline">Instructions</p>
           <p>
             Select features to knockout by clicking on the cards in the left
             list, then click the{" "}

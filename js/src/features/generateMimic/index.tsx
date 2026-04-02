@@ -109,22 +109,30 @@ export default function GenerateMimicArea(props: {
 function GenerateMimicHeader(props: { expanded: boolean }) {
   const { expanded } = props;
   return (
-    <div className="flex flex-col border rounded-sm px-4 py-3 gap-2">
-      <p className="text-xl font-bold text-center pb-2">
-        Designing a "feature mimic"
-      </p>
-      <p>
-        {`Use this program to design a sequence that matches ${NUM_FEATURES} sequence features of your inputted sequence. `}
-        In other words, it "mimics" the features of your input sequence.
-        {expanded && (
+    <>
+      <div className="flex flex-col border rounded-sm px-4 py-3 gap-2">
+        <p className="text-xl font-bold text-center pb-2">
+          Designing a "feature mimic"
+        </p>
+        <p>
+          {`Use this program to design a sequence that matches ${NUM_FEATURES} sequence features of your inputted sequence. `}
+          In other words, it "mimics" the features of your input sequence.
+        </p>
+      </div>
+      {expanded && (
+        <div className="flex flex-col border rounded-sm px-4 py-3 gap-2">
+          <p className="text-md font-bold underline">Instructions</p>
           <p>
             Optionally select an RNG seed to deterministically generate an
-            initial random sequence, and then click the button at the bottom to
-            get a new sequence that matches the features of your input sequence!
+            initial random sequence.
           </p>
-        )}
-      </p>
-    </div>
+          <p>
+            Click the button at the bottom to get a new sequence that matches
+            the features of your input sequence!
+          </p>
+        </div>
+      )}
+    </>
   );
 }
 function GenerateMimicResultsArea(props: {
