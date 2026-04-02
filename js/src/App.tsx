@@ -10,6 +10,7 @@ import {
 import FeaturizeArea from "./features/featurize";
 import GenerateKOArea from "./features/generateKO";
 import Link from "./components/link";
+import { ThemeToggle } from "./components/themeToggle";
 
 export default function Page() {
   const [sequence, setSequence] = useState<string | null>(null);
@@ -51,6 +52,7 @@ function PageHeader(props: {
   } = props;
   return (
     <div className="flex flex-col">
+      <div className="fixed top-4 right-4 z-50"><ThemeToggle></ThemeToggle></div>
       <Preamble />
       <SequenceArea
         disabled={disabled || activeTool !== null}
