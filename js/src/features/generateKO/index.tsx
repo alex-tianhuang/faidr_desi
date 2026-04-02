@@ -89,7 +89,7 @@ export default function GenerateKOArea(props: {
   if (error) {
     return (
       <div className="flex flex-col gap-2">
-        <GenerateKOHeader />
+        <GenerateKOHeader expanded={false} />
         <ErrorDiv
           title="Unfortunately, we cannot design knockouts of your inputted sequence."
           message={`Some sequence features could not be computed: ${error}`}
@@ -99,7 +99,7 @@ export default function GenerateKOArea(props: {
   }
   return (
     <div className="flex flex-col gap-2">
-      <GenerateKOHeader />
+      <GenerateKOHeader expanded={true} />
       {featureTargets !== null && featureVector !== null ? (
         <>
           <GenerateKOTargetPicker
@@ -150,9 +150,10 @@ export default function GenerateKOArea(props: {
     </div>
   );
 }
-function GenerateKOHeader() {
+function GenerateKOHeader(props: { expanded: boolean }) {
+  const { expanded } = props;
   return (
-    <div className="flex flex-col border rounded-sm p-2 px-4 py-3">
+    <div className="flex flex-col border rounded-sm p-2 px-4 py-3 gap-2">
       <p className="text-xl font-bold text-center pb-2">
         Designing a "feature knockout"
       </p>
@@ -161,6 +162,20 @@ function GenerateKOHeader() {
         but sets some sequence features that you want to ablate to the human
         IDRome average. In other words, it "knocks out" those features.
       </p>
+      {expanded && (
+        <>
+          <p>
+            Select features to knockout by clicking on the cards in the left
+            list, then click the {"`>>`"} button to move those to the knockout
+            list. You can see the original values and IDRome average values on
+            the cards on the right list.
+          </p>
+          <p>
+            When you have selected your features, click the button at the bottom
+            to get your sequence!
+          </p>
+        </>
+      )}
     </div>
   );
 }
