@@ -76,7 +76,7 @@ function ToolButton(props: {
         onClick={() => setTool(isActive ? null : tool)}
         disabled={disabled}
       >
-        {isActive ? "Edit input sequence" : label}
+        {isActive ? "Go back to editing sequence" : label}
       </Button>
       <Button
         onClick={() => setOpenHelp(true)}

@@ -51,7 +51,7 @@ export default function GenerateMimicArea(props: {
           !requestStarted && setReqTimestamp(Date.now());
         }}
       >
-        {requestStarted ? "Edit sequence or RNG seed" : "Click to design"}
+        {requestStarted ? "Go back to editing sequence or RNG seed" : "Click to design"}
       </Button>
 
       {requestStarted ? (

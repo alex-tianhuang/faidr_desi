@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { DesignIterationsTable } from "@/components/designIterationsTable";
 import useGenerateKOEndpoint from "./hook";
 import useFeaturizeEndpoint from "../featurize/hook";
@@ -75,6 +75,12 @@ export default function GenerateKOArea(props: {
     );
   }, [featureVector, KOList]);
   const [reqTimestamp, setReqTimestamp] = useState(() => Date.now());
+  const numFeaturesKO = KOList.length;
+  useEffect(() => {
+    if (numFeaturesKO === 0 && requestStarted) {
+      setRequestStarted(false);
+    }
+  }, [numFeaturesKO])
   if (error) {
     return (
       <ErrorDiv
@@ -83,7 +89,6 @@ export default function GenerateKOArea(props: {
       />
     );
   }
-  const numFeaturesKO = KOList.length;
   return (
     <div className="flex flex-col gap-2">
       {featureTargets !== null && featureVector !== null ? (
@@ -109,7 +114,7 @@ export default function GenerateKOArea(props: {
             }}
           >
             {requestStarted
-              ? "Edit sequence or features to knockout"
+              ? "Go back to editing sequence or features to knockout"
               : "Click to design"}
           </Button>
         </>
