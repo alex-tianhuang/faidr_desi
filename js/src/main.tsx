@@ -10,7 +10,7 @@ await initWasm();
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <TooltipProvider>
-      <ThemeProvider>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <App />
       </ThemeProvider>
     </TooltipProvider>

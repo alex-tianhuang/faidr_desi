@@ -6,10 +6,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { EXAMPLE_TEXT_INPUT, MIN_SEQUENCE_LENGTH } from "@/lib/consts";
 import { EditorView, Decoration } from "@codemirror/view";
 import { StateField, StateEffect } from "@codemirror/state";
-import CodeMirror from "@uiw/react-codemirror";
+import CodeMirror, { oneDark } from "@uiw/react-codemirror";
 import ErrorDiv from "./errorDiv";
 import { cn } from "@/lib/utils";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
+import { useTheme } from "next-themes";
 
 /**
  * Text area / file upload that allows for sequence editing.
@@ -25,13 +26,23 @@ export default function SequenceArea(props: {
     disabled,
     sequenceState: [sequence, setSequence],
   } = props;
+  const { theme } = useTheme();
   const [text, setText] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [highlightedSpan, setHighlightedSpan] = useState<[number, number]>([
     0, 0,
   ]);
   const viewRef = useRef<EditorView | null>(null);
-  const { setHighlight, extensions } = useMemo(setupTextEditor, []);
+  const { setHighlight, extensions: extensions_ } = useMemo(
+    setupTextEditor,
+    [],
+  );
+
+  const extensions = useMemo(
+    () => [...extensions_, highlightTheme(theme)],
+    [extensions_, theme],
+  );
+
   useEffect(() => {
     if (!viewRef.current) return;
     viewRef.current.dispatch({
@@ -94,6 +105,7 @@ export default function SequenceArea(props: {
       >
         <CodeMirror
           editable={!disabled}
+          theme={theme === "dark" ? oneDark : "light"}
           placeholder="Paste your protein sequence of interest here"
           onChange={setText}
           extensions={extensions}
@@ -104,7 +116,11 @@ export default function SequenceArea(props: {
       </div>
       <span className="text-center">OR</span>
       <div className="flex flex-row self-center">
-        <Button className="w-fit rounded-r-none" disabled={disabled} {...getRootProps()}>
+        <Button
+          className="w-fit rounded-r-none"
+          disabled={disabled}
+          {...getRootProps()}
+        >
           Upload a FASTA file (and the first sequence will be used)
           <Input {...getInputProps()}></Input>
         </Button>
@@ -166,10 +182,16 @@ function setupTextEditor() {
     ".cm-line": { padding: "0" },
     ".cm-activeLine": { backgroundColor: "transparent" },
     ".cm-activeLineGutter": { backgroundColor: "transparent" },
-    ".cm-highlight": { backgroundColor: "#fef08a" },
   });
   return {
     setHighlight,
     extensions: [highlightField, plainTextArea, EditorView.lineWrapping],
   };
+}
+function highlightTheme(theme: string | undefined) {
+  return EditorView.theme({
+    ".cm-highlight": {
+      backgroundColor: theme === "dark" ? "#854d0e" : "#fef08a",
+    },
+  });
 }
