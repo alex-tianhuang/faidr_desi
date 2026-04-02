@@ -2,11 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import { DesignIterationsTable } from "@/components/designIterationsTable";
 import useGenerateKOEndpoint from "./hook";
 import useFeaturizeEndpoint from "../featurize/hook";
-import type { Featurized } from "../featurize/types";
 import TransferList from "@/components/transferList";
 import { Button } from "@/components/ui/button";
-import { FEATURE_MEANS } from "@/lib/consts";
+import { FEATURE_MEANS, NUM_FEATURES } from "@/lib/consts";
 import {
+  checkAllFeatures,
   cn,
   compareStrings,
   formatTimeElapsed,
@@ -88,14 +88,18 @@ export default function GenerateKOArea(props: {
   }, [numFeaturesKO]);
   if (error) {
     return (
-      <ErrorDiv
-        title="Could not compute sequence features of input sequence"
-        message={error}
-      />
+      <div className="flex flex-col gap-2">
+        <GenerateKOHeader />
+        <ErrorDiv
+          title="Unfortunately, we cannot design knockouts of your inputted sequence."
+          message={`Some sequence features could not be computed: ${error}`}
+        />
+      </div>
     );
   }
   return (
     <div className="flex flex-col gap-2">
+      <GenerateKOHeader />
       {featureTargets !== null && featureVector !== null ? (
         <>
           <GenerateKOTargetPicker
@@ -146,27 +150,19 @@ export default function GenerateKOArea(props: {
     </div>
   );
 }
-function checkAllFeatures(data: Record<string, Featurized> | null) {
-  if (data === null) {
-    return {
-      featureVector: null,
-      checkError: null,
-    };
-  }
-  const featureVector: Record<string, number> = {};
-  for (const [featureID, featurized] of Object.entries(data)) {
-    if (featurized.case === "error") {
-      return {
-        featureVector: null,
-        checkError: featurized.value.reason,
-      };
-    }
-    featureVector[featureID] = featurized.value;
-  }
-  return {
-    featureVector,
-    checkError: null,
-  };
+function GenerateKOHeader() {
+  return (
+    <div className="flex flex-col border rounded-sm p-2 px-4 py-3">
+      <p className="text-xl font-bold text-center pb-2">
+        Designing a "feature knockout"
+      </p>
+      <p>
+        {`Use this program to design a sequence that preserves ${NUM_FEATURES} sequence features of your inputted sequence, `}
+        but sets some sequence features that you want to ablate to the human
+        IDRome average. In other words, it "knocks out" those features.
+      </p>
+    </div>
+  );
 }
 function GenerateKOTargetPicker(props: {
   disabled: boolean;

@@ -3,12 +3,14 @@ import useGenerateMimicEndpoint from "./hook";
 import RngPicker from "@/components/rngPicker";
 import { Button } from "@/components/ui/button";
 import { DesignIterationsTable } from "@/components/designIterationsTable";
-import { formatTimeElapsed, mutationToString } from "@/lib/utils";
+import { checkAllFeatures, formatTimeElapsed, mutationToString } from "@/lib/utils";
 import { Alert } from "@/components/ui/alert";
 import { LoaderPinwheelIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import FinalSequenceDiv from "@/components/finalSequenceDiv";
 import ErrorDiv from "@/components/errorDiv";
+import { FEATURE_CONFIGURATION, NUM_FEATURES } from "@/lib/consts";
+import useFeaturizeEndpoint from "../featurize/hook";
 
 export default function GenerateMimicArea(props: {
   sequence: string;
@@ -31,9 +33,30 @@ export default function GenerateMimicArea(props: {
   const [rngHint, setRngHint] = useState("");
   const usingTimestampForRng = Number.isNaN(Number.parseInt(rngHint));
   const rng = useMemo(() => ({ seed: rngSeed }), [rngSeed]);
-
+  const {
+    initError,
+    featurized,
+    featurizedError
+  } = useFeaturizeEndpoint({
+    sequence,
+    featureConfiguration: FEATURE_CONFIGURATION
+  });
+  const { checkError } = useMemo(() => checkAllFeatures(featurized), [featurized]);
+  const error = initError || featurizedError || checkError;
+  if (error) {
+    return (
+      <div className="flex flex-col gap-2">
+        <GenerateMimicHeader />
+        <ErrorDiv
+          title="Unfortunately, we cannot design mimics of your inputted sequence."
+          message={`Some sequence features could not be computed: ${error}`}
+        />
+      </div>
+    );
+  }
   return (
     <div className="flex flex-col gap-2">
+      <GenerateMimicHeader />
       <RngPicker
         timestamp={reqTimestamp}
         disabled={requestStarted}
@@ -80,7 +103,24 @@ export default function GenerateMimicArea(props: {
     </div>
   );
 }
-
+function GenerateMimicHeader() {
+  return (
+    <div className="flex flex-col border rounded-sm px-4 py-3">
+      <p className="text-xl font-bold text-center pb-2">
+        Designing a "feature mimic"
+      </p>
+      <p>
+        {`Use this program to design a sequence that matches ${NUM_FEATURES} sequence features of your inputted sequence. `}
+        In other words, it "mimics" the features of your input sequence.
+      </p>
+      <p>
+        Optionally select an RNG seed to deterministically generate an initial
+        random sequence, and then click the button at the bottom to get your
+        sequence!
+      </p>
+    </div>
+  );
+}
 function GenerateMimicResultsArea(props: {
   sequence: string;
   featureConfiguration: unknown;
