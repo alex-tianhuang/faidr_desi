@@ -17,6 +17,12 @@ import ErrorDiv from "@/components/errorDiv";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ChevronsRight, LoaderPinwheelIcon } from "@hugeicons/core-free-icons";
 import { Alert } from "@/components/ui/alert";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 type FeatureCard = {
   propKey: string;
@@ -203,34 +209,44 @@ function GenerateKOTargetPicker(props: {
     disabled,
     featureVector,
     KOFeatureTargets,
-    defaultListState,
-    KOListState,
+    defaultListState: [defaultList, setDefaultList],
+    KOListState: [KOList, setKOList],
   } = props;
+  // user hasn't clicked anything and might not understand these are buttons
+  const userProbablyNeedsHint = useMemo(
+    () =>
+      KOList.length === 0 &&
+      defaultList.findIndex((item) => item.selected) === -1,
+    [defaultList, KOList],
+  );
   return (
     <div className={cn("flex flex-col", disabled && "opacity-50")}>
-      <TransferList
-        disabled={disabled}
-        leftListState={defaultListState}
-        leftListTitle="Features to preserve"
-        rightListState={KOListState}
-        rightListTitle="Features to set to IDRome average"
-        renderItem={(item, toggleSelect, whichList) => (
-          <li key={item.propKey}>
-            <GenerateKOFeatureCard
-              disabled={disabled}
-              toggleSelect={toggleSelect}
-              selected={item.selected}
-              featureID={item.propKey}
-              isKOList={whichList === "right"}
-              featureVector={featureVector}
-              KOFeatureTargets={KOFeatureTargets}
-            />
-          </li>
-        )}
-        compareFn={(a: FeatureCard, b: FeatureCard) =>
-          compareStrings(a.searchKey, b.searchKey)
-        }
-      ></TransferList>
+      <TooltipProvider delay={1000}>
+        <TransferList
+          disabled={disabled}
+          leftListState={[defaultList, setDefaultList]}
+          leftListTitle="Features to preserve"
+          rightListState={[KOList, setKOList]}
+          rightListTitle="Features to set to IDRome average"
+          renderItem={(item, toggleSelect, whichList) => (
+            <li key={item.propKey}>
+              <GenerateKOFeatureCard
+                disabled={disabled}
+                toggleSelect={toggleSelect}
+                selected={item.selected}
+                featureID={item.propKey}
+                isKOList={whichList === "right"}
+                featureVector={featureVector}
+                KOFeatureTargets={KOFeatureTargets}
+                userProbablyNeedsHint={userProbablyNeedsHint}
+              />
+            </li>
+          )}
+          compareFn={(a: FeatureCard, b: FeatureCard) =>
+            compareStrings(a.searchKey, b.searchKey)
+          }
+        ></TransferList>
+      </TooltipProvider>
     </div>
   );
 }
@@ -242,6 +258,7 @@ function GenerateKOFeatureCard(props: {
   isKOList: boolean;
   featureVector: Record<string, number>;
   KOFeatureTargets: Record<string, number>;
+  userProbablyNeedsHint: boolean;
 }) {
   const {
     disabled,
@@ -251,27 +268,33 @@ function GenerateKOFeatureCard(props: {
     isKOList,
     featureVector,
     KOFeatureTargets,
+    userProbablyNeedsHint,
   } = props;
   return (
-    <Button
-      disabled={disabled}
-      onClick={toggleSelect}
-      className="items-center gap-3 w-full text-sm rounded-sm"
-      variant={selected ? "default" : "outline"}
-    >
-      <span className="flex-1 truncate font-medium self-left text-left">
-        {featureID}
-      </span>
-      <span className="shrink-0 text-xs opacity-70 text-right self-right">
-        {Number(featureVector[featureID]).toPrecision(3)}
-        {isKOList && (
-          <>
-            {" → "}
-            {Number(KOFeatureTargets[featureID]).toPrecision(3)}
-          </>
-        )}
-      </span>
-    </Button>
+    <Tooltip>
+      <TooltipTrigger disabled={!userProbablyNeedsHint} className="w-full">
+        <Button
+          disabled={disabled}
+          onClick={toggleSelect}
+          className="items-center gap-3 w-full text-sm rounded-sm"
+          variant={selected ? "default" : "outline"}
+        >
+          <span className="flex-1 truncate font-medium self-left text-left">
+            {featureID}
+          </span>
+          <span className="shrink-0 text-xs opacity-70 text-right self-right">
+            {Number(featureVector[featureID]).toPrecision(3)}
+            {isKOList && (
+              <>
+                {" → "}
+                {Number(KOFeatureTargets[featureID]).toPrecision(3)}
+              </>
+            )}
+          </span>
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent>Click me to select me!</TooltipContent>
+    </Tooltip>
   );
 }
 function GenerateKOResultsArea(props: {
