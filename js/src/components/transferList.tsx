@@ -17,13 +17,17 @@ export default function TransferList<
     whichList: "left" | "right",
   ) => React.ReactNode;
   leftListState: [Item[], (_: Item[]) => void];
+  leftListTitle: string;
   rightListState: [Item[], (_: Item[]) => void];
+  rightListTitle: string;
   compareFn: (a: Item, b: Item) => number;
 }) {
   const {
     disabled,
     leftListState: [leftList, setLeftList],
+    leftListTitle,
     rightListState: [rightList, setRightList],
+    rightListTitle,
     renderItem,
     compareFn,
   } = props;
@@ -80,8 +84,9 @@ export default function TransferList<
     );
 
   return (
-    <div className="flex space-x-4">
-      <div className="w-1/2 bg-background">
+    <div className="flex gap-4">
+      <div className="flex flex-col gap-2 w-1/2 bg-background">
+        <div className="w-full text-center border-b">{leftListTitle}</div>
         <div className="flex items-center justify-between">
           <Input
             placeholder="Search"
@@ -108,7 +113,8 @@ export default function TransferList<
         </ul>
       </div>
 
-      <div className="w-1/2 bg-background">
+      <div className="flex flex-col gap-2 w-1/2 bg-background">
+        <div className="w-full text-center border-b">{rightListTitle}</div>
         <div className="flex items-center justify-between">
           <Button
             disabled={disabled}
