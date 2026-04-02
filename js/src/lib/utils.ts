@@ -15,7 +15,7 @@ export function mutationToString(mutation: Mutation) {
   return `${from}${pos + 1}${to}`;
 }
 /** File writing function written by Claude Code. */
-export async function saveFile (content: string, suggestedName: string) {
+export async function saveFile(content: string, suggestedName: string) {
   if ("showSaveFilePicker" in window) {
     const handle = await (window as any).showSaveFilePicker({
       suggestedName,
@@ -34,3 +34,7 @@ export async function saveFile (content: string, suggestedName: string) {
     URL.revokeObjectURL(url);
   }
 };
+/** CompareFn for `Array.sort` */
+export function compareStrings(a: string, b: string) {
+  return a > b ? 1 : (a < b ? -1 : 0)
+}
