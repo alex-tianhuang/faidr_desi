@@ -7,12 +7,13 @@ import initWasm, {
   type Sender,
   type TaskSpawner,
 } from "./rust/idrdesign_app.js";
+import { v4 as uuidv4 } from "uuid";
 import Worker from "./wk1BLK.ts?worker";
 const concurrency = Math.max(navigator.hardwareConcurrency, 1);
 const blockingWorkers = new Wk1BatchedPool(
   new Wk1BLKPool(
     [...new Array(concurrency)].map(() => new Worker()),
-    () => crypto.randomUUID(),
+    uuidv4,
   ),
 );
 const initServer = (
