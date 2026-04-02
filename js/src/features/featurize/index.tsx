@@ -1,3 +1,4 @@
+import ErrorDiv from "@/components/errorDiv";
 import useFeaturizeEndpoint from "./hook";
 import { FeaturesTable } from "@/components/featuresTable";
 
@@ -9,12 +10,12 @@ export default function FeaturizeArea(props: {
     initError,
     featurized,
     featurizedError
-  } = useFeaturizeEndpoint(props)
+  } = useFeaturizeEndpoint(props);
+  const error = initError ?? featurizedError;
   return (
-    <div>
-      {initError !== null ? <div>initError: {JSON.stringify(initError)}</div> : null}
-      {featurized !== null ? <FeaturesTable data={featurized}></FeaturesTable> : null}
-      {featurizedError !== null ? <div>Featurization Error: {JSON.stringify(featurizedError)}</div> : null}
+    <div className="flex flex-col gap-2">
+      {error && <ErrorDiv title="Failed to compute sequence features" message={error}></ErrorDiv>}
+      {featurized && <FeaturesTable data={featurized}></FeaturesTable>}
     </div>
   );
 }
