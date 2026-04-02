@@ -46,7 +46,7 @@ function FeaturizeHeader() {
         Sequence features
       </p>
       <p>
-        View and download a CSV of your sequence features below.
+        View and download a CSV of your sequence features below. (scroll horizontally to see all features)
       </p>
     </div>
   );
