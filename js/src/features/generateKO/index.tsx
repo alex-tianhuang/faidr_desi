@@ -15,7 +15,7 @@ import {
 import FinalSequenceDiv from "@/components/finalSequenceDiv";
 import ErrorDiv from "@/components/errorDiv";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { LoaderPinwheelIcon } from "@hugeicons/core-free-icons";
+import { ChevronsRight, LoaderPinwheelIcon } from "@hugeicons/core-free-icons";
 import { Alert } from "@/components/ui/alert";
 
 type FeatureCard = {
@@ -166,13 +166,22 @@ function GenerateKOHeader(props: { expanded: boolean }) {
         <>
           <p>
             Select features to knockout by clicking on the cards in the left
-            list, then click the {"`>>`"} button to move those to the knockout
-            list. You can see the original values and IDRome average values on
-            the cards on the right list.
+            list, then click the{" "}
+            {
+              <HugeiconsIcon
+                className="inline"
+                icon={ChevronsRight}
+              ></HugeiconsIcon>
+            }{" "}
+            button to move those to the knockout list.
+          </p>
+          <p>
+            You can see the pairs of "(original value) → (IDRome average value)"
+            on the cards on the right list.
           </p>
           <p>
             When you have selected your features, click the button at the bottom
-            to get your sequence!
+            to get a sequence that sets your selected features to IDRome average!
           </p>
         </>
       )}
