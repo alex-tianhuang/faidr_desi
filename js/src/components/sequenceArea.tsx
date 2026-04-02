@@ -33,10 +33,7 @@ export default function SequenceArea(props: {
     0, 0,
   ]);
   const viewRef = useRef<EditorView | null>(null);
-  const { setHighlight, extensions } = useMemo(
-    setupTextEditor,
-    [],
-  );
+  const { setHighlight, extensions } = useMemo(setupTextEditor, []);
 
   useEffect(() => {
     if (!viewRef.current) return;
@@ -133,7 +130,8 @@ export default function SequenceArea(props: {
       {sequence !== null && (
         <Alert variant="default" className="overflow-scroll">
           <AlertTitle>
-            Successfully parsed sequence (highlighted in yellow above)
+            Successfully parsed sequence (highlighted in{" "}
+            {resolvedTheme === "dark" ? "orange" : "yellow"} above)
           </AlertTitle>
           <AlertDescription className="break-all">{sequence}</AlertDescription>
         </Alert>
@@ -178,7 +176,7 @@ function setupTextEditor() {
     ".cm-activeLine": { backgroundColor: "transparent" },
     ".cm-activeLineGutter": { backgroundColor: "transparent" },
     ".cm-highlight": {
-      backgroundColor: "var(--text-highlight)"
+      backgroundColor: "var(--text-highlight)",
     },
   });
   return {
