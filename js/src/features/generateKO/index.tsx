@@ -181,7 +181,8 @@ function GenerateKOHeader(props: { expanded: boolean }) {
           </p>
           <p>
             When you have selected your features, click the button at the bottom
-            to get a sequence that sets your selected features to IDRome average!
+            to get a sequence that sets your selected features to IDRome
+            average!
           </p>
         </>
       )}
@@ -254,18 +255,20 @@ function GenerateKOResultsArea(props: {
 }) {
   const { initError, progressData, progressError, startTimestamp } =
     useGenerateKOEndpoint(props);
-  const error = initError ?? progressError;
-
   const finalSequence =
     (progressData.done ? progressData.iterations.at(-1)?.sequence : null) ??
     null;
-
+  const checkError =
+    progressData?.done && progressData.iterations.length === 1
+      ? "Starting sequence is already at local optimum in feature space.\nThis can happen when too few features are allowed to vary and the system becomes overconstrained.\nWe recommend choosing more or different features to knockout."
+      : null;
+  const error = initError ?? progressError ?? checkError;
   return (
     <div className="flex flex-col gap-2">
-      {finalSequence ? (
-        <FinalSequenceDiv sequence={finalSequence}></FinalSequenceDiv>
-      ) : error ? (
+      {error ? (
         <ErrorDiv title="Could not design sequence:" message={error}></ErrorDiv>
+      ) : finalSequence ? (
+        <FinalSequenceDiv sequence={finalSequence}></FinalSequenceDiv>
       ) : (
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <HugeiconsIcon
