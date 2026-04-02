@@ -71,15 +71,16 @@ function ToolButton(props: {
   const { tool, setTool, disabled, label, isActive, helpTitle, helpDiv } = props;
   const [openHelp, setOpenHelp] = useState(false);
   return (
-    <div className="flex-1 flex flex-row gap-1">
+    <div className="flex-1 flex flex-row">
       <Button
-        className="flex-1"
+        className="flex-1 rounded-r-none"
         onClick={() => setTool(isActive ? null : tool)}
         disabled={disabled}
       >
         {isActive ? "Try other sequence / try other tool" : label}
       </Button>
       <Button
+        className="rounded-l-none"
         onClick={() => setOpenHelp(true)}
         disabled={disabled}
       >
