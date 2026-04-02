@@ -57,13 +57,16 @@ export default function FeaturizeArea(props: {
       {featurized ? (
         <>
           <div className="flex flex-row text-sm items-center">
-            <span className="flex-1 text-center">
-              {zscoreEnabled
+            <div className="flex-1 flex flex-col pl-4 text-start">
+              <span>Viewing as:</span>
+              <span>{zscoreEnabled
                 ? "Z-score features compared to the human IDRome"
-                : "Raw feature values"}
-            </span>
+                : "Raw feature values"}</span>
+              
+            </div>
             <Button
-              className="w-fit"
+              className="w-fit text-xs"
+              variant="outline"
               onClick={() => setZscoreEnabled(!zscoreEnabled)}
             >
               {zscoreEnabled
