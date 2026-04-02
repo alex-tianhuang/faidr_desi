@@ -1,3 +1,4 @@
+import type { Featurized } from "@/features/featurize/types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -46,3 +47,27 @@ export function formatTimeElapsed(ms: number) {
   const s = totalSeconds % 60;
   return [h, m, s].map((v) => String(v).padStart(2, "0")).join(":");
 };
+
+/** Check that all features are non-error variants. */
+export function checkAllFeatures(data: Record<string, Featurized> | null) {
+  if (data === null) {
+    return {
+      featureVector: null,
+      checkError: null,
+    };
+  }
+  const featureVector: Record<string, number> = {};
+  for (const [featureID, featurized] of Object.entries(data)) {
+    if (featurized.case === "error") {
+      return {
+        featureVector: null,
+        checkError: featurized.value.reason,
+      };
+    }
+    featureVector[featureID] = featurized.value;
+  }
+  return {
+    featureVector,
+    checkError: null,
+  };
+}
