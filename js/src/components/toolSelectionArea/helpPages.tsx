@@ -11,7 +11,7 @@ export function GenerateMimicHelp() {
         in normalized feature space to the target (input) sequence. This has
         been explored in this preprint:
       </p>
-      <Link href="https://www.biorxiv.org/content/10.1101/2023.04.28.538739v1">
+      <Link href="https://www.biorxiv.org/content/10.1101/2023.04.28.538739v1" inline={false}>
         BioRxiv (2023)
       </Link>
     </div>
@@ -27,7 +27,7 @@ export function GenerateKOHelp() {
         the IDRome average, while keeping the other sequence features unchanged.
         This has been explored in this preprint:
       </p>
-      <Link href="https://www.biorxiv.org/content/10.1101/2023.04.28.538739v1">
+      <Link href="https://www.biorxiv.org/content/10.1101/2023.04.28.538739v1" inline={false}>
         BioRxiv (2023)
       </Link>
     </div>
@@ -41,10 +41,10 @@ export function FeaturizeHelp() {
         This tool computes {NUM_FEATURES} sequence features described in papers
         from the labs of Julie Forman-Kay and Alan Moses:
       </p>
-      <Link href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7932695/">
+      <Link href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7932695/" inline={false}>
         eLife (2021)
       </Link>
-      <Link href="https://www.biorxiv.org/content/10.1101/2024.03.15.585291v1">
+      <Link href="https://www.biorxiv.org/content/10.1101/2024.03.15.585291v1" inline={false}>
         BioRxiv (2024)
       </Link>
     </div>
