@@ -175,7 +175,7 @@ function GenerateKOHeader(props: { expanded: boolean }) {
             Select features to knockout by clicking on the cards in the left
             list, then click the{" "}
             {
-              <ChevronsRight/>
+              <ChevronsRight className="inline"/>
             }{" "}
             button to move those to the knockout list.
           </p>
