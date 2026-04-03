@@ -25,6 +25,7 @@ export default function RngPicker(props: {
                 const rngHint = e.target.value;
                 setRngHint(rngHint);
             }}
+            className="bg-(--text-bg)"
         />
         <span>OR</span>
         <Button disabled={disabled || rngHint.length > 0} onClick={() => {
