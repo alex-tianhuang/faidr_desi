@@ -119,8 +119,11 @@ export default function SequenceArea(props: {
           disabled={disabled}
           {...getRootProps()}
         >
-          Upload a FASTA file{" "}
-          <span className="text-xs">(and the first sequence will be used)</span>
+          Upload a FASTA file
+          <span className="text-xs">
+            {" "}
+            (use the first sequence)
+          </span>
           <Input {...getInputProps()} />
         </Button>
         <Button
