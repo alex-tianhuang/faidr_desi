@@ -85,11 +85,11 @@ export default function FeaturizeArea(props: {
 function FeaturizeHeader() {
   return (
     <>
-      <div className="flex flex-col border rounded-md px-4 py-3">
+      <div className="flex flex-col border rounded-md p-4">
         <p className="text-xl font-bold text-center">Computing sequence features</p>
         <p className="text-center text-muted-foreground">View and download a CSV of your sequence features below.</p>
       </div>
-      <div className="flex flex-col border rounded-md px-4 py-3">
+      <div className="flex flex-col border rounded-md p-4">
         <p className="text-md font-bold underline">Instructions</p>
         <p className="text-justify text-muted-foreground">
           Click the small button on the right to change whether you are looking
