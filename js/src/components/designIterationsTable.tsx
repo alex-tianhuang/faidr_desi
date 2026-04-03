@@ -10,6 +10,9 @@ const COLUMNS: ColumnDef<DesignIteration>[] = [
   {
     accessorKey: "featureDistance",
     header: "Feature Distance",
+    cell: ({ getValue }) => (
+      getValue<number>().toPrecision(4)
+    ),
   },
   {
     accessorKey: "mutation",
@@ -19,7 +22,7 @@ const COLUMNS: ColumnDef<DesignIteration>[] = [
     accessorKey: "sequence",
     header: "Sequence",
     cell: ({ getValue }) => (
-      <span className="block max-w-50 truncate" title={getValue<string>()}>
+      <span className="block max-w-50 truncate">
         {getValue<string>()}
       </span>
     ),
