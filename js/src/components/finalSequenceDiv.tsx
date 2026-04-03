@@ -15,11 +15,11 @@ export default function FinalSequenceDiv(props: { sequence: string }) {
   };
 
   return (
-    <div className="flex flex-col border border-primary rounded-md px-4 py-3 gap-2">
+    <div className="flex flex-col border border-input rounded-md p-4 gap-2">
       <span className="text-md font-bold underline">
         Designed Sequence
       </span>
-      <div className="flex items-center gap-3 rounded-lg border border-border bg-muted px-4 py-3">
+      <div className="flex items-center gap-3 rounded-lg border border-border bg-muted p-4">
         <code className="text-sm break-all flex-1 leading-relaxed">{sequence}</code>
         <button
           onClick={handleCopy}
