@@ -23,7 +23,7 @@ export default function Page() {
     }
   }, [sequence, tool]);
   return (
-    <div className="flex flex-col m-5 gap-2">
+    <div className="flex flex-col item-center m-5 gap-2 min-w-80">
       <PageHeader
         sequenceState={[sequence, setSequence]}
         toolState={[tool, setTool]}
