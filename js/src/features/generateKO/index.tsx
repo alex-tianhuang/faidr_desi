@@ -136,9 +136,9 @@ export default function GenerateKOArea(props: {
               reqTimestamp={reqTimestamp}
             ></GenerateKOResultsArea>
           ) : (
-            <span className="text-muted-foreground">
+            <div className="p-4 border border-input rounded-md text-muted-foreground">
               Design results will be displayed below.
-            </span>
+            </div>
           )}
         </>
       ) : (
@@ -151,7 +151,7 @@ function GenerateKOHeader(props: { expanded: boolean }) {
   const { expanded } = props;
   return (
     <>
-      <div className="flex flex-col border rounded-md px-4 py-3 gap-2">
+      <div className="flex flex-col border rounded-md p-4 gap-2">
         <p className="text-xl font-bold text-center">
           Designing a "feature knockout"
         </p>
@@ -162,7 +162,7 @@ function GenerateKOHeader(props: { expanded: boolean }) {
         </p>
       </div>
       {expanded && (
-        <div className="flex flex-col border rounded-md text-justify text-muted-foreground px-4 py-3 gap-2">
+        <div className="flex flex-col border rounded-md text-justify text-muted-foreground p-4 gap-2">
           <p className="text-left text-foreground text-md font-bold underline">
             Instructions
           </p>
@@ -342,7 +342,7 @@ function GenerateKOResultsArea(props: {
       : null;
   const error = initError ?? progressError ?? checkError;
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 p-4 border rounded-md border-primary">
       {error ? (
         <ErrorDiv title="Could not design sequence:" message={error}></ErrorDiv>
       ) : finalSequence ? (

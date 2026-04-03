@@ -96,9 +96,9 @@ export default function GenerateMimicArea(props: {
           ></GenerateMimicResultsArea>
         </>
       ) : (
-        <span className="text-muted-foreground">
+        <div className="p-4 border rounded-md border-input text-muted-foreground">
           Design results will be displayed below.
-        </span>
+        </div>
       )}
     </div>
   );
@@ -107,7 +107,7 @@ function GenerateMimicHeader(props: { expanded: boolean }) {
   const { expanded } = props;
   return (
     <>
-      <div className="flex flex-col border rounded-md px-4 py-3 gap-2">
+      <div className="flex flex-col border rounded-md p-4 gap-2">
         <p className="text-xl font-bold text-center">
           Designing a "feature mimic"
         </p>
@@ -117,7 +117,7 @@ function GenerateMimicHeader(props: { expanded: boolean }) {
         </p>
       </div>
       {expanded && (
-        <div className="flex flex-col border rounded-md text-justify text-muted-foreground px-4 py-3 gap-2">
+        <div className="flex flex-col border rounded-md text-justify text-muted-foreground p-4 gap-2">
           <p className="text-foreground text-md font-bold underline">
             Instructions
           </p>
@@ -158,7 +158,7 @@ function GenerateMimicSubmissionArea(props: {
   return (
     <div
       className={cn(
-        "flex flex-col gap-2 border rounded-md px-3 py-4",
+        "flex flex-col gap-2 border rounded-md p-4",
         disabled ? "border-input" : "border-primary",
       )}
     >
@@ -190,7 +190,7 @@ function GenerateMimicResultsArea(props: {
     null;
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 p-4 border rounded-md border-primary">
       {finalSequence ? (
         <FinalSequenceDiv sequence={finalSequence}></FinalSequenceDiv>
       ) : error ? (
