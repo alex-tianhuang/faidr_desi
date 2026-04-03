@@ -14,7 +14,7 @@ import FinalSequenceDiv from "@/components/finalSequenceDiv";
 import ErrorDiv from "@/components/errorDiv";
 import { FEATURE_CONFIGURATION, NUM_FEATURES } from "@/lib/consts";
 import useFeaturizeEndpoint from "../featurize/hook";
-import { Loader2 } from "lucide-react";
+import Loading from "@/components/loading";
 
 export default function GenerateMimicArea(props: {
   sequence: string;
@@ -96,7 +96,9 @@ export default function GenerateMimicArea(props: {
           ></GenerateMimicResultsArea>
         </>
       ) : (
-        <>Design results will appear here.</>
+        <span className="text-muted-foreground">
+          Design results will be displayed below.
+        </span>
       )}
     </div>
   );
@@ -195,11 +197,12 @@ function GenerateMimicResultsArea(props: {
         <ErrorDiv title="Could not design sequence:" message={error}></ErrorDiv>
       ) : (
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Loader2 className="h-4 w-4 animate-spin" />[
-          {formatTimeElapsed(Date.now() - startTimestamp)}]{" "}
-          {progressData.currentMutation
-            ? `Trying ${mutationToString(progressData.currentMutation)}...`
-            : "Starting..."}
+          <Loading>
+            [{formatTimeElapsed(Date.now() - startTimestamp)}]{" "}
+            {progressData.currentMutation
+              ? `Trying ${mutationToString(progressData.currentMutation)}...`
+              : "Starting..."}
+          </Loading>
         </div>
       )}
       <span className="text-xs text-muted-foreground">

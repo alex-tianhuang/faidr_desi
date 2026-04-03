@@ -116,7 +116,6 @@ export default function GenerateKOArea(props: {
             defaultListState={[defaultList, setDefaultList]}
             disabled={requestStarted}
           ></GenerateKOSubmissionArea>
-
           <Button
             disabled={numFeaturesKO === 0}
             onClick={() => {
@@ -128,7 +127,7 @@ export default function GenerateKOArea(props: {
               ? "Go back to editing sequence or features to knockout"
               : "Click to design"}
           </Button>
-          {requestStarted && (
+          {requestStarted ? (
             <GenerateKOResultsArea
               sequence={sequence}
               featureConfiguration={featureConfiguration}
@@ -136,6 +135,10 @@ export default function GenerateKOArea(props: {
               featureTargets={featureTargets}
               reqTimestamp={reqTimestamp}
             ></GenerateKOResultsArea>
+          ) : (
+            <span className="text-muted-foreground">
+              Design results will be displayed below.
+            </span>
           )}
         </>
       ) : (
