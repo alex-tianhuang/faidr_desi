@@ -21,7 +21,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { ChevronsRight, Loader2 } from "lucide-react";
+import { ChevronsRight } from "lucide-react";
 import Loading from "@/components/loading";
 
 type FeatureCard = {
@@ -114,9 +114,21 @@ export default function GenerateKOArea(props: {
             setReqTimestamp={setReqTimestamp}
             KOListState={[KOList, setKOList]}
             defaultListState={[defaultList, setDefaultList]}
-            requestStartedState={[requestStarted, setRequestStarted]}
+            disabled={requestStarted}
           ></GenerateKOSubmissionArea>
-          {requestStarted ? (
+
+          <Button
+            disabled={numFeaturesKO === 0}
+            onClick={() => {
+              setRequestStarted(!requestStarted);
+              !requestStarted && setReqTimestamp(Date.now());
+            }}
+          >
+            {requestStarted
+              ? "Go back to editing sequence or features to knockout"
+              : "Click to design"}
+          </Button>
+          {requestStarted && (
             <GenerateKOResultsArea
               sequence={sequence}
               featureConfiguration={featureConfiguration}
@@ -124,8 +136,6 @@ export default function GenerateKOArea(props: {
               featureTargets={featureTargets}
               reqTimestamp={reqTimestamp}
             ></GenerateKOResultsArea>
-          ) : (
-            <>Design results will appear here.</>
           )}
         </>
       ) : (
@@ -173,7 +183,7 @@ function GenerateKOHeader(props: { expanded: boolean }) {
   );
 }
 function GenerateKOSubmissionArea(props: {
-  requestStartedState: [boolean, (_: boolean) => void];
+  disabled: boolean;
   featureVector: Record<string, number>;
   featureTargets: Record<string, number>;
   defaultListState: [FeatureCard[], (_: FeatureCard[]) => void];
@@ -181,8 +191,7 @@ function GenerateKOSubmissionArea(props: {
   setReqTimestamp: (_: number) => void;
 }) {
   const {
-    requestStartedState: [requestStarted, setRequestStarted],
-    setReqTimestamp,
+    disabled,
     featureTargets,
     featureVector,
     defaultListState,
@@ -190,9 +199,14 @@ function GenerateKOSubmissionArea(props: {
   } = props;
   const numFeaturesKO = KOList.length;
   return (
-    <div className="flex flex-col gap-2 p-4 border rounded-md border-primary">
+    <div
+      className={cn(
+        "flex flex-col gap-2 p-4 border rounded-md",
+        disabled ? "border-input" : "border-primary",
+      )}
+    >
       <GenerateKOTargetPicker
-        disabled={requestStarted}
+        disabled={disabled}
         featureVector={featureVector}
         KOFeatureTargets={FEATURE_MEANS}
         defaultListState={defaultListState}
@@ -204,17 +218,6 @@ function GenerateKOSubmissionArea(props: {
           ? `Setting ${numFeaturesKO} feature${numFeaturesKO > 1 ? "s" : ""} to IDRome average`
           : "Please choose at least one feature to knockout (set to IDRome average)"}
       </Alert>
-      <Button
-        disabled={numFeaturesKO === 0}
-        onClick={() => {
-          setRequestStarted(!requestStarted);
-          !requestStarted && setReqTimestamp(Date.now());
-        }}
-      >
-        {requestStarted
-          ? "Go back to editing sequence or features to knockout"
-          : "Click to design"}
-      </Button>
     </div>
   );
 }
@@ -342,13 +345,12 @@ function GenerateKOResultsArea(props: {
       ) : finalSequence ? (
         <FinalSequenceDiv sequence={finalSequence}></FinalSequenceDiv>
       ) : (
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Loader2 className="h-4 w-4 animate-spin" />[
-          {formatTimeElapsed(Date.now() - startTimestamp)}]{" "}
+        <Loading>
+          [{formatTimeElapsed(Date.now() - startTimestamp)}]{" "}
           {progressData.currentMutation
             ? `Trying ${mutationToString(progressData.currentMutation)}...`
             : "Starting..."}
-        </div>
+        </Loading>
       )}
 
       {progressData.iterations.length > 0 && (
