@@ -108,7 +108,7 @@ function GenerateMimicHeader(props: { expanded: boolean }) {
   return (
     <>
       <div className="flex flex-col border rounded-md px-4 py-3 gap-2">
-        <p className="text-xl font-bold text-center pb-2">
+        <p className="text-xl font-bold text-center">
           Designing a "feature mimic"
         </p>
         <p className="text-justify text-muted-foreground">
