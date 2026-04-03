@@ -107,23 +107,23 @@ export default function SequenceArea(props: {
         />
       </div>
       <span className="text-center">OR</span>
-      <div className="flex flex-row self-center">
-        <Button
-          className="w-fit rounded-r-none"
-          disabled={disabled}
-          {...getRootProps()}
-        >
-          Upload a FASTA file (and the first sequence will be used)
-          <Input {...getInputProps()}></Input>
-        </Button>
-        <Button
-          disabled={disabled}
-          className="w-fit rounded-l-none"
-          onClick={() => setTextAndUpdateEditor(EXAMPLE_TEXT_INPUT)}
-        >
-          Try an example
-        </Button>
-      </div>
+      <div className="flex flex-col sm:flex-row self-center">
+  <Button
+    className="rounded-b-none sm:rounded-none sm:rounded-l-full"
+    disabled={disabled}
+    {...getRootProps()}
+  >
+    Upload a FASTA file <span className="text-xs">(and the first sequence will be used)</span>
+    <Input {...getInputProps()} />
+  </Button>
+  <Button
+    disabled={disabled}
+    className="rounded-t-none sm:rounded-none sm:rounded-r-full"
+    onClick={() => setTextAndUpdateEditor(EXAMPLE_TEXT_INPUT)}
+  >
+    Try an example
+  </Button>
+</div>
       {error !== null && (
         <ErrorDiv title="Cannot parse sequence" message={error}></ErrorDiv>
       )}
