@@ -22,6 +22,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { ChevronsRight, Loader2 } from "lucide-react";
+import Loading from "@/components/loading";
 
 type FeatureCard = {
   propKey: string;
@@ -131,25 +132,20 @@ export default function GenerateKOArea(props: {
               ? "Go back to editing sequence or features to knockout"
               : "Click to design"}
           </Button>
+          {requestStarted ? (
+            <GenerateKOResultsArea
+              sequence={sequence}
+              featureConfiguration={featureConfiguration}
+              featureWeights={featureWeights}
+              featureTargets={featureTargets}
+              reqTimestamp={reqTimestamp}
+            ></GenerateKOResultsArea>
+          ) : (
+            <>Design results will appear here.</>
+          )}
         </>
       ) : (
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Loader2
-            className="h-4 w-4 animate-spin"
-          />
-          Computing input sequence's features...
-        </div>
-      )}
-      {requestStarted ? (
-        <GenerateKOResultsArea
-          sequence={sequence}
-          featureConfiguration={featureConfiguration}
-          featureWeights={featureWeights}
-          featureTargets={featureTargets}
-          reqTimestamp={reqTimestamp}
-        ></GenerateKOResultsArea>
-      ) : (
-        <>Design results will appear here.</>
+        <Loading>Computing input sequence's features...</Loading>
       )}
     </div>
   );
@@ -158,13 +154,13 @@ function GenerateKOHeader(props: { expanded: boolean }) {
   const { expanded } = props;
   return (
     <>
-      <div className="flex flex-col border rounded-sm p-2 px-4 py-3 gap-2">
-        <p className="text-xl font-bold text-center pb-2">
+      <div className="flex flex-col border rounded-md px-4 py-3 gap-2">
+        <p className="text-xl font-bold text-center">
           Designing a "feature knockout"
         </p>
-        <p>
+        <p className="text-justify text-muted-foreground">
           {`Use this program to design a sequence that preserves ${NUM_FEATURES} sequence features of your inputted sequence, `}
-          but sets some sequence features that you want to ablate to the human
+          but set some sequence features that you want to ablate to the human
           IDRome average. In other words, it "knocks out" those features.
         </p>
       </div>
@@ -173,11 +169,8 @@ function GenerateKOHeader(props: { expanded: boolean }) {
           <p className="text-md font-bold underline">Instructions</p>
           <p>
             Select features to knockout by clicking on the cards in the left
-            list, then click the{" "}
-            {
-              <ChevronsRight className="inline"/>
-            }{" "}
-            button to move those to the knockout list.
+            list, then click the {<ChevronsRight className="inline" />} button
+            to move those to the knockout list.
           </p>
           <p>
             You can see the pairs of "(original value) → (IDRome average value)"
@@ -318,10 +311,8 @@ function GenerateKOResultsArea(props: {
         <FinalSequenceDiv sequence={finalSequence}></FinalSequenceDiv>
       ) : (
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Loader2
-            className="h-4 w-4 animate-spin"
-          />
-          [{formatTimeElapsed(Date.now() - startTimestamp)}]{" "}
+          <Loader2 className="h-4 w-4 animate-spin" />[
+          {formatTimeElapsed(Date.now() - startTimestamp)}]{" "}
           {progressData.currentMutation
             ? `Trying ${mutationToString(progressData.currentMutation)}...`
             : "Starting..."}
