@@ -107,6 +107,7 @@ export default function SequenceArea(props: {
           viewRef.current = view;
         }}
         className={cn(
+          "max-h-[30vh] overflow-auto",
           disabled && "opacity-50",
           error && "shadow shadow-destructive",
         )}
