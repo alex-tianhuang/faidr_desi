@@ -115,7 +115,7 @@ export default function SequenceArea(props: {
       <span className="text-center">OR</span>
       <div className="flex flex-col sm:flex-row self-center">
         <Button
-          className="rounded-t-xl rounded-b-none sm:rounded-none sm:rounded-l-xl"
+          className="rounded-t-xl rounded-b-none sm:rounded-none sm:rounded-l-full"
           disabled={disabled}
           {...getRootProps()}
         >
@@ -128,7 +128,7 @@ export default function SequenceArea(props: {
         </Button>
         <Button
           disabled={disabled}
-          className="rounded-b-xl rounded-t-none sm:rounded-none sm:rounded-r-xl"
+          className="rounded-b-xl rounded-t-none sm:rounded-none sm:rounded-r-full"
           onClick={() => setTextAndUpdateEditor(EXAMPLE_TEXT_INPUT)}
         >
           Try an example
