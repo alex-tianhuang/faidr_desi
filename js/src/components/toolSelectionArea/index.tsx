@@ -1,7 +1,13 @@
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { GenerateMimicHelp, GenerateKOHelp, FeaturizeHelp } from "./helpPages";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "../ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "../ui/sheet";
 import { useState } from "react";
 import { NUM_FEATURES } from "@/lib/consts";
 
@@ -9,24 +15,21 @@ type ToolType = "mimic" | "ko" | "feats";
 const TOOL_INFO = [
   {
     propKey: "mimic",
-    label: "Design feature mimic",
-    helpTitle: "Designing a \"feature mimic\"",
-    helpDiv:
-      <GenerateMimicHelp/>,
+    label: "Design a feature mimic",
+    helpTitle: 'Designing a "feature mimic"',
+    helpDiv: <GenerateMimicHelp />,
   },
   {
     propKey: "ko",
-    label: "Design feature knockout",
-    helpTitle: "Designing a \"feature knockout\"",
-    helpDiv:
-      <GenerateKOHelp/>,
+    label: "Design a feature knockout",
+    helpTitle: 'Designing a "feature knockout"',
+    helpDiv: <GenerateKOHelp />,
   },
   {
     propKey: "feats",
     label: `Get ${NUM_FEATURES} sequence features`,
     helpTitle: "Computing features",
-    helpDiv:
-      <FeaturizeHelp/>
+    helpDiv: <FeaturizeHelp />,
   },
 ] as const;
 export default function ToolSelectionArea(props: {
@@ -38,23 +41,34 @@ export default function ToolSelectionArea(props: {
     disabled,
   } = props;
   return (
-    <div className={cn("border-t py-5 flex flex-col sm:flex-row gap-4", disabled ? "border-input" : "border-primary")}>
-      {TOOL_INFO.map(({ propKey, label, helpTitle, helpDiv }) => {
-        const isActive = activeTool === propKey
-        const isInactive = (activeTool !== null) && (!isActive);
-        return (
-          <ToolButton
-            key={propKey}
-            tool={propKey}
-            setTool={setTool}
-            disabled={disabled || isInactive}
-            label={label}
-            isActive={propKey === activeTool}
-            helpTitle={helpTitle}
-            helpDiv={helpDiv}
-          ></ToolButton>
-        );
-      })}
+    <div
+      className={cn(
+        "border rounded-md gap-2 p-2 flex flex-col",
+        disabled ? "border-input" : "border-primary",
+      )}
+    >
+      <p className="text-center text-md text-muted-foreground">
+        Choose one of the tools to use below, or click the question marks to read
+        more about them.
+      </p>
+      <div className="gap-2 flex flex-col sm:flex-row">
+        {TOOL_INFO.map(({ propKey, label, helpTitle, helpDiv }) => {
+          const isActive = activeTool === propKey;
+          const isInactive = activeTool !== null && !isActive;
+          return (
+            <ToolButton
+              key={propKey}
+              tool={propKey}
+              setTool={setTool}
+              disabled={disabled || isInactive}
+              label={label}
+              isActive={propKey === activeTool}
+              helpTitle={helpTitle}
+              helpDiv={helpDiv}
+            ></ToolButton>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -67,7 +81,8 @@ function ToolButton(props: {
   helpTitle: string;
   helpDiv: React.ReactNode;
 }) {
-  const { tool, setTool, disabled, label, isActive, helpTitle, helpDiv } = props;
+  const { tool, setTool, disabled, label, isActive, helpTitle, helpDiv } =
+    props;
   const [openHelp, setOpenHelp] = useState(false);
   return (
     <div className="flex-1 flex flex-row">
@@ -76,7 +91,11 @@ function ToolButton(props: {
         onClick={() => setTool(isActive ? null : tool)}
         disabled={disabled}
       >
-        {isActive ? "Try other sequence / try other tool" : label}
+        {isActive ? (
+          <span className="text-xs">Try other sequence / try other tool</span>
+        ) : (
+          label
+        )}
       </Button>
       <Button
         className="rounded-l-none"
