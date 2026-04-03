@@ -51,7 +51,7 @@ function PageHeader(props: {
     disabled,
   } = props;
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-2">
       <div className="fixed top-4 right-4 z-50"><ThemeToggle></ThemeToggle></div>
       <Preamble />
       <SequenceArea

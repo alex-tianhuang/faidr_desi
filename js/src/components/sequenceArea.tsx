@@ -84,7 +84,7 @@ export default function SequenceArea(props: {
   return (
     <div
       className={cn(
-        "flex flex-col gap-2 p-2 my-5 rounded-lg border",
+        "flex flex-col gap-2 p-2 rounded-lg border",
         disabled ? "border-input" : "border-primary",
       )}
     >
