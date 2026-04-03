@@ -51,7 +51,7 @@ export default function ToolSelectionArea(props: {
         Choose one of the tools to use below, or click the question marks to read
         more about them.
       </p>
-      <div className="gap-2 flex flex-col sm:flex-row">
+      <div className="gap-2 flex flex-col sm:flex-row flex-wrap">
         {TOOL_INFO.map(({ propKey, label, helpTitle, helpDiv }) => {
           const isActive = activeTool === propKey;
           const isInactive = activeTool !== null && !isActive;
