@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
-// import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { GenerateMimicHelp, GenerateKOHelp, FeaturizeHelp } from "./helpPages";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "../ui/sheet";
 import { useState } from "react";
@@ -12,22 +11,22 @@ const TOOL_INFO = [
     propKey: "mimic",
     label: "Design feature mimic",
     helpTitle: "Designing a \"feature mimic\"",
-    helpDivFactory:
-      GenerateMimicHelp,
+    helpDiv:
+      <GenerateMimicHelp/>,
   },
   {
     propKey: "ko",
     label: "Design feature knockout",
     helpTitle: "Designing a \"feature knockout\"",
-    helpDivFactory:
-      GenerateKOHelp,
+    helpDiv:
+      <GenerateKOHelp/>,
   },
   {
     propKey: "feats",
     label: `Get ${NUM_FEATURES} sequence features`,
     helpTitle: "Computing features",
-    helpDivFactory:
-      FeaturizeHelp
+    helpDiv:
+      <FeaturizeHelp/>
   },
 ] as const;
 export default function ToolSelectionArea(props: {
@@ -40,7 +39,7 @@ export default function ToolSelectionArea(props: {
   } = props;
   return (
     <div className={cn("border-t py-5 flex flex-col sm:flex-row gap-4", disabled ? "border-input" : "border-primary")}>
-      {TOOL_INFO.map(({ propKey, label, helpTitle, helpDivFactory }) => {
+      {TOOL_INFO.map(({ propKey, label, helpTitle, helpDiv }) => {
         const isActive = activeTool === propKey
         const isInactive = (activeTool !== null) && (!isActive);
         return (
@@ -52,7 +51,7 @@ export default function ToolSelectionArea(props: {
             label={label}
             isActive={propKey === activeTool}
             helpTitle={helpTitle}
-            helpDiv={helpDivFactory()}
+            helpDiv={helpDiv}
           ></ToolButton>
         );
       })}
