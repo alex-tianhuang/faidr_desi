@@ -15,7 +15,7 @@ export default function FinalSequenceDiv(props: { sequence: string }) {
   };
 
   return (
-    <div className="flex flex-col border rounded-md px-4 py-3 gap-2">
+    <div className="flex flex-col border border-primary rounded-md px-4 py-3 gap-2">
       <span className="text-md font-bold underline">
         Designed Sequence
       </span>
