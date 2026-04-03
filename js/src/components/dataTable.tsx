@@ -54,7 +54,7 @@ export default function DataTable<TData extends Record<string, AcceptedData>, TV
   };
 
   return (
-    <div className="flex flex-col overflow-hidden border border-primary items-end p-2 gap-2">
+    <div className="flex flex-col overflow-hidden border border-primary rounded-md items-end p-2 gap-2">
       <Button className="w-full" onClick={handleExport}>Download CSV</Button>
       <Table>
         <TableHeader>
