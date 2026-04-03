@@ -11,6 +11,7 @@ import {
 import type { Featurized } from "./types";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import Loading from "@/components/loading";
 
 const MY_EMAIL = "tianh.huang@mail.utoronto.ca";
 export default function FeaturizeArea(props: {
@@ -77,12 +78,7 @@ export default function FeaturizeArea(props: {
           <FeaturesTable data={featurized}></FeaturesTable>
         </div>
       ) : (
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Loader2
-            className="h-4 w-4 animate-spin"
-          />
-          {"Computing sequence features..."}
-        </div>
+        <Loading>Computing sequence features...</Loading>
       )}
     </div>
   );
