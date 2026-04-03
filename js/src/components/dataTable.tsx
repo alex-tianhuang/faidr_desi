@@ -15,15 +15,14 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
-import { cn, saveFile } from "@/lib/utils";
+import { saveFile } from "@/lib/utils";
 
 export default function DataTable<TData extends Record<string, AcceptedData>, TValue>(props: {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   suggestedFilename: string;
-  className: string;
 }) {
-  const { columns, data, suggestedFilename, className } = props;
+  const { columns, data, suggestedFilename } = props;
   const table = useReactTable({
     data,
     columns,
@@ -55,7 +54,7 @@ export default function DataTable<TData extends Record<string, AcceptedData>, TV
   };
 
   return (
-    <div className={cn("flex flex-col overflow-hidden border rounded-md items-end p-2 gap-2", className)}>
+    <div className="flex flex-col overflow-hidden border rounded-md items-end p-4 gap-2 border-input">
       <Button className="w-full" onClick={handleExport}>Download CSV</Button>
       <Table>
         <TableHeader>

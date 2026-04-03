@@ -26,7 +26,6 @@ export function FeaturesTable(props: { data: Record<string, Featurized> }) {
       columns={columns}
       data={data}
       suggestedFilename="features.csv"
-      className="border-input"
     ></DataTable>
   );
 }
