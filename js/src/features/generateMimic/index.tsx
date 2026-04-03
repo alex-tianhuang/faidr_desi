@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { DesignIterationsTable } from "@/components/designIterationsTable";
 import {
   checkAllFeatures,
+  cn,
   formatTimeElapsed,
   mutationToString,
 } from "@/lib/utils";
@@ -44,7 +45,7 @@ export default function GenerateMimicArea(props: {
     () => checkAllFeatures(featurized),
     [featurized],
   );
-  const error = initError || featurizedError || checkError;
+  const error = initError ?? featurizedError ?? checkError;
   if (error) {
     return (
       <div className="flex flex-col gap-2">
@@ -59,17 +60,12 @@ export default function GenerateMimicArea(props: {
   return (
     <div className="flex flex-col gap-2">
       <GenerateMimicHeader expanded={true} />
-      <RngPicker
-        timestamp={reqTimestamp}
+      <GenerateMimicSubmissionArea
+        reqTimestamp={reqTimestamp}
         disabled={requestStarted}
-        setRngSeed={setRngSeed}
         rngHintState={[rngHint, setRngHint]}
-      ></RngPicker>
-      <Alert>
-        {usingTimestampForRng
-          ? "Using timestamp to seed RNG"
-          : `Using "${rng.seed}" to seed RNG`}
-      </Alert>
+        rngSeedState={[rngSeed, setRngSeed]}
+      ></GenerateMimicSubmissionArea>
       <Button
         onClick={() => {
           setRequestStarted(!requestStarted);
@@ -109,18 +105,20 @@ function GenerateMimicHeader(props: { expanded: boolean }) {
   const { expanded } = props;
   return (
     <>
-      <div className="flex flex-col border rounded-sm px-4 py-3 gap-2">
+      <div className="flex flex-col border rounded-md px-4 py-3 gap-2">
         <p className="text-xl font-bold text-center pb-2">
           Designing a "feature mimic"
         </p>
-        <p>
+        <p className="text-justify text-muted-foreground">
           {`Use this program to design a sequence that matches ${NUM_FEATURES} sequence features of your inputted sequence. `}
           In other words, it "mimics" the features of your input sequence.
         </p>
       </div>
       {expanded && (
-        <div className="flex flex-col border rounded-sm px-4 py-3 gap-2">
-          <p className="text-md font-bold underline">Instructions</p>
+        <div className="flex flex-col border rounded-md text-justify text-muted-foreground px-4 py-3 gap-2">
+          <p className="text-foreground text-md font-bold underline">
+            Instructions
+          </p>
           <p>
             Optionally select an RNG seed to deterministically generate an
             initial random sequence.
@@ -132,6 +130,44 @@ function GenerateMimicHeader(props: { expanded: boolean }) {
         </div>
       )}
     </>
+  );
+}
+function GenerateMimicSubmissionArea(props: {
+  reqTimestamp: number;
+  disabled: boolean;
+  rngHintState: [string, (_: string) => void];
+  rngSeedState: [number, (_: number) => void];
+}) {
+  const {
+    reqTimestamp,
+    disabled,
+    rngHintState: [rngHint, setRngHint],
+    rngSeedState: [rngSeed, setRngSeed],
+  } = props;
+  const rngHintParsed = Number.parseInt(rngHint);
+  const usingTimestampForRng = Number.isNaN(rngHintParsed);
+  const rngSeedDescription = usingTimestampForRng
+    ? rngHint.length === 0
+      ? "Using timestamp to seed RNG"
+      : `Could not parse "${rngHint}" as a number, using timestamp to seed RNG`
+    : rngHintParsed >= 2 ** 32
+      ? `User seed overflows 2 ^ 32, using ${rngHintParsed % 2 ** 32} to seed RNG instead (first 32 bits)`
+      : `Using ${rngSeed} to seed RNG`;
+  return (
+    <div
+      className={cn(
+        "flex flex-col gap-2 border rounded-md px-3 py-4",
+        disabled ? "border-input" : "border-primary",
+      )}
+    >
+      <RngPicker
+        timestamp={reqTimestamp}
+        disabled={disabled}
+        setRngSeed={setRngSeed}
+        rngHintState={[rngHint, setRngHint]}
+      ></RngPicker>
+      <Alert>{rngSeedDescription}</Alert>
+    </div>
   );
 }
 function GenerateMimicResultsArea(props: {
@@ -159,10 +195,8 @@ function GenerateMimicResultsArea(props: {
         <ErrorDiv title="Could not design sequence:" message={error}></ErrorDiv>
       ) : (
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Loader2
-            className="h-4 w-4 animate-spin"
-          />
-          [{formatTimeElapsed(Date.now() - startTimestamp)}]{" "}
+          <Loader2 className="h-4 w-4 animate-spin" />[
+          {formatTimeElapsed(Date.now() - startTimestamp)}]{" "}
           {progressData.currentMutation
             ? `Trying ${mutationToString(progressData.currentMutation)}...`
             : "Starting..."}
