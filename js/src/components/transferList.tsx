@@ -97,11 +97,11 @@ export default function TransferList<
         <div className="w-1/2 text-center border-b">{rightListTitle}</div>
       </div>
       <div className="flex flex-row gap-4 w-full">
-        <div className="w-[calc(50%-8px)] flex flex-col gap-2">
+        <div className="w-[calc(50%-8px)] flex flex-col">
           <div className="flex items-center justify-between">
             <Input
               placeholder="Search"
-              className="rounded-br-none rounded-bl-none rounded-tr-none focus-visible:ring-0 focus-visible:border-blue-500"
+              className="rounded-none focus-visible:ring-0 focus-visible:border-blue-500"
               value={leftSearch}
               onChange={(e) => setLeftSearch(e.target.value)}
             />
@@ -109,7 +109,7 @@ export default function TransferList<
               <TooltipTrigger disabled={disabled || disabledLeft}>
                 <Button
                   disabled={disabled || disabledLeft}
-                  className="rounded-tl-none rounded-bl-none rounded-br-none border-l-0"
+                  className="rounded-none border-l-0"
                   onClick={moveToRight}
                   size="icon"
                   // variant="default"
@@ -122,7 +122,7 @@ export default function TransferList<
               </TooltipContent>
             </Tooltip>
           </div>
-          <ul className="h-50 border-l border-r border-b p-1.5 overflow-y-scroll">
+          <ul className="h-50 border p-1.5 overflow-y-scroll">
             {leftList
               .filter((item) =>
                 item.searchKey.toLowerCase().includes(leftSearch.toLowerCase()),
@@ -130,13 +130,13 @@ export default function TransferList<
               .map(renderLeftItem)}
           </ul>
         </div>
-        <div className="w-[calc(50%-8px)] flex flex-col gap-2">
+        <div className="w-[calc(50%-8px)] flex flex-col">
           <div className="flex items-center justify-between">
             <Tooltip>
               <TooltipTrigger disabled={disabled || disabledRight}>
                 <Button
                   disabled={disabled || disabledRight}
-                  className="rounded-tr-none rounded-br-none rounded-bl-none border-r-0"
+                  className="rounded-none border-r-0"
                   onClick={moveToLeft}
                   size="icon"
                 >
@@ -149,12 +149,12 @@ export default function TransferList<
             </Tooltip>
             <Input
               placeholder="Search"
-              className="rounded-bl-none rounded-br-none rounded-tl-none focus-visible:ring-0 focus-visible:border-blue-500"
+              className="rounded-none focus-visible:ring-0 focus-visible:border-blue-500"
               value={rightSearch}
               onChange={(e) => setRightSearch(e.target.value)}
             />
           </div>
-          <ul className="h-50 border-l border-r border-b p-1.5 overflow-y-scroll">
+          <ul className="h-50 border p-1.5 overflow-y-scroll">
             {rightList
               .filter((item) =>
                 item.searchKey
