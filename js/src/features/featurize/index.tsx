@@ -65,8 +65,7 @@ export default function FeaturizeArea(props: {
               </span>
             </div>
             <Button
-              className="w-fit text-xs"
-              variant="outline"
+              className="w-fit text-xs rounded-xl"
               onClick={() => setZscoreEnabled(!zscoreEnabled)}
             >
               {zscoreEnabled
