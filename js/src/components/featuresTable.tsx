@@ -9,9 +9,7 @@ export function FeaturesTable(props: { data: Record<string, Featurized> }) {
     accessorKey: featureID,
     cell: ({ getValue }) => {
       const value = getValue<number | string>();
-      return <span className="block truncate">
-        {(typeof value === "number") ? value.toPrecision(4) : value}
-      </span>
+      return (typeof value === "number") ? value.toPrecision(4) : value
     },
   }))
   const data = [Object.fromEntries(Object.entries(props.data).map(([featureID, featurized]) => [
