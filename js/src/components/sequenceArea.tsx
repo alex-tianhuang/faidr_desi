@@ -76,54 +76,60 @@ export default function SequenceArea(props: {
       checkLengthAndSetSequence(sequence);
     } else {
       const { error, relevantSpan } = r;
-
       setHighlightedSpan(relevantSpan);
       setError(error.message);
       setSequence(null);
     }
   }, [text]);
   return (
-    <div className="flex flex-col gap-2 my-5">
-      <div
+    <div
+      className={cn(
+        "flex flex-col gap-2 p-2 my-5 rounded-lg border",
+        disabled ? "border-input" : "border-primary",
+      )}
+    >
+      <p
         className={cn(
-          "border-b py-2",
-          sequence
-            ? "border-primary"
-            : error
-              ? "border-destructive"
-              : "border-input",
+          "text-center text-md text-muted-foreground",
           disabled && "opacity-50",
         )}
       >
-        <CodeMirror
-          editable={!disabled}
-          theme={resolvedTheme === "dark" ? oneDark : "light"}
-          placeholder="Paste your protein sequence of interest here"
-          onChange={setText}
-          extensions={extensions}
-          onCreateEditor={(view) => {
-            viewRef.current = view;
-          }}
-        />
-      </div>
+        Try it out by pasting a sequence in the box below, uploading a file, or
+        starting with an example.
+      </p>
+      <CodeMirror
+        editable={!disabled}
+        theme={resolvedTheme === "dark" ? oneDark : "light"}
+        placeholder="Paste your protein sequence of interest here"
+        onChange={setText}
+        extensions={extensions}
+        onCreateEditor={(view) => {
+          viewRef.current = view;
+        }}
+        className={cn(
+          disabled && "opacity-50",
+          error && "shadow shadow-destructive",
+        )}
+      />
       <span className="text-center">OR</span>
       <div className="flex flex-col sm:flex-row self-center">
-  <Button
-    className="rounded-b-none sm:rounded-none sm:rounded-l-full"
-    disabled={disabled}
-    {...getRootProps()}
-  >
-    Upload a FASTA file <span className="text-xs">(and the first sequence will be used)</span>
-    <Input {...getInputProps()} />
-  </Button>
-  <Button
-    disabled={disabled}
-    className="rounded-t-none sm:rounded-none sm:rounded-r-full"
-    onClick={() => setTextAndUpdateEditor(EXAMPLE_TEXT_INPUT)}
-  >
-    Try an example
-  </Button>
-</div>
+        <Button
+          className="rounded-b-none sm:rounded-none sm:rounded-l-full"
+          disabled={disabled}
+          {...getRootProps()}
+        >
+          Upload a FASTA file{" "}
+          <span className="text-xs">(and the first sequence will be used)</span>
+          <Input {...getInputProps()} />
+        </Button>
+        <Button
+          disabled={disabled}
+          className="rounded-t-none sm:rounded-none sm:rounded-r-full"
+          onClick={() => setTextAndUpdateEditor(EXAMPLE_TEXT_INPUT)}
+        >
+          Try an example
+        </Button>
+      </div>
       {error !== null && (
         <ErrorDiv title="Cannot parse sequence" message={error}></ErrorDiv>
       )}
