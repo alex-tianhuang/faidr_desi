@@ -19,9 +19,9 @@ export default function Page() {
   // guard because sometimes `requestStarted` gets stuck
   useEffect(() => {
     if (sequence === null || tool === null) {
-      setRequestStarted(false)
+      setRequestStarted(false);
     }
-  }, [sequence, tool])
+  }, [sequence, tool]);
   return (
     <div className="flex flex-col m-5 gap-2">
       <PageHeader
@@ -52,7 +52,9 @@ function PageHeader(props: {
   } = props;
   return (
     <div className="flex flex-col gap-2">
-      <div className="fixed top-4 right-4 z-50"><ThemeToggle></ThemeToggle></div>
+      <div className="fixed top-4 right-4 z-50">
+        <ThemeToggle></ThemeToggle>
+      </div>
       <Preamble />
       <SequenceArea
         disabled={disabled || activeTool !== null}
@@ -73,7 +75,8 @@ function Preamble() {
       </p>
       <p className="text-sm text-muted-foreground">
         Welcome to a simple webapp that uses a greedy sequence feature matching
-        algorithm to design IDRs. This tool is based on{" "}
+        algorithm to design intrinsically disordered protein regions (IDRs).
+        This tool is based on{" "}
         <Link
           href="https://www.biorxiv.org/content/10.1101/2023.04.28.538739v1"
           inline
@@ -82,7 +85,7 @@ function Preamble() {
         </Link>{" "}
         by the Julie Forman-Kay and Alan Moses group, who have been using
         sequence feature-based design as a framework for hypothesis testing IDR
-        functions.
+        function.
       </p>
     </div>
   );
