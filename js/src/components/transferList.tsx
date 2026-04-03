@@ -91,74 +91,79 @@ export default function TransferList<
     );
 
   return (
-    <div className="flex gap-4">
-      <div className="flex flex-col gap-2 w-1/2 bg-background">
-        <div className="w-full text-center border-b">{leftListTitle}</div>
-        <div className="flex items-center justify-between">
-          <Input
-            placeholder="Search"
-            className="rounded-br-none rounded-bl-none rounded-tr-none focus-visible:ring-0 focus-visible:border-blue-500"
-            value={leftSearch}
-            onChange={(e) => setLeftSearch(e.target.value)}
-          />
-          <Tooltip>
-            <TooltipTrigger disabled={disabled || disabledLeft}>
-              <Button
-                disabled={disabled || disabledLeft}
-                className="rounded-tl-none rounded-bl-none rounded-br-none border-l-0"
-                onClick={moveToRight}
-                size="icon"
-                // variant="default"
-              >
-                <ChevronsRight/>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              Click me to move selected items right!
-            </TooltipContent>
-          </Tooltip>
-        </div>
-        <ul className="h-50 border-l border-r border-b p-1.5 overflow-y-scroll">
-          {leftList
-            .filter((item) =>
-              item.searchKey.toLowerCase().includes(leftSearch.toLowerCase()),
-            )
-            .map(renderLeftItem)}
-        </ul>
+    <div className="flex flex-col gap-2 w-full">
+      <div className="flex flex-row gap-4 w-full">
+        <div className="w-1/2 text-center border-b">{leftListTitle}</div>
+        <div className="w-1/2 text-center border-b">{rightListTitle}</div>
       </div>
-
-      <div className="flex flex-col gap-2 w-1/2 bg-background">
-        <div className="w-full text-center border-b">{rightListTitle}</div>
-        <div className="flex items-center justify-between">
-          <Tooltip>
-            <TooltipTrigger disabled={disabled || disabledRight}>
-              <Button
-            disabled={disabled || disabledRight}
-            className="rounded-tr-none rounded-br-none rounded-bl-none border-r-0"
-            onClick={moveToLeft}
-            size="icon"
-          >
-            <ChevronsLeft/>
-          </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              Click me to move selected items left!
-            </TooltipContent>
-          </Tooltip>
-          <Input
-            placeholder="Search"
-            className="rounded-bl-none rounded-br-none rounded-tl-none focus-visible:ring-0 focus-visible:border-blue-500"
-            value={rightSearch}
-            onChange={(e) => setRightSearch(e.target.value)}
-          />
+      <div className="flex flex-row gap-4 w-full">
+        <div className="w-[calc(50%-8px)] flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <Input
+              placeholder="Search"
+              className="rounded-br-none rounded-bl-none rounded-tr-none focus-visible:ring-0 focus-visible:border-blue-500"
+              value={leftSearch}
+              onChange={(e) => setLeftSearch(e.target.value)}
+            />
+            <Tooltip>
+              <TooltipTrigger disabled={disabled || disabledLeft}>
+                <Button
+                  disabled={disabled || disabledLeft}
+                  className="rounded-tl-none rounded-bl-none rounded-br-none border-l-0"
+                  onClick={moveToRight}
+                  size="icon"
+                  // variant="default"
+                >
+                  <ChevronsRight />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                Click me to move selected items right!
+              </TooltipContent>
+            </Tooltip>
+          </div>
+          <ul className="h-50 border-l border-r border-b p-1.5 overflow-y-scroll">
+            {leftList
+              .filter((item) =>
+                item.searchKey.toLowerCase().includes(leftSearch.toLowerCase()),
+              )
+              .map(renderLeftItem)}
+          </ul>
         </div>
-        <ul className="h-50 border-l border-r border-b p-1.5 overflow-y-scroll">
-          {rightList
-            .filter((item) =>
-              item.searchKey.toLowerCase().includes(rightSearch.toLowerCase()),
-            )
-            .map(renderRightItem)}
-        </ul>
+        <div className="w-[calc(50%-8px)] flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <Tooltip>
+              <TooltipTrigger disabled={disabled || disabledRight}>
+                <Button
+                  disabled={disabled || disabledRight}
+                  className="rounded-tr-none rounded-br-none rounded-bl-none border-r-0"
+                  onClick={moveToLeft}
+                  size="icon"
+                >
+                  <ChevronsLeft />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                Click me to move selected items left!
+              </TooltipContent>
+            </Tooltip>
+            <Input
+              placeholder="Search"
+              className="rounded-bl-none rounded-br-none rounded-tl-none focus-visible:ring-0 focus-visible:border-blue-500"
+              value={rightSearch}
+              onChange={(e) => setRightSearch(e.target.value)}
+            />
+          </div>
+          <ul className="h-50 border-l border-r border-b p-1.5 overflow-y-scroll">
+            {rightList
+              .filter((item) =>
+                item.searchKey
+                  .toLowerCase()
+                  .includes(rightSearch.toLowerCase()),
+              )
+              .map(renderRightItem)}
+          </ul>
+        </div>
       </div>
     </div>
   );
