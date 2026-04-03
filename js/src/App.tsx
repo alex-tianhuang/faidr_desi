@@ -84,10 +84,6 @@ function Preamble() {
         sequence feature-based design as a framework for hypothesis testing IDR
         functions.
       </p>
-      <p className="text-sm text-muted-foreground">
-        Try it out by pasting a sequence in the box below, uploading a file, or
-        starting with an example.
-      </p>
     </div>
   );
 }
