@@ -49,14 +49,14 @@ export default function FeaturizeArea(props: {
               {MY_EMAIL}
             </Link>
             .<br />
-            <span className="font-bold">Error: {error}</span>
+            <span className="underline">Error: {error}</span>
           </AlertDescription>
         </Alert>
       )}
       {featurized ? (
-        <>
-          <div className="flex flex-row text-sm items-center">
-            <div className="flex-1 flex flex-col pl-4 text-start">
+        <div className="flex flex-col gap-2 p-4 border rounded-md border-primary">
+          <div className="flex flex-row text-muted-foreground items-center">
+            <div className="flex-1 flex flex-col text-sm text-start">
               <span>Viewing as:</span>
               <span>
                 {zscoreEnabled
@@ -75,7 +75,7 @@ export default function FeaturizeArea(props: {
             </Button>
           </div>
           <FeaturesTable data={featurized}></FeaturesTable>
-        </>
+        </div>
       ) : (
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <Loader2
@@ -90,17 +90,17 @@ export default function FeaturizeArea(props: {
 function FeaturizeHeader() {
   return (
     <>
-      <div className="flex flex-col border rounded-sm p-2 px-4 py-3 gap-2">
-        <p className="text-xl font-bold text-center pb-2">Sequence features</p>
-        <p>View and download a CSV of your sequence features below.</p>
+      <div className="flex flex-col border rounded-sm px-4 py-3">
+        <p className="text-xl font-bold text-center">Computing sequence features</p>
+        <p className="text-center text-muted-foreground">View and download a CSV of your sequence features below.</p>
       </div>
-      <div className="flex flex-col border rounded-sm p-2 px-4 py-3 gap-2">
+      <div className="flex flex-col border rounded-sm px-4 py-3">
         <p className="text-md font-bold underline">Instructions</p>
-        <p>
+        <p className="text-justify text-muted-foreground">
           Click the small button on the right to change whether you are looking
           at raw features or feature Z-scores.
         </p>
-        <p>Scroll horizontally to see your sequence features!</p>
+        <p className="text-justify text-muted-foreground">Scroll horizontally to see your sequence features!</p>
       </div>
     </>
   );
