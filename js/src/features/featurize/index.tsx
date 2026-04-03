@@ -10,7 +10,6 @@ import {
 } from "@/lib/consts";
 import type { Featurized } from "./types";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
 import Loading from "@/components/loading";
 
 const MY_EMAIL = "tianh.huang@mail.utoronto.ca";
