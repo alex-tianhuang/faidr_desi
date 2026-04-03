@@ -11,7 +11,7 @@ export function ThemeToggle() {
     <Tooltip>
       <TooltipTrigger>
         <Button
-          variant="outline"
+          variant="ghost"
           size="icon"
           onClick={() => setTheme(otherTheme)}
         >
