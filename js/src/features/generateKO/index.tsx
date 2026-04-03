@@ -108,30 +108,14 @@ export default function GenerateKOArea(props: {
       <GenerateKOHeader expanded={true} />
       {featureTargets !== null && featureVector !== null ? (
         <>
-          <GenerateKOTargetPicker
-            disabled={requestStarted}
-            featureVector={featureVector}
-            KOFeatureTargets={FEATURE_MEANS}
-            defaultListState={[defaultList, setDefaultList]}
-            KOListState={[KOList, setKOList]}
+          <GenerateKOSubmissionArea
             featureTargets={featureTargets}
-          ></GenerateKOTargetPicker>
-          <Alert>
-            {numFeaturesKO > 0
-              ? `Setting ${numFeaturesKO} feature${numFeaturesKO > 1 ? "s" : ""} to IDRome average`
-              : "Please choose at least one feature to knockout (set to IDRome average)"}
-          </Alert>
-          <Button
-            disabled={numFeaturesKO === 0}
-            onClick={() => {
-              setRequestStarted(!requestStarted);
-              !requestStarted && setReqTimestamp(Date.now());
-            }}
-          >
-            {requestStarted
-              ? "Go back to editing sequence or features to knockout"
-              : "Click to design"}
-          </Button>
+            featureVector={featureVector}
+            setReqTimestamp={setReqTimestamp}
+            KOListState={[KOList, setKOList]}
+            defaultListState={[defaultList, setDefaultList]}
+            requestStartedState={[requestStarted, setRequestStarted]}
+          ></GenerateKOSubmissionArea>
           {requestStarted ? (
             <GenerateKOResultsArea
               sequence={sequence}
@@ -165,8 +149,10 @@ function GenerateKOHeader(props: { expanded: boolean }) {
         </p>
       </div>
       {expanded && (
-        <div className="flex flex-col border rounded-sm p-2 px-4 py-3 gap-2">
-          <p className="text-md font-bold underline">Instructions</p>
+        <div className="flex flex-col border rounded-md text-justify text-muted-foreground px-4 py-3 gap-2">
+          <p className="text-left text-foreground text-md font-bold underline">
+            Instructions
+          </p>
           <p>
             Select features to knockout by clicking on the cards in the left
             list, then click the {<ChevronsRight className="inline" />} button
@@ -184,6 +170,52 @@ function GenerateKOHeader(props: { expanded: boolean }) {
         </div>
       )}
     </>
+  );
+}
+function GenerateKOSubmissionArea(props: {
+  requestStartedState: [boolean, (_: boolean) => void];
+  featureVector: Record<string, number>;
+  featureTargets: Record<string, number>;
+  defaultListState: [FeatureCard[], (_: FeatureCard[]) => void];
+  KOListState: [FeatureCard[], (_: FeatureCard[]) => void];
+  setReqTimestamp: (_: number) => void;
+}) {
+  const {
+    requestStartedState: [requestStarted, setRequestStarted],
+    setReqTimestamp,
+    featureTargets,
+    featureVector,
+    defaultListState,
+    KOListState: [KOList, setKOList],
+  } = props;
+  const numFeaturesKO = KOList.length;
+  return (
+    <div className="flex flex-col gap-2 p-4 border rounded-md border-primary">
+      <GenerateKOTargetPicker
+        disabled={requestStarted}
+        featureVector={featureVector}
+        KOFeatureTargets={FEATURE_MEANS}
+        defaultListState={defaultListState}
+        KOListState={[KOList, setKOList]}
+        featureTargets={featureTargets}
+      ></GenerateKOTargetPicker>
+      <Alert>
+        {numFeaturesKO > 0
+          ? `Setting ${numFeaturesKO} feature${numFeaturesKO > 1 ? "s" : ""} to IDRome average`
+          : "Please choose at least one feature to knockout (set to IDRome average)"}
+      </Alert>
+      <Button
+        disabled={numFeaturesKO === 0}
+        onClick={() => {
+          setRequestStarted(!requestStarted);
+          !requestStarted && setReqTimestamp(Date.now());
+        }}
+      >
+        {requestStarted
+          ? "Go back to editing sequence or features to knockout"
+          : "Click to design"}
+      </Button>
+    </div>
   );
 }
 function GenerateKOTargetPicker(props: {
