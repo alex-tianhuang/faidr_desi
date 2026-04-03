@@ -38,13 +38,24 @@ pub fn parse_text_as_sequence(text: String) -> ParsedSequence {
         (0..text.len(), &mut *text)
     };
     let mut seq_buffer = Vec::from(seq);
+    let start = relevant_span.start;
+    let relevant_span = [relevant_span.start as u32, relevant_span.end as u32];
     match aa_canonical_str::join_multiline(&mut seq_buffer) {
-        Ok(seq) => ParsedSequence::Ok {
-            sequence: seq.as_str().to_string(),
-            relevant_span: [relevant_span.start as u32, relevant_span.end as u32],
+        Ok(seq) => {
+            if seq.as_slice().is_empty() && start > 0 {
+                return ParsedSequence::Error {
+                    error: JsValuePreserved::new(Error::new("Text area contains only header")),
+                    relevant_span,
+                };
+            } else {
+                ParsedSequence::Ok {
+                    sequence: seq.as_str().to_string(),
+                    relevant_span,
+                }
+            }
         },
         Err(e) => {
-            let pos = relevant_span.start + e.at;
+            let pos = start + e.at;
             let line_no = text[..pos].iter().filter(|b| **b == b'\n').count() + 1;
             let col_no = match text[..pos].iter().rev().position(|b| *b == b'\n') {
                 Some(n) => {
@@ -60,7 +71,7 @@ pub fn parse_text_as_sequence(text: String) -> ParsedSequence {
                     "Cannot parse `{}` as a capitalized aminoacid at line {}, column {}",
                     e.ch, line_no, col_no
                 ))),
-                relevant_span: [relevant_span.start as u32, relevant_span.end as u32],
+                relevant_span,
             }
         }
     }
