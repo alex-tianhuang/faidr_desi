@@ -87,6 +87,10 @@ export default function GenerateKOArea(props: {
   }, [featureVector, KOList]);
   const [reqTimestamp, setReqTimestamp] = useState(() => Date.now());
   const numFeaturesKO = KOList.length;
+  // if numFeaturesKO === 0 then there should be no request 
+  //
+  // on dev this occassionally freezes my component when
+  // I go off the page for a little bit for some reason
   useEffect(() => {
     if (numFeaturesKO === 0 && requestStarted) {
       setRequestStarted(false);
