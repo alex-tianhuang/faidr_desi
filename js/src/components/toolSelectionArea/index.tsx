@@ -92,7 +92,7 @@ function ToolButton(props: {
         disabled={disabled}
       >
         {isActive ? (
-          <span className="text-xs">Try other sequence / try other tool</span>
+          "Try other sequence / try other tool"
         ) : (
           label
         )}
