@@ -28,15 +28,13 @@ export default function GenerateMimicArea(props: {
     featureWeights,
     requestStartedState: [requestStarted, setRequestStarted],
   } = props;
-  const [rngSeed, setRngSeed] = useState(
-    // an arbitrary number which is
-    // immediately overwritten by RngPicker
-    2222,
-  );
   const [reqTimestamp, setReqTimestamp] = useState(() => Date.now());
   const [rngHint, setRngHint] = useState("");
-  const usingTimestampForRng = Number.isNaN(Number.parseInt(rngHint));
-  const rng = useMemo(() => ({ seed: rngSeed }), [rngSeed]);
+  const rngHintParsed = Number.parseInt(rngHint);
+  const usingTimestampForRng = Number.isNaN(rngHintParsed);
+  const rngSeed =
+    (Number.isNaN(rngHintParsed) ? reqTimestamp : rngHintParsed) % 2 ** 32;
+  const rng = { seed: rngSeed };
   const { initError, featurized, featurizedError } = useFeaturizeEndpoint({
     sequence,
     featureConfiguration: FEATURE_CONFIGURATION,
@@ -61,10 +59,9 @@ export default function GenerateMimicArea(props: {
     <div className="flex flex-col gap-2">
       <GenerateMimicHeader expanded={true} />
       <GenerateMimicSubmissionArea
-        reqTimestamp={reqTimestamp}
         disabled={requestStarted}
         rngHintState={[rngHint, setRngHint]}
-        rngSeedState={[rngSeed, setRngSeed]}
+        rngSeed={rngSeed}
       ></GenerateMimicSubmissionArea>
       <Button
         onClick={() => {
@@ -135,16 +132,14 @@ function GenerateMimicHeader(props: { expanded: boolean }) {
   );
 }
 function GenerateMimicSubmissionArea(props: {
-  reqTimestamp: number;
   disabled: boolean;
   rngHintState: [string, (_: string) => void];
-  rngSeedState: [number, (_: number) => void];
+  rngSeed: number;
 }) {
   const {
-    reqTimestamp,
     disabled,
     rngHintState: [rngHint, setRngHint],
-    rngSeedState: [rngSeed, setRngSeed],
+    rngSeed,
   } = props;
   const rngHintParsed = Number.parseInt(rngHint);
   const usingTimestampForRng = Number.isNaN(rngHintParsed);
@@ -163,9 +158,7 @@ function GenerateMimicSubmissionArea(props: {
       )}
     >
       <RngPicker
-        timestamp={reqTimestamp}
         disabled={disabled}
-        setRngSeed={setRngSeed}
         rngHintState={[rngHint, setRngHint]}
       ></RngPicker>
       <Alert>{rngSeedDescription}</Alert>
