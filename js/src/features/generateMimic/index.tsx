@@ -30,10 +30,8 @@ export default function GenerateMimicArea(props: {
   } = props;
   const [reqTimestamp, setReqTimestamp] = useState(() => Date.now());
   const [rngHint, setRngHint] = useState("");
-  const rngHintParsed = Number.parseInt(rngHint);
-  const usingTimestampForRng = Number.isNaN(rngHintParsed);
-  const rngSeed =
-    (Number.isNaN(rngHintParsed) ? reqTimestamp : rngHintParsed) % 2 ** 32;
+  const rngInfo = parseRngHint(rngHint, reqTimestamp);
+  const { rngSeed, usingTimestampForRng } = rngInfo;
   const rng = { seed: rngSeed };
   const { initError, featurized, featurizedError } = useFeaturizeEndpoint({
     sequence,
@@ -141,15 +139,16 @@ function GenerateMimicSubmissionArea(props: {
     rngHintState: [rngHint, setRngHint],
     rngSeed,
   } = props;
-  const rngHintParsed = Number.parseInt(rngHint);
-  const usingTimestampForRng = Number.isNaN(rngHintParsed);
-  const rngSeedDescription = usingTimestampForRng
+  const rngInfo = parseRngHint(rngHint, 0);
+  const rngSeedDescription = rngInfo.usingTimestampForRng
     ? rngHint.length === 0
       ? "Using timestamp to seed RNG"
       : `Could not parse "${rngHint}" as a number, using timestamp to seed RNG`
-    : rngHintParsed >= 2 ** 32
-      ? `User seed overflows 2 ^ 32, using ${rngHintParsed % 2 ** 32} to seed RNG instead (first 32 bits)`
-      : `Using ${rngSeed} to seed RNG`;
+    : rngInfo.overflow
+      ? `User seed overflows 2 ^ 32, using ${rngSeed} to seed RNG instead (first 32 bits)`
+      : rngInfo.underflow
+        ? `User seed is negative, using ${rngSeed} to seed RNG instead (modulo 2 ^ 32)`
+        : `Using ${rngSeed} to seed RNG`;
   return (
     <div
       className={cn(
@@ -214,4 +213,24 @@ function GenerateMimicResultsArea(props: {
       )}
     </div>
   );
+}
+function parseRngHint(rngHint: string, timestamp: number) {
+  const rngHintParsed = Number.parseInt(rngHint);
+  const usingTimestampForRng = Number.isNaN(rngHintParsed);
+  if (usingTimestampForRng) {
+    return {
+      usingTimestampForRng: true as const,
+      rngSeed: timestamp,
+    };
+  }
+  const maxInt = 2 ** 32;
+  const overflow = rngHintParsed >= maxInt;
+  const underflow = rngHintParsed < 0;
+  const rngSeed = ((rngHintParsed % maxInt) + maxInt) % maxInt;
+  return {
+    usingTimestampForRng: false as const,
+    rngSeed,
+    overflow,
+    underflow,
+  };
 }
