@@ -3,7 +3,8 @@ import DataTable from "./dataTable";
 import type { Featurized } from "@/features/featurize/types";
 import type { AcceptedData } from "node_modules/export-to-csv/output/lib/types";
 
-export function FeaturesTable(props: { data: Record<string, Featurized> }) {
+export function FeaturesTable(props: { data: Record<string, Featurized>, zscoreEnabled: boolean }) {
+  const { zscoreEnabled} = props;
   const columns: ColumnDef<Record<string, AcceptedData>>[] = Object.keys(
     props.data,
   ).map((featureID) => ({
@@ -26,6 +27,7 @@ export function FeaturesTable(props: { data: Record<string, Featurized> }) {
       columns={columns}
       data={data}
       suggestedFilename="features.csv"
+      downloadButtonText={zscoreEnabled ? "Download as CSV (Z-scores)" : "Download as CSV (raw features)"}
     ></DataTable>
   );
 }

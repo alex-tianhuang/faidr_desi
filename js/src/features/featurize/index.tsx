@@ -73,7 +73,10 @@ export default function FeaturizeArea(props: {
                 : "View as z-scores against the human IDRome"}
             </Button>
           </div>
-          <FeaturesTable data={featurized}></FeaturesTable>
+          <FeaturesTable
+            data={featurized}
+            zscoreEnabled={zscoreEnabled}
+          ></FeaturesTable>
         </div>
       ) : (
         <Loading>Computing sequence features...</Loading>
@@ -85,8 +88,12 @@ function FeaturizeHeader() {
   return (
     <>
       <div className="flex flex-col border rounded-md p-4">
-        <p className="text-xl font-bold text-center">Computing sequence features</p>
-        <p className="text-center text-muted-foreground">View and download a CSV of your sequence features below.</p>
+        <p className="text-xl font-bold text-center">
+          Computing sequence features
+        </p>
+        <p className="text-center text-muted-foreground">
+          View and download a CSV of your sequence features below.
+        </p>
       </div>
       <div className="flex flex-col border rounded-md p-4">
         <p className="text-md font-bold underline">Instructions</p>
@@ -94,7 +101,9 @@ function FeaturizeHeader() {
           Click the small button on the right to change whether you are looking
           at raw features or feature Z-scores.
         </p>
-        <p className="text-justify text-muted-foreground">Scroll horizontally to see your sequence features!</p>
+        <p className="text-justify text-muted-foreground">
+          Scroll horizontally to see your sequence features!
+        </p>
       </div>
     </>
   );

@@ -21,8 +21,9 @@ export default function DataTable<TData extends Record<string, AcceptedData>, TV
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   suggestedFilename: string;
+  downloadButtonText: string;
 }) {
-  const { columns, data, suggestedFilename } = props;
+  const { columns, data, suggestedFilename, downloadButtonText } = props;
   const table = useReactTable({
     data,
     columns,
@@ -55,7 +56,7 @@ export default function DataTable<TData extends Record<string, AcceptedData>, TV
 
   return (
     <div className="flex flex-col overflow-hidden border rounded-md items-end p-4 gap-2 border-input">
-      <Button className="w-full" onClick={handleExport}>Download CSV</Button>
+      <Button className="w-full" onClick={handleExport}>{downloadButtonText}</Button>
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
