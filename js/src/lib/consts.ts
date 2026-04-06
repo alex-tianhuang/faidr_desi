@@ -434,7 +434,7 @@ export const FEATURE_CONFIGURATION = {
   ELASTIN_LIKE: {
     compute: "regex-motif-span",
     pattern: "VPG.G",
-    takeAverage: true,
+    takeAverage: false,
   },
   E_repeats: {
     compute: "repeat-span",
@@ -449,12 +449,12 @@ export const FEATURE_CONFIGURATION = {
   FG_rich: {
     compute: "regex-motif-span",
     pattern: "[FG].FG",
-    takeAverage: true,
+    takeAverage: false,
   },
   FGxF: {
     compute: "regex-motif-span",
     pattern: "FG.F",
-    takeAverage: true,
+    takeAverage: false,
   },
   FRG: {
     compute: "regex-motif-span",
@@ -748,7 +748,7 @@ export const FEATURE_CONFIGURATION = {
   PY: {
     compute: "regex-motif-span",
     pattern: "PY",
-    takeAverage: true,
+    takeAverage: false,
   },
   P_repeats: {
     compute: "repeat-span",
@@ -768,7 +768,7 @@ export const FEATURE_CONFIGURATION = {
   REP_RGG: {
     compute: "regex-motif-span",
     pattern: "RGG",
-    takeAverage: true,
+    takeAverage: false,
   },
   RG_repeats: {
     compute: "repeat-span",
@@ -793,7 +793,7 @@ export const FEATURE_CONFIGURATION = {
   SGFYSG: {
     compute: "regex-motif-span",
     pattern: "[SG][FY][SG]",
-    takeAverage: true,
+    takeAverage: false,
   },
   SG_repeats: {
     compute: "repeat-span",
