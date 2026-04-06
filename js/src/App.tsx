@@ -6,6 +6,7 @@ import {
   FEATURE_CONFIGURATION,
   FEATURE_MEANS,
   FEATURE_WEIGHTS,
+  NUM_FEATURES,
 } from "./lib/consts";
 import FeaturizeArea from "./features/featurize";
 import GenerateKOArea from "./features/generateKO";
@@ -73,7 +74,7 @@ function Preamble() {
       <p className="text-2xl font-bold text-center underline">
         Simple IDR Design
       </p>
-      <p className="text-sm text-muted-foreground">
+      <p className="text-sm text-muted-foreground text-justify">
         Welcome to a simple webapp that uses a greedy sequence feature matching
         algorithm to design intrinsically disordered protein regions (IDRs).
         This tool is based on{" "}
@@ -86,6 +87,26 @@ function Preamble() {
         by the Julie Forman-Kay and Alan Moses group, who have been using
         sequence feature-based design as a framework for hypothesis testing IDR
         function.
+      </p>
+      <p className="text-sm text-muted-foreground text-justify">
+        This app uses {NUM_FEATURES} sequence features consisting of short
+        linear interaction motifs (SLIMs), aminoacid composition, and residue
+        patterning statistics. Bioinformatic analysis and design experiments using
+        these features can be found in these papers:{" "}
+        <Link
+          href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7932695/"
+          inline={true}
+        >
+          Zarin et al., 2021. (eLife)
+        </Link>{" "}
+        and{" "}
+        <Link
+          href="https://www.biorxiv.org/content/10.1101/2024.03.15.585291v1"
+          inline={true}
+        >
+          Pritisanac et al., 2024. (BioRxiv)
+        </Link>
+        .
       </p>
     </div>
   );
