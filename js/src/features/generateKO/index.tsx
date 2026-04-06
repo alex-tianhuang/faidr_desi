@@ -4,7 +4,7 @@ import useGenerateKOEndpoint from "./hook";
 import useFeaturizeEndpoint from "../featurize/hook";
 import TransferList from "@/components/transferList";
 import { Button } from "@/components/ui/button";
-import { FEATURE_MEANS, NUM_FEATURES, type IDRome } from "@/lib/consts";
+import { NUM_FEATURES, type IDRome } from "@/lib/consts";
 import {
   checkAllFeatures,
   cn,
