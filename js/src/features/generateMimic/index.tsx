@@ -156,6 +156,17 @@ function GenerateMimicSubmissionArea(props: {
         disabled ? "border-input" : "border-primary",
       )}
     >
+      <div className="flex flex-row w-full">
+        <span className="flex-1 text-start text-md font-bold underline">
+          RNG Seed (optional)
+        </span>
+      </div>
+      <span className="text-muted-foreground">
+        You can input your own seed for the RNG or click the button on the right
+        to generate an example seed. If you do nothing, the current time will be
+        used to generate a seed for you.
+      </span>
+
       <RngPicker
         disabled={disabled}
         rngHintState={[rngHint, setRngHint]}
