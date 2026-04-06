@@ -217,13 +217,13 @@ function GenerateMimicResultsArea(props: {
 function parseRngHint(rngHint: string, timestamp: number) {
   const rngHintParsed = Number.parseInt(rngHint);
   const usingTimestampForRng = Number.isNaN(rngHintParsed);
+  const maxInt = 2 ** 32;
   if (usingTimestampForRng) {
     return {
       usingTimestampForRng: true as const,
-      rngSeed: timestamp,
+      rngSeed: timestamp % maxInt,
     };
   }
-  const maxInt = 2 ** 32;
   const overflow = rngHintParsed >= maxInt;
   const underflow = rngHintParsed < 0;
   const rngSeed = ((rngHintParsed % maxInt) + maxInt) % maxInt;
