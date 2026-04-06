@@ -65,7 +65,7 @@ export default function FeaturizeArea(props: {
               </span>
             </div>
             <Button
-              className="w-fit text-xs rounded-xl"
+              className="w-fit text-wrap text-xs rounded-xl max-w-1/2 whitespace-normal h-auto min-h-9"
               onClick={() => setZscoreEnabled(!zscoreEnabled)}
             >
               {zscoreEnabled
@@ -77,6 +77,10 @@ export default function FeaturizeArea(props: {
             data={featurized}
             zscoreEnabled={zscoreEnabled}
           ></FeaturesTable>
+          <p className="text-sm text-justify text-muted-foreground">
+            Scroll horizontally in the table above to see more sequence
+            features!
+          </p>
         </div>
       ) : (
         <Loading>Computing sequence features...</Loading>
@@ -100,9 +104,6 @@ function FeaturizeHeader() {
         <p className="text-justify text-muted-foreground">
           Click the small button on the right to change whether you are looking
           at raw features or feature Z-scores.
-        </p>
-        <p className="text-justify text-muted-foreground">
-          Scroll horizontally to see your sequence features!
         </p>
       </div>
     </>
