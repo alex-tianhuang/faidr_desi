@@ -94,7 +94,7 @@ export default function FeaturizeArea(props: {
                     setIdrome(value);
                   }}
                 >
-                  {(["yeast", "human", "none"] as const).map((key) => (
+                  {(["human", "yeast", "none"] as const).map((key) => (
                     <DropdownMenuRadioItem key={key} value={key}>
                       {viewAsMessage(key)}
                     </DropdownMenuRadioItem>
