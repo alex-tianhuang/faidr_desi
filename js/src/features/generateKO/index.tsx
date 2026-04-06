@@ -4,7 +4,7 @@ import useGenerateKOEndpoint from "./hook";
 import useFeaturizeEndpoint from "../featurize/hook";
 import TransferList from "@/components/transferList";
 import { Button } from "@/components/ui/button";
-import { FEATURE_MEANS, NUM_FEATURES } from "@/lib/consts";
+import { FEATURE_MEANS, NUM_FEATURES, type IDRome } from "@/lib/consts";
 import {
   checkAllFeatures,
   cn,
@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/tooltip";
 import { ChevronsRight } from "lucide-react";
 import Loading from "@/components/loading";
+import IdromePicker from "@/components/idromePicker";
 
 type FeatureCard = {
   propKey: string;
@@ -33,9 +34,10 @@ type FeatureCard = {
 export default function GenerateKOArea(props: {
   sequence: string;
   featureConfiguration: unknown;
-  featureWeights: unknown;
+  featureWeights: Record<string, number>;
   KOFeatureTargets: Record<string, number>;
   requestStartedState: [boolean, (_: boolean) => void];
+  idromeState: [IDRome, (_: IDRome) => void];
 }) {
   const {
     sequence,
@@ -43,6 +45,7 @@ export default function GenerateKOArea(props: {
     featureWeights,
     KOFeatureTargets,
     requestStartedState: [requestStarted, setRequestStarted],
+    idromeState,
   } = props;
   const { initError, featurized, featurizedError } = useFeaturizeEndpoint({
     sequence,
@@ -53,7 +56,6 @@ export default function GenerateKOArea(props: {
     [featurized],
   );
   const error = initError ?? featurizedError ?? checkError;
-
   const [defaultList, setDefaultList] = useState<FeatureCard[]>([]);
   const [KOList, setKOList] = useState<FeatureCard[]>([]);
   const [prevFeatureVector, setPrevFeatureVector] = useState(featureVector);
@@ -87,7 +89,7 @@ export default function GenerateKOArea(props: {
   }, [featureVector, KOList]);
   const [reqTimestamp, setReqTimestamp] = useState(() => Date.now());
   const numFeaturesKO = KOList.length;
-  // if numFeaturesKO === 0 then there should be no request 
+  // if numFeaturesKO === 0 then there should be no request
   //
   // on dev this occassionally freezes my component when
   // I go off the page for a little bit for some reason
@@ -112,9 +114,15 @@ export default function GenerateKOArea(props: {
       <GenerateKOHeader expanded={true} />
       {featureTargets !== null && featureVector !== null ? (
         <>
+          <IdromePicker
+            disabled={requestStarted}
+            includeMeans={true}
+            idromeState={idromeState}
+          ></IdromePicker>
           <GenerateKOSubmissionArea
             featureTargets={featureTargets}
             featureVector={featureVector}
+            KOFeatureTargets={KOFeatureTargets}
             setReqTimestamp={setReqTimestamp}
             KOListState={[KOList, setKOList]}
             defaultListState={[defaultList, setDefaultList]}
@@ -161,7 +169,7 @@ function GenerateKOHeader(props: { expanded: boolean }) {
         </p>
         <p className="text-justify text-muted-foreground">
           {`Use this program to design a sequence that preserves ${NUM_FEATURES} sequence features of your inputted sequence, `}
-          but set some sequence features that you want to ablate to the human
+          but set some sequence features that you want to ablate to the
           IDRome average. In other words, it "knocks out" those features.
         </p>
       </div>
@@ -171,9 +179,10 @@ function GenerateKOHeader(props: { expanded: boolean }) {
             Instructions
           </p>
           <p>
-            Select features to knockout by clicking on the cards in the left
-            list, then click the {<ChevronsRight className="inline" />} button
-            to move those to the knockout list.
+            Pick an IDRome and then select features to knockout by clicking on
+            the cards in the left list, then click the{" "}
+            {<ChevronsRight className="inline" />} button to move those to the
+            knockout list.
           </p>
           <p>
             You can see the pairs of "(original value) → (IDRome average value)"
@@ -193,6 +202,7 @@ function GenerateKOSubmissionArea(props: {
   disabled: boolean;
   featureVector: Record<string, number>;
   featureTargets: Record<string, number>;
+  KOFeatureTargets: Record<string, number>;
   defaultListState: [FeatureCard[], (_: FeatureCard[]) => void];
   KOListState: [FeatureCard[], (_: FeatureCard[]) => void];
   setReqTimestamp: (_: number) => void;
@@ -201,6 +211,7 @@ function GenerateKOSubmissionArea(props: {
     disabled,
     featureTargets,
     featureVector,
+    KOFeatureTargets,
     defaultListState,
     KOListState: [KOList, setKOList],
   } = props;
@@ -215,7 +226,7 @@ function GenerateKOSubmissionArea(props: {
       <GenerateKOTargetPicker
         disabled={disabled}
         featureVector={featureVector}
-        KOFeatureTargets={FEATURE_MEANS}
+        KOFeatureTargets={KOFeatureTargets}
         defaultListState={defaultListState}
         KOListState={[KOList, setKOList]}
         featureTargets={featureTargets}
@@ -331,8 +342,8 @@ function GenerateKOFeatureCard(props: {
 function GenerateKOResultsArea(props: {
   sequence: string;
   featureConfiguration: unknown;
-  featureWeights: unknown;
-  featureTargets: unknown;
+  featureWeights: Record<string, number>;
+  featureTargets: Record<string, number>;
   reqTimestamp: number;
 }) {
   const { initError, progressData, progressError, startTimestamp } =

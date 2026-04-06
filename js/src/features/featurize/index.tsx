@@ -7,32 +7,52 @@ import {
   FEATURE_CONFIGURATION,
   FEATURE_MEANS,
   FEATURE_WEIGHTS,
+  type IDRome,
 } from "@/lib/consts";
 import type { Featurized } from "./types";
 import { Button } from "@/components/ui/button";
 import Loading from "@/components/loading";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const MY_EMAIL = "tianh.huang@mail.utoronto.ca";
 export default function FeaturizeArea(props: {
   sequence: string;
   featureConfiguration: unknown;
+  idromeState: [IDRome, (_: IDRome) => void];
 }) {
+  const {
+    idromeState: [idrome, setIdrome],
+  } = props;
   const {
     initError,
     featurized: featurizedRaw,
     featurizedError,
   } = useFeaturizeEndpoint(props);
-  const [zscoreEnabled, setZscoreEnabled] = useState(true);
+  const [postProcessing, setPostProcessing] = useState<IDRome | "none">(idrome);
+  const postProcessingDescription =
+    postProcessing !== "none"
+      ? `${postProcessing} IDRome Z-scores`
+      : "raw features";
   const featurized = useMemo(
     () =>
-      zscoreEnabled
+      postProcessing !== "none"
         ? featurizedRaw
-          ? featuresToIDRomeZscores(featurizedRaw)
+          ? featuresToIDRomeZscores(featurizedRaw, postProcessing)
           : null
         : featurizedRaw,
-    [featurizedRaw, zscoreEnabled],
+    [featurizedRaw, postProcessing],
   );
   const error = initError ?? featurizedError;
+  const viewAsMessage = (option: typeof postProcessing) =>
+    option !== "none"
+      ? `Z-score features (${option} IDRome)`
+      : "Raw feature values";
   return (
     <div className="flex flex-col gap-2">
       <FeaturizeHeader />
@@ -58,24 +78,34 @@ export default function FeaturizeArea(props: {
           <div className="flex flex-row text-muted-foreground items-center">
             <div className="flex-1 flex flex-col text-sm text-start">
               <span>Viewing as:</span>
-              <span>
-                {zscoreEnabled
-                  ? "Z-score features compared to the human IDRome"
-                  : "Raw feature values"}
-              </span>
+              <span>{viewAsMessage(postProcessing)}</span>
             </div>
-            <Button
-              className="w-fit text-wrap text-xs rounded-xl max-w-1/2 whitespace-normal h-auto min-h-9"
-              onClick={() => setZscoreEnabled(!zscoreEnabled)}
-            >
-              {zscoreEnabled
-                ? "View as raw feature values"
-                : "View as z-scores against the human IDRome"}
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Button variant="outline">View as other</Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuRadioGroup
+                  value={postProcessing}
+                  onValueChange={(value) => {
+                    if (!value) return;
+                    setPostProcessing(value!);
+                    if (value !== "human" && value !== "yeast") return;
+                    setIdrome(value);
+                  }}
+                >
+                  {(["yeast", "human", "none"] as const).map((key) => (
+                    <DropdownMenuRadioItem key={key} value={key}>
+                      {viewAsMessage(key)}
+                    </DropdownMenuRadioItem>
+                  ))}
+                </DropdownMenuRadioGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
           <FeaturesTable
             data={featurized}
-            zscoreEnabled={zscoreEnabled}
+            downloadButtonText={`Download as CSV (${postProcessingDescription})`}
           ></FeaturesTable>
           <p className="text-sm text-justify text-muted-foreground">
             Scroll horizontally in the table above to see more sequence
@@ -111,6 +141,7 @@ function FeaturizeHeader() {
 }
 function featuresToIDRomeZscores(
   featurized: Record<keyof typeof FEATURE_CONFIGURATION, Featurized>,
+  idrome: IDRome,
 ) {
   return Object.fromEntries(
     Object.entries(featurized).map(([featureID, value]) => [
@@ -119,8 +150,8 @@ function featuresToIDRomeZscores(
         ? {
             case: "ok",
             value:
-              (value.value - (FEATURE_MEANS as any)[featureID]) *
-              (FEATURE_WEIGHTS as any)[featureID],
+              (value.value - (FEATURE_MEANS[idrome] as any)[featureID]) *
+              (FEATURE_WEIGHTS[idrome] as any)[featureID],
           }
         : value,
     ]),

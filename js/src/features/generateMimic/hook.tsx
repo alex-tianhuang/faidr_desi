@@ -7,7 +7,7 @@ import { mutationToString } from "@/lib/utils";
 export default function useGenerateMimicEndpoint(args: {
   sequence: string;
   featureConfiguration: unknown;
-  featureWeights: unknown;
+  featureWeights: Record<string, number>;
   rng: {
     seed: number;
   };

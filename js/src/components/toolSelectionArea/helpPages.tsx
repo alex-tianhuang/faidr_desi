@@ -47,7 +47,8 @@ export function FeaturizeHelp() {
         This tool computes {NUM_FEATURES} sequence features, like motifs,
         residue composition, and residue patterning statistics (see papers at
         the bottom). This tool also shows the features as a Z-score compared to
-        the mean and variance of raw sequence features in the human IDRome.
+        the mean and variance of raw sequence features in a reference (human or
+        yeast) IDRome.
       </p>
       <Link
         href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7932695/"

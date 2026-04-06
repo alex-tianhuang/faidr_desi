@@ -7,8 +7,8 @@ import { mutationToString } from "@/lib/utils";
 export default function useGenerateKOEndpoint(args: {
   sequence: string;
   featureConfiguration: unknown;
-  featureWeights: unknown;
-  featureTargets: unknown;
+  featureWeights: Record<string, number>;
+  featureTargets: Record<string, number>;
   reqTimestamp: number;
 }) {
   const {

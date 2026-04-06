@@ -12,21 +12,24 @@ import {
 import { Alert } from "@/components/ui/alert";
 import FinalSequenceDiv from "@/components/finalSequenceDiv";
 import ErrorDiv from "@/components/errorDiv";
-import { FEATURE_CONFIGURATION, NUM_FEATURES } from "@/lib/consts";
+import { FEATURE_CONFIGURATION, NUM_FEATURES, type IDRome } from "@/lib/consts";
 import useFeaturizeEndpoint from "../featurize/hook";
 import Loading from "@/components/loading";
+import IdromePicker from "@/components/idromePicker";
 
 export default function GenerateMimicArea(props: {
   sequence: string;
   featureConfiguration: unknown;
-  featureWeights: unknown;
+  featureWeights: Record<string, number>;
   requestStartedState: [boolean, (_: boolean) => void];
+  idromeState: [IDRome, (_: IDRome) => void];
 }) {
   const {
     sequence,
     featureConfiguration,
     featureWeights,
     requestStartedState: [requestStarted, setRequestStarted],
+    idromeState,
   } = props;
   const [reqTimestamp, setReqTimestamp] = useState(() => Date.now());
   const [rngHint, setRngHint] = useState("");
@@ -56,6 +59,11 @@ export default function GenerateMimicArea(props: {
   return (
     <div className="flex flex-col gap-2">
       <GenerateMimicHeader expanded={true} />
+      <IdromePicker
+        disabled={requestStarted}
+        includeMeans={false}
+        idromeState={idromeState}
+      ></IdromePicker>
       <GenerateMimicSubmissionArea
         disabled={requestStarted}
         rngHintState={[rngHint, setRngHint]}
@@ -117,12 +125,8 @@ function GenerateMimicHeader(props: { expanded: boolean }) {
             Instructions
           </p>
           <p>
-            Optionally select an RNG seed to deterministically generate an
-            initial random sequence.
-          </p>
-          <p>
-            Click the button at the bottom to get a new sequence that matches
-            the features of your input sequence!
+            Pick an IDRome and then click the button at the bottom to get a new
+            sequence that matches the features of your input sequence!
           </p>
         </div>
       )}
@@ -156,29 +160,33 @@ function GenerateMimicSubmissionArea(props: {
         disabled ? "border-input" : "border-primary",
       )}
     >
-      <div className="flex flex-row w-full">
-        <span className="flex-1 text-start text-md font-bold underline">
-          RNG Seed (optional)
-        </span>
-      </div>
-      <span className="text-muted-foreground">
-        You can input your own seed for the RNG or click the button on the right
-        to generate an example seed. If you do nothing, the current time will be
-        used to generate a seed for you.
-      </span>
-
-      <RngPicker
-        disabled={disabled}
-        rngHintState={[rngHint, setRngHint]}
-      ></RngPicker>
-      <Alert>{rngSeedDescription}</Alert>
+      <details>
+        <summary className="text-sm cursor-pointer text-muted-foreground hover:text-foreground">
+          Seed deterministically (advanced)
+        </summary>
+        <div className="mt-2 flex flex-col gap-2 p-4 border rounded-md border-input">
+          <span className="flex-1 text-start text-md font-bold underline">
+            RNG Seed (optional)
+          </span>
+          <span className="text-muted-foreground">
+            You can input your own seed for the RNG or click the button on the
+            right to generate an example seed. If you do nothing, the current
+            time will be used to generate a seed for you.
+          </span>
+          <RngPicker
+            disabled={disabled}
+            rngHintState={[rngHint, setRngHint]}
+          ></RngPicker>
+          <Alert>{rngSeedDescription}</Alert>
+        </div>
+      </details>
     </div>
   );
 }
 function GenerateMimicResultsArea(props: {
   sequence: string;
   featureConfiguration: unknown;
-  featureWeights: unknown;
+  featureWeights: Record<string, number>;
   rng: {
     seed: number;
   };

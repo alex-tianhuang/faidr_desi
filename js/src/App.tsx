@@ -7,6 +7,7 @@ import {
   FEATURE_MEANS,
   FEATURE_WEIGHTS,
   NUM_FEATURES,
+  type IDRome,
 } from "./lib/consts";
 import FeaturizeArea from "./features/featurize";
 import GenerateKOArea from "./features/generateKO";
@@ -17,6 +18,7 @@ export default function Page() {
   const [sequence, setSequence] = useState<string | null>(null);
   const [tool, setTool] = useState<"mimic" | "ko" | "feats" | null>(null);
   const [requestStarted, setRequestStarted] = useState<boolean>(false);
+  const [idrome, setIdrome] = useState<IDRome>("human");
   // guard because sometimes `requestStarted` gets stuck
   useEffect(() => {
     if (sequence === null || tool === null) {
@@ -34,6 +36,7 @@ export default function Page() {
         sequence={sequence}
         tool={tool}
         requestStartedState={[requestStarted, setRequestStarted]}
+        idromeState={[idrome, setIdrome]}
       ></PageFooter>
     </div>
   );
@@ -91,8 +94,8 @@ function Preamble() {
       <p className="text-sm text-muted-foreground text-justify">
         This app uses {NUM_FEATURES} sequence features consisting of short
         linear interaction motifs (SLIMs), aminoacid composition, and residue
-        patterning statistics. Bioinformatic analysis and design experiments using
-        these features can be found in these papers:{" "}
+        patterning statistics. Bioinformatic analysis and design experiments
+        using these features can be found in these papers:{" "}
         <Link
           href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7932695/"
           inline={true}
@@ -115,16 +118,23 @@ function PageFooter(props: {
   sequence: string | null;
   tool: "mimic" | "ko" | "feats" | null;
   requestStartedState: [boolean, (_: boolean) => void];
+  idromeState: [IDRome, (_: IDRome) => void];
 }) {
-  const { sequence, tool, requestStartedState } = props;
+  const {
+    sequence,
+    tool,
+    requestStartedState,
+    idromeState: [idrome, setIdrome],
+  } = props;
   if (tool === null || sequence === null) return <></>;
   if (tool === "mimic") {
     return (
       <GenerateMimicArea
         sequence={sequence}
         featureConfiguration={FEATURE_CONFIGURATION}
-        featureWeights={FEATURE_WEIGHTS}
+        featureWeights={FEATURE_WEIGHTS[idrome]}
         requestStartedState={requestStartedState}
+        idromeState={[idrome, setIdrome]}
       ></GenerateMimicArea>
     );
   }
@@ -133,6 +143,7 @@ function PageFooter(props: {
       <FeaturizeArea
         sequence={sequence}
         featureConfiguration={FEATURE_CONFIGURATION}
+        idromeState={[idrome, setIdrome]}
       ></FeaturizeArea>
     );
   }
@@ -141,9 +152,10 @@ function PageFooter(props: {
       <GenerateKOArea
         sequence={sequence}
         featureConfiguration={FEATURE_CONFIGURATION}
-        featureWeights={FEATURE_WEIGHTS}
+        featureWeights={FEATURE_WEIGHTS[idrome]}
         requestStartedState={requestStartedState}
-        KOFeatureTargets={FEATURE_MEANS}
+        KOFeatureTargets={FEATURE_MEANS[idrome]}
+        idromeState={[idrome, setIdrome]}
       ></GenerateKOArea>
     );
   }
