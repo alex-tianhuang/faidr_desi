@@ -2,6 +2,7 @@ import type { IDRome } from "@/lib/consts";
 import { Button } from "./ui/button";
 import { Alert } from "./ui/alert";
 import { cn } from "@/lib/utils";
+import { Toggle } from "./ui/toggle";
 
 export default function IdromePicker(props: {
   idromeState: [IDRome, (_: IDRome) => void];
@@ -13,8 +14,6 @@ export default function IdromePicker(props: {
     disabled,
     includeMeans,
   } = props;
-
-  const otherIdrome = idrome === "yeast" ? "human" : "yeast";
   return (
     <div
       className={cn(
@@ -36,24 +35,38 @@ export default function IdromePicker(props: {
         generated from a human or a yeast IDRome. Click the button below to
         change which IDRome is being used.
       </p>
-      <div className="flex flex-col sm:flex-row gap-2 items-center text-start w-full">
-        <Alert>
-          <span>
-            Using <span className="underline">{idrome}</span> IDRome
-            {includeMeans && " means and"} weights for design.
-          </span>
-        </Alert>
-        <Button
-          className="w-fit whitespace-normal self-center"
-          onClick={() => setIdrome(otherIdrome)}
-          disabled={disabled}
-        >
-          <span>
-            Click to use <span className="underline">{otherIdrome}</span> IDRome
-            {includeMeans && " means and"} weights
-          </span>
-        </Button>
+
+      <div className="flex flex-row flex-wrap gap-2 items-center text-start w-full">
+        {[
+          {
+            key: "human" as const,
+            name: "Human",
+          },
+          {
+            key: "yeast" as const,
+            name: "Yeast",
+          },
+        ].map((option) => (
+          <Toggle
+            className="flex-1 whitespace-normal self-center"
+            onClick={() =>
+              setIdrome(option.key)
+            }
+            disabled={disabled}
+            pressed={idrome === option.key}
+          >
+            <span>
+              {option.name} IDRome {includeMeans && "means and"} weights
+            </span>
+          </Toggle>
+        ))}
       </div>
+      <Alert>
+        <span>
+          Using <span className="underline">{idrome}</span> IDRome
+          {includeMeans && " means and"} weights for design.
+        </span>
+      </Alert>
     </div>
   );
 }
