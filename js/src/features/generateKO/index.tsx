@@ -18,7 +18,6 @@ import { Alert } from "@/components/ui/alert";
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { ChevronsRight } from "lucide-react";
@@ -149,7 +148,9 @@ export default function GenerateKOArea(props: {
             ></GenerateKOResultsArea>
           ) : (
             <div className="p-4 border border-input rounded-md text-muted-foreground">
-              Design results will be displayed below.
+              {numFeaturesKO > 0
+                ? "Click the button above and design results will be displayed here."
+                : "Design results will be displayed here once you choose some features to knockout."}
             </div>
           )}
         </>
