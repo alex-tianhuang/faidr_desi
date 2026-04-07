@@ -161,6 +161,9 @@ function FeaturizeResultsArea(props: {
                 </Toggle>
               );
             })}
+            <Alert>
+              Viewing sequence features as {postProcessingDescription}
+            </Alert>
           </div>
         </div>
       )}
