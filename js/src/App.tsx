@@ -77,7 +77,7 @@ function Preamble() {
       <p className="text-2xl font-bold text-center underline">
         Simple IDR Design
       </p>
-      <p className="text-sm text-muted-foreground text-justify">
+      <p className="text-muted-foreground text-justify">
         Welcome to a simple webapp that uses a greedy sequence feature matching
         algorithm to design intrinsically disordered protein regions (IDRs).
         This tool is based on{" "}
@@ -91,7 +91,7 @@ function Preamble() {
         sequence feature-based design as a framework for hypothesis testing IDR
         function.
       </p>
-      <p className="text-sm text-muted-foreground text-justify">
+      <p className="text-muted-foreground text-justify">
         This app uses {NUM_FEATURES} sequence features consisting of short
         linear interaction motifs (SLIMs), aminoacid composition, and residue
         patterning statistics. The association between these sequence features
