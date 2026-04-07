@@ -94,8 +94,8 @@ function Preamble() {
       <p className="text-sm text-muted-foreground text-justify">
         This app uses {NUM_FEATURES} sequence features consisting of short
         linear interaction motifs (SLIMs), aminoacid composition, and residue
-        patterning statistics. Bioinformatic analysis and design experiments
-        using these features can be found in these papers:{" "}
+        patterning statistics. The association between these sequence features
+        and IDR function has been described in these papers:{" "}
         <Link
           href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7932695/"
           inline={true}
