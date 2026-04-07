@@ -16,13 +16,13 @@ export default function IdromePicker(props: {
   return (
     <div
       className={cn(
-        "flex flex-col gap-2 p-4 border rounded-md",
+        "flex flex-col gap-2 p-4 border rounded-md text-justify",
         disabled ? "opacity-50 border-input" : "border-primary",
       )}
     >
-      <span className="flex-1 text-start text-md font-bold underline">
+      <p className="flex-1 text-md font-bold underline">
         Choose IDRome background
-      </span>
+      </p>
       <p className="text-muted-foreground">
         During design, features are treated as Z-scores against the means and
         standard deviations of a user-chosen IDRome. This way features that are
