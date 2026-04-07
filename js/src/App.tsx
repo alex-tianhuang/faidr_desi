@@ -83,7 +83,8 @@ function Preamble() {
         This tool is based on{" "}
         <Link
           href="https://www.biorxiv.org/content/10.1101/2023.04.28.538739v1"
-          inline
+          inline={true}
+          className="text-md"
         >
           this 2023 preprint
         </Link>{" "}
@@ -99,6 +100,7 @@ function Preamble() {
         <Link
           href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7932695/"
           inline={true}
+          className="text-md"
         >
           Zarin et al., 2021. (eLife)
         </Link>{" "}
@@ -106,6 +108,7 @@ function Preamble() {
         <Link
           href="https://www.biorxiv.org/content/10.1101/2024.03.15.585291v1"
           inline={true}
+          className="text-md"
         >
           Pritisanac et al., 2024. (BioRxiv)
         </Link>
