@@ -1,5 +1,4 @@
 import type { IDRome } from "@/lib/consts";
-import { Button } from "./ui/button";
 import { Alert } from "./ui/alert";
 import { cn } from "@/lib/utils";
 import { Toggle } from "./ui/toggle";
@@ -32,8 +31,8 @@ export default function IdromePicker(props: {
       </p>
       <p className="text-muted-foreground">
         Currently you can choose between {includeMeans && " means and"} weights
-        generated from a human or a yeast IDRome. Click the button below to
-        change which IDRome is being used.
+        generated from a human or a yeast IDRome. Click the buttons below
+        to change which IDRome is being used.
       </p>
 
       <div className="flex flex-row flex-wrap gap-2 items-center text-start w-full">
@@ -49,9 +48,7 @@ export default function IdromePicker(props: {
         ].map((option) => (
           <Toggle
             className="flex-1 whitespace-normal self-center"
-            onClick={() =>
-              setIdrome(option.key)
-            }
+            onClick={() => setIdrome(option.key)}
             disabled={disabled}
             pressed={idrome === option.key}
           >
