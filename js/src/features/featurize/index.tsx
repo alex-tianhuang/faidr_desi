@@ -162,7 +162,10 @@ function FeaturizeResultsArea(props: {
               );
             })}
             <Alert>
-              Viewing sequence features as {postProcessingDescription}
+              <span>
+                Viewing sequence features as{" "}
+                <span className="underline">{postProcessingDescription}</span>
+              </span>
             </Alert>
           </div>
         </div>
