@@ -10,15 +10,8 @@ import {
   type IDRome,
 } from "@/lib/consts";
 import type { Featurized } from "./types";
-import { Button } from "@/components/ui/button";
 import Loading from "@/components/loading";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Toggle } from "@/components/ui/toggle";
 
 const MY_EMAIL = "tianh.huang@mail.utoronto.ca";
 export default function FeaturizeArea(props: {
@@ -35,10 +28,6 @@ export default function FeaturizeArea(props: {
     featurizedError,
   } = useFeaturizeEndpoint(props);
   const [postProcessing, setPostProcessing] = useState<IDRome | "none">(idrome);
-  const postProcessingDescription =
-    postProcessing !== "none"
-      ? `${postProcessing} IDRome Z-scores`
-      : "raw features";
   const featurized = useMemo(
     () =>
       postProcessing !== "none"
@@ -49,10 +38,6 @@ export default function FeaturizeArea(props: {
     [featurizedRaw, postProcessing],
   );
   const error = initError ?? featurizedError;
-  const viewAsMessage = (option: typeof postProcessing) =>
-    option !== "none"
-      ? `Z-score features (${option} IDRome)`
-      : "Raw feature values";
   return (
     <div className="flex flex-col gap-2">
       <FeaturizeHeader />
@@ -73,71 +58,23 @@ export default function FeaturizeArea(props: {
           </AlertDescription>
         </Alert>
       )}
-      {featurized ? (
-        <div className="flex flex-col gap-2 p-4 border rounded-md border-primary">
-          <div className="flex flex-row text-muted-foreground items-center">
-            <div className="flex-1 flex flex-col text-sm text-start">
-              <span>Viewing as:</span>
-              <span>{viewAsMessage(postProcessing)}</span>
-            </div>
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Button variant="outline">View as other</Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuRadioGroup
-                  value={postProcessing}
-                  onValueChange={(value) => {
-                    if (!value) return;
-                    setPostProcessing(value!);
-                    if (value !== "human" && value !== "yeast") return;
-                    setIdrome(value);
-                  }}
-                >
-                  {(["human", "yeast", "none"] as const).map((key) => (
-                    <DropdownMenuRadioItem key={key} value={key}>
-                      {viewAsMessage(key)}
-                    </DropdownMenuRadioItem>
-                  ))}
-                </DropdownMenuRadioGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-          <FeaturesTable
-            data={featurized}
-            downloadButtonText={`Download as CSV (${postProcessingDescription})`}
-          ></FeaturesTable>
-          <p className="text-sm text-justify text-muted-foreground">
-            Scroll horizontally in the table above to see more sequence
-            features!
-          </p>
-        </div>
-      ) : (
-        <Loading>Computing sequence features...</Loading>
-      )}
+      <FeaturizeResultsArea
+        featurized={featurized}
+        postProcessingState={[
+          postProcessing,
+          (option) => {
+            setPostProcessing(option);
+            if (option === "yeast" || option === "human") {
+              setIdrome(option);
+            }
+          },
+        ]}
+      ></FeaturizeResultsArea>
     </div>
   );
 }
 function FeaturizeHeader() {
-  return (
-    <>
-      <div className="flex flex-col border rounded-md p-4">
-        <p className="text-xl font-bold text-center">
-          Computing sequence features
-        </p>
-        <p className="text-center text-muted-foreground">
-          View and download a CSV of your sequence features below.
-        </p>
-      </div>
-      <div className="flex flex-col border rounded-md p-4">
-        <p className="text-md font-bold underline">Instructions</p>
-        <p className="text-justify text-muted-foreground">
-          Click the small button on the right to change whether you are looking
-          at raw features or feature Z-scores.
-        </p>
-      </div>
-    </>
-  );
+  return <div className="flex flex-col border rounded-md p-4"></div>;
 }
 function featuresToIDRomeZscores(
   featurized: Record<keyof typeof FEATURE_CONFIGURATION, Featurized>,
@@ -156,4 +93,77 @@ function featuresToIDRomeZscores(
         : value,
     ]),
   ) as Record<keyof typeof FEATURE_CONFIGURATION, Featurized>;
+}
+function FeaturizeResultsArea(props: {
+  featurized: Record<string, Featurized> | null;
+  postProcessingState: [IDRome | "none", (_: IDRome | "none") => void];
+}) {
+  const {
+    postProcessingState: [postProcessing, setPostProcessing],
+    featurized,
+  } = props;
+  const postProcessingDescription =
+    postProcessing !== "none"
+      ? `${postProcessing} IDRome Z-scores`
+      : "raw features";
+  const optionDescription = (option: typeof postProcessing) =>
+    option !== "none"
+      ? `Z-score features (${option} IDRome)`
+      : "Raw feature values";
+  return (
+    <>
+      <div className="flex flex-col gap-2 p-4 border rounded-md border-primary">
+        <p className="text-xl font-bold text-center">
+          Computing sequence features
+        </p>
+        <p className="text-center text-muted-foreground">
+          View and download a CSV of your sequence features below.
+        </p>
+        {featurized ? (
+          <>
+            <FeaturesTable
+              data={featurized}
+              downloadButtonText={`Download as CSV (${postProcessingDescription})`}
+            ></FeaturesTable>
+            <p className="text-center text-muted-foreground">
+              Scroll horizontally in the table above to see more sequence
+              features!
+            </p>
+          </>
+        ) : (
+          <Loading>Computing sequence features...</Loading>
+        )}
+      </div>
+      {featurized && (
+        <div className="flex flex-col gap-2 p-4 border rounded-md border-primary">
+          <p className="text-md font-bold underline">
+            Switch between raw features and Z-scores
+          </p>
+          <p className="text-justify text-muted-foreground">
+            Click one of the buttons below to change how features are reported
+            in the table above.
+          </p>
+          <div className="flex flex-row flex-wrap items-center gap-2">
+            {(["human", "yeast", "none"] as const).map((option) => {
+              const pressed = option === postProcessing;
+              return (
+                <Toggle
+                  className="flex-1 min-w-fit"
+                  key={option}
+                  pressed={pressed}
+                  onPressedChange={(pressed) => {
+                    if (pressed) {
+                      setPostProcessing(option);
+                    }
+                  }}
+                >
+                  {optionDescription(option)}
+                </Toggle>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </>
+  );
 }
