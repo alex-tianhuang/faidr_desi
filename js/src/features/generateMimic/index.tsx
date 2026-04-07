@@ -34,7 +34,7 @@ export default function GenerateMimicArea(props: {
   const [reqTimestamp, setReqTimestamp] = useState(() => Date.now());
   const [rngHint, setRngHint] = useState("");
   const rngInfo = parseRngHint(rngHint, reqTimestamp);
-  const { rngSeed, usingTimestampForRng } = rngInfo;
+  const { rngSeed } = rngInfo;
   const rng = { seed: rngSeed };
   const { initError, featurized, featurizedError } = useFeaturizeEndpoint({
     sequence,
@@ -48,7 +48,7 @@ export default function GenerateMimicArea(props: {
   if (error) {
     return (
       <div className="flex flex-col gap-2">
-        <GenerateMimicHeader expanded={false} />
+        <GenerateMimicHeader />
         <ErrorDiv
           title="Unfortunately, we cannot design mimics of your inputted sequence."
           message={`Some sequence features could not be computed: ${error}`}
@@ -58,7 +58,7 @@ export default function GenerateMimicArea(props: {
   }
   return (
     <div className="flex flex-col gap-2">
-      <GenerateMimicHeader expanded={true} />
+      <GenerateMimicHeader />
       <IdromePicker
         disabled={requestStarted}
         includeMeans={false}
@@ -76,20 +76,12 @@ export default function GenerateMimicArea(props: {
         }}
       >
         {requestStarted
-          ? "Go back to editing sequence or RNG seed"
+          ? "Go back to editing sequence or other parameters"
           : "Click to design"}
       </Button>
 
       {requestStarted ? (
         <>
-          <Button
-            disabled={!usingTimestampForRng}
-            onClick={() => {
-              usingTimestampForRng && setReqTimestamp(Date.now());
-            }}
-          >
-            Use a new timestamp to seed RNG
-          </Button>
           <GenerateMimicResultsArea
             sequence={sequence}
             featureConfiguration={featureConfiguration}
@@ -100,37 +92,23 @@ export default function GenerateMimicArea(props: {
         </>
       ) : (
         <div className="p-4 border rounded-md border-input text-muted-foreground">
-          Design results will be displayed below.
+          Click the button above and design results will be displayed here.
         </div>
       )}
     </div>
   );
 }
-function GenerateMimicHeader(props: { expanded: boolean }) {
-  const { expanded } = props;
+function GenerateMimicHeader() {
   return (
-    <>
-      <div className="flex flex-col border rounded-md p-4 gap-2">
-        <p className="text-xl font-bold text-center">
-          Designing a "feature mimic"
-        </p>
-        <p className="text-justify text-muted-foreground">
-          {`Use this program to design a sequence that matches ${NUM_FEATURES} sequence features of your inputted sequence. `}
-          In other words, it "mimics" the features of your input sequence.
-        </p>
-      </div>
-      {expanded && (
-        <div className="flex flex-col border rounded-md text-justify text-muted-foreground p-4 gap-2">
-          <p className="text-foreground text-md font-bold underline">
-            Instructions
-          </p>
-          <p>
-            Pick an IDRome and then click the button at the bottom to get a new
-            sequence that matches the features of your input sequence!
-          </p>
-        </div>
-      )}
-    </>
+    <div className="flex flex-col border rounded-md p-4 gap-2">
+      <p className="text-xl font-bold text-center">
+        Designing a "feature mimic"
+      </p>
+      <p className="text-justify text-muted-foreground">
+        {`Use this program to design a sequence that matches ${NUM_FEATURES} sequence features of your inputted sequence. `}
+        In other words, it "mimics" the features of your input sequence.
+      </p>
+    </div>
   );
 }
 function GenerateMimicSubmissionArea(props: {
