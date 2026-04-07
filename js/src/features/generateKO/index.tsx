@@ -101,7 +101,7 @@ export default function GenerateKOArea(props: {
   if (error) {
     return (
       <div className="flex flex-col gap-2">
-        <GenerateKOHeader expanded={false} />
+        <GenerateKOHeader />
         <ErrorDiv
           title="Unfortunately, we cannot design knockouts of your inputted sequence."
           message={`Some sequence features could not be computed: ${error}`}
@@ -111,7 +111,7 @@ export default function GenerateKOArea(props: {
   }
   return (
     <div className="flex flex-col gap-2">
-      <GenerateKOHeader expanded={true} />
+      <GenerateKOHeader />
       {featureTargets !== null && featureVector !== null ? (
         <>
           <IdromePicker
@@ -159,8 +159,7 @@ export default function GenerateKOArea(props: {
     </div>
   );
 }
-function GenerateKOHeader(props: { expanded: boolean }) {
-  const { expanded } = props;
+function GenerateKOHeader() {
   return (
     <>
       <div className="flex flex-col border rounded-md p-4 gap-2">
@@ -169,32 +168,10 @@ function GenerateKOHeader(props: { expanded: boolean }) {
         </p>
         <p className="text-justify text-muted-foreground">
           {`Use this program to design a sequence that preserves ${NUM_FEATURES} sequence features of your inputted sequence, `}
-          but set some sequence features that you want to ablate to the
-          IDRome average. In other words, it "knocks out" those features.
+          but set some sequence features that you want to ablate to the IDRome
+          average. In other words, it "knocks out" those features.
         </p>
       </div>
-      {expanded && (
-        <div className="flex flex-col border rounded-md text-justify text-muted-foreground p-4 gap-2">
-          <p className="text-left text-foreground text-md font-bold underline">
-            Instructions
-          </p>
-          <p>
-            Pick an IDRome and then select features to knockout by clicking on
-            the cards in the left list, then click the{" "}
-            {<ChevronsRight className="inline" />} button to move those to the
-            knockout list.
-          </p>
-          <p>
-            You can see the pairs of "(original value) → (IDRome average value)"
-            on the cards on the right list.
-          </p>
-          <p>
-            When you have selected your features, click the button at the bottom
-            to get a sequence that sets your selected features to IDRome
-            average!
-          </p>
-        </div>
-      )}
     </>
   );
 }
@@ -223,6 +200,27 @@ function GenerateKOSubmissionArea(props: {
         disabled ? "border-input" : "border-primary",
       )}
     >
+      <p className="text-left text-foreground text-md font-bold underline">
+        Pick features to knockout
+      </p>
+      <div className="flex flex-col text-justify text-muted-foreground gap-2">
+        <p>
+          About the two lists below: the list on the left is the list of
+          features to be preserved in your sequence, and the list on the right
+          is the list of features to set to IDRome average.
+        </p>
+        <p>
+          Pick features to knockout by clicking on the cards in the left list,
+          then click the {<ChevronsRight className="inline" />} button to move
+          those to the right list.
+        </p>
+        <p>
+          In the list on the right, each of the cards should display the
+          original feature value and the intended target value in the format
+          "(original value) → (IDRome average value)".
+        </p>
+      </div>
+
       <GenerateKOTargetPicker
         disabled={disabled}
         featureVector={featureVector}
@@ -236,6 +234,12 @@ function GenerateKOSubmissionArea(props: {
           ? `Setting ${numFeaturesKO} feature${numFeaturesKO > 1 ? "s" : ""} to IDRome average`
           : "Please choose at least one feature to knockout (set to IDRome average)"}
       </Alert>
+      {numFeaturesKO > 0 && (
+        <div className="text-muted-foreground">
+          Once you have done selected your features to knockout, click the
+          button below to get your designed knockout sequence!
+        </div>
+      )}
     </div>
   );
 }
@@ -261,34 +265,43 @@ function GenerateKOTargetPicker(props: {
       defaultList.findIndex((item) => item.selected) === -1,
     [defaultList, KOList],
   );
+  const [overrideLeftChevronTooltip, setOverrideLeftChevronTooltip] =
+    useState(false);
   return (
     <div className={cn("flex flex-col", disabled && "opacity-50")}>
-      <TooltipProvider delay={1000}>
-        <TransferList
-          disabled={disabled}
-          leftListState={[defaultList, setDefaultList]}
-          leftListTitle="Features to preserve"
-          rightListState={[KOList, setKOList]}
-          rightListTitle="Features to set to IDRome average"
-          renderItem={(item, toggleSelect, whichList) => (
-            <li key={item.propKey}>
-              <GenerateKOFeatureCard
-                disabled={disabled}
-                toggleSelect={toggleSelect}
-                selected={item.selected}
-                featureID={item.propKey}
-                isKOList={whichList === "right"}
-                featureVector={featureVector}
-                KOFeatureTargets={KOFeatureTargets}
-                userProbablyNeedsHint={userProbablyNeedsHint}
-              />
-            </li>
-          )}
-          compareFn={(a: FeatureCard, b: FeatureCard) =>
-            compareStrings(a.searchKey, b.searchKey)
-          }
-        ></TransferList>
-      </TooltipProvider>
+      <TransferList
+        disabled={disabled}
+        leftListState={[defaultList, setDefaultList]}
+        leftListTitle="Features to preserve"
+        rightListState={[KOList, setKOList]}
+        rightListTitle="Features to set to IDRome average"
+        renderItem={(item, toggleSelect, whichList) => (
+          <li key={item.propKey}>
+            <GenerateKOFeatureCard
+              disabled={disabled}
+              toggleSelect={() => {
+                if (!item.selected && userProbablyNeedsHint) {
+                  setOverrideLeftChevronTooltip(true);
+                }
+                toggleSelect();
+              }}
+              selected={item.selected}
+              featureID={item.propKey}
+              isKOList={whichList === "right"}
+              featureVector={featureVector}
+              KOFeatureTargets={KOFeatureTargets}
+              userProbablyNeedsHint={userProbablyNeedsHint}
+            />
+          </li>
+        )}
+        compareFn={(a: FeatureCard, b: FeatureCard) =>
+          compareStrings(a.searchKey, b.searchKey)
+        }
+        overrideLeftChevronTooltipState={[
+          overrideLeftChevronTooltip,
+          setOverrideLeftChevronTooltip,
+        ]}
+      ></TransferList>
     </div>
   );
 }
@@ -335,7 +348,7 @@ function GenerateKOFeatureCard(props: {
           </span>
         </Button>
       </TooltipTrigger>
-      <TooltipContent>Click me to select me!</TooltipContent>
+      <TooltipContent>Click me to select me for knockout!</TooltipContent>
     </Tooltip>
   );
 }

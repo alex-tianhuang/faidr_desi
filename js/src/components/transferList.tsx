@@ -21,6 +21,7 @@ export default function TransferList<
   rightListState: [Item[], (_: Item[]) => void];
   rightListTitle: string;
   compareFn: (a: Item, b: Item) => number;
+  overrideLeftChevronTooltipState: [boolean, (_: boolean) => void];
 }) {
   const {
     disabled,
@@ -30,6 +31,10 @@ export default function TransferList<
     rightListTitle,
     renderItem,
     compareFn,
+    overrideLeftChevronTooltipState: [
+      overrideLeftChevronTooltip,
+      setOverrideLeftChevronTooltip,
+    ],
   } = props;
   const disabledLeft = useMemo(
     () => !Boolean(leftList.find((item) => item.selected)),
@@ -105,12 +110,18 @@ export default function TransferList<
               value={leftSearch}
               onChange={(e) => setLeftSearch(e.target.value)}
             />
-            <Tooltip>
+            <Tooltip
+              key={overrideLeftChevronTooltip.toString()}
+              open={overrideLeftChevronTooltip || undefined}
+            >
               <TooltipTrigger disabled={disabled || disabledLeft}>
                 <Button
                   disabled={disabled || disabledLeft}
                   className="rounded-none border-l-0"
-                  onClick={moveToRight}
+                  onClick={() => {
+                    setOverrideLeftChevronTooltip(false);
+                    moveToRight();
+                  }}
                   size="icon"
                   // variant="default"
                 >
