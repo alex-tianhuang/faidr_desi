@@ -8,6 +8,7 @@ import {
   cn,
   formatTimeElapsed,
   mutationToString,
+  percentIdentity,
 } from "@/lib/utils";
 import { Alert } from "@/components/ui/alert";
 import FinalSequenceDiv from "@/components/finalSequenceDiv";
@@ -144,7 +145,7 @@ function GenerateMimicSubmissionArea(props: {
         </summary>
         <div className="mt-2 flex flex-col gap-2 p-4 border rounded-md border-input">
           <span className="flex-1 text-start text-md font-bold underline">
-            RNG Seed (optional)
+            RNG Seed
           </span>
           <span className="text-muted-foreground">
             You can input your own seed for the RNG or click the button on the
@@ -181,7 +182,32 @@ function GenerateMimicResultsArea(props: {
   return (
     <div className="flex flex-col gap-2 p-4 border rounded-md border-primary">
       {finalSequence ? (
-        <FinalSequenceDiv sequence={finalSequence}></FinalSequenceDiv>
+        <div className="flex flex-col border border-input rounded-md p-4 gap-2">
+          <span className="text-md font-bold underline">Designed Sequence</span>
+          <div className="flex flex-row items-center gap-2">
+            <span className="text-sm text-muted-foreground">
+              {percentIdentity(finalSequence, props.sequence).toFixed(1)}%
+              identity to user input sequence
+            </span>
+            <span className="text-muted-foreground">·</span>
+            <span className="text-sm text-muted-foreground">
+              {percentIdentity(
+                finalSequence,
+                progressData.iterations[0].sequence,
+              ).toFixed(1)}
+              % identity to random initial sequence
+            </span>
+            <span className="text-muted-foreground">·</span>
+            <span className="text-sm text-muted-foreground">
+              {percentIdentity(
+                props.sequence,
+                progressData.iterations[0].sequence,
+              ).toFixed(1)}
+              % identity between random initial sequence and user input sequence
+            </span>
+          </div>
+          <FinalSequenceDiv sequence={finalSequence}></FinalSequenceDiv>
+        </div>
       ) : error ? (
         <ErrorDiv title="Could not design sequence:" message={error}></ErrorDiv>
       ) : (
