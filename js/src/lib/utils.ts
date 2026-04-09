@@ -100,3 +100,21 @@ export function copyToClipboard(text: string) {
     document.body.removeChild(textarea);
   }
 }
+/**
+ * Compute the percent identity of two sequences,
+ * returning as a percentage.
+ * 
+ * If the two sequences are of different lengths,
+ * an error is thrown.
+ */
+export function percentIdentity(seqA: string, seqB: string): number {
+  if (seqA.length != seqB.length) {
+    throw new Error("[percentIdentity] passed in two sequences of different lengths")
+  }
+  const n = seqA.length;
+  let countId = 0;
+  for (let i = 0; i < n; i++) {
+    countId += Number(seqA[i] === seqB[i])
+  }
+  return countId / n * 100;
+}
