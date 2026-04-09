@@ -184,6 +184,7 @@ function GenerateMimicResultsArea(props: {
       {finalSequence ? (
         <div className="flex flex-col border border-input rounded-md p-4 gap-2">
           <span className="text-md font-bold underline">Designed Sequence</span>
+          <FinalSequenceDiv sequence={finalSequence}></FinalSequenceDiv>
           <div className="flex flex-row items-center gap-2">
             <span className="text-sm text-muted-foreground">
               {percentIdentity(finalSequence, props.sequence).toFixed(1)}%
@@ -206,7 +207,6 @@ function GenerateMimicResultsArea(props: {
               % identity between random initial sequence and user input sequence
             </span>
           </div>
-          <FinalSequenceDiv sequence={finalSequence}></FinalSequenceDiv>
         </div>
       ) : error ? (
         <ErrorDiv title="Could not design sequence:" message={error}></ErrorDiv>

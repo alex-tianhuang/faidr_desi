@@ -387,17 +387,12 @@ function GenerateKOResultsArea(props: {
         <ErrorDiv title="Could not design sequence:" message={error}></ErrorDiv>
       ) : finalSequence ? (
         <div className="flex flex-col border border-input rounded-md p-4 gap-2">
-          <div className="flex flex-row items-center gap-2">
-            <span className="text-md font-bold underline">
-              Designed Sequence
-            </span>
-            <span className="text-muted-foreground">·</span>
-            <span className="text-sm text-muted-foreground">
-              {percentIdentity(finalSequence, props.sequence).toFixed(1)}%
-              identity to user input sequence
-            </span>
-          </div>
+          <span className="text-md font-bold underline">Designed Sequence</span>
           <FinalSequenceDiv sequence={finalSequence}></FinalSequenceDiv>
+          <span className="text-sm text-muted-foreground">
+            {percentIdentity(finalSequence, props.sequence).toFixed(1)}%
+            identity to user input sequence
+          </span>
         </div>
       ) : (
         <Loading>
