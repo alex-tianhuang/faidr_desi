@@ -25,3 +25,10 @@ dist-ssr
 
 # wasm artifacts dir
 src/backend/rust
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
