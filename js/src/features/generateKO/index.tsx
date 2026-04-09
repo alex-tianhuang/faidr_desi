@@ -266,6 +266,13 @@ function GenerateKOTargetPicker(props: {
       defaultList.findIndex((item) => item.selected) === -1,
     [defaultList, KOList],
   );
+  const onlyOneItemSelected = useMemo(
+    () =>
+      !userProbablyNeedsHint &&
+      KOList.length === 0 &&
+      defaultList.filter((item) => item.selected).length === 1,
+    [userProbablyNeedsHint, defaultList, KOList],
+  );
   const [overrideLeftChevronTooltip, setOverrideLeftChevronTooltip] =
     useState(false);
   return (
@@ -283,6 +290,9 @@ function GenerateKOTargetPicker(props: {
               toggleSelect={() => {
                 if (!item.selected && userProbablyNeedsHint) {
                   setOverrideLeftChevronTooltip(true);
+                }
+                if (item.selected && onlyOneItemSelected) {
+                  setOverrideLeftChevronTooltip(false);
                 }
                 toggleSelect();
               }}
