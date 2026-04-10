@@ -1,7 +1,8 @@
 import { SEQUENCE_VALIDATION_PARAMETERS } from "@/lib/consts";
 import FEATURE_CONFIGURATION from "./data/kl_feature_configuration";
 import { test, expect } from "./fixtures";
-import { EXPECTED_FEATURE_VALUES, TEST_SEQUENCE } from "./data/featurize/features_reimplemented_test_data";
+import TEST_SEQUENCE from "./data/featurize/test_sequence";
+import EXPECTED_FEATURE_VALUES from "./data/featurize/expected_feature_values";
 
 test("features can reproduce old implementation", async ({ page }) => {
   const result = await page.evaluate(
