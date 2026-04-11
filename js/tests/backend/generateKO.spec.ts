@@ -7,7 +7,6 @@ import KO_FEATURE_TARGETS from "./data/generateKO/kl_ko_values_min";
 import { test, expect } from "./fixtures";
 import { Progress as GenerateMimicProgress } from "@/features/generateMimic/types";
 import type { Featurized } from "@/features/featurize/types";
-import scratch from "./data/generateKO/scratch";
 
 test("simple knockout design algorithm can reproduce old implementation", async ({ page }) => {
   // console.log(scratch)
