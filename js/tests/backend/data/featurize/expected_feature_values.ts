@@ -88,7 +88,7 @@ const MOTIF_DUMP_FEATURES = {
   "id=aromatic m=[FYW]": 31.0,
   "id=disorder_promoting m=[TAGRDHQKSEP]": 275.0,
   net_charge: 15.0,
-  WF_complexity: 0.8679172593313571 * (Math.log(20)), // WF complexity used to be reported in log 20 units
+  WF_complexity: 0.8679172593313571 * Math.log(20), // WF complexity used to be reported in log 20 units
   KL_hydropathy: -0.37540983606557377,
   isoelectric_point: 9.8779296875,
   FCR: 0.1885245901639344,
@@ -194,4 +194,7 @@ const WRAPPING_D_CLUSTER_FEATURES = {
   my_kappa: -1.80621305117198,
   my_omega: -1.4201716703554155,
 };
-export default [MOTIF_DUMP_FEATURES, WRAPPING_D_CLUSTER_FEATURES]
+export default [
+  MOTIF_DUMP_FEATURES,
+  WRAPPING_D_CLUSTER_FEATURES,
+];
