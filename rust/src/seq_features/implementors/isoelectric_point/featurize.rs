@@ -47,7 +47,7 @@ fn compute_isoelectric_point(residue_counts: &ResidueCounts) -> Result<f64, NoIs
     for (idx, &(aa, pka)) in PKAS_ALL.iter().enumerate() {
         counts_and_pkas[idx] = (residue_counts[aa] as f64, pka)
     }
-    bisect_search_isoelectric_point_legacy(|ph| {
+    bisect_search_isoelectric_point(|ph| {
         accurate_net_charge(ph, num_basic_res as f64, &counts_and_pkas)
     })
 }
@@ -102,37 +102,6 @@ fn bisect_search_isoelectric_point(func: impl Fn(f64) -> f64) -> Result<f64, NoI
     }
 }
 
-/// Search for the isoelectric point via bisection.
-///
-/// The `func` argument is a function from the pH to the charge,
-/// which requires information about the amino-acid composition of the sequence.
-/// 
-/// Dev note
-/// --------
-/// This argument is meant to reproduce the isoelectric point
-/// of some legacy code, because the better implementation above
-/// does not necessarily agree with this one.
-#[allow(unused)]
-fn bisect_search_isoelectric_point_legacy(func: impl Fn(f64) -> f64) -> Result<f64, NoIsoelectricPoint> {
-    const PH_TOLERANCE: f64 = 0.001;
-    let mut guess_ph = 0.0;
-    let mut min_ph = 0.0;
-    while func(guess_ph) > 0.0 {
-        min_ph = guess_ph;
-        guess_ph += 1.0;
-    }
-    let mut max_ph = 1.0 + min_ph;
-    while (max_ph - min_ph) > PH_TOLERANCE {
-        guess_ph = (max_ph + min_ph) / 2.0;
-        let charge = func(guess_ph);
-        if charge > 0.0 {
-            min_ph = guess_ph;
-        } else {
-            max_ph = guess_ph;
-        }
-    }
-    Ok(guess_ph)
-}
 /// Returned if the isoelectric point calculation fails to converge.
 ///
 /// This indicates the true isoelectric point is oustide the [0, 14] range,
