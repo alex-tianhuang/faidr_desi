@@ -5,7 +5,7 @@ import Link from "@/components/link";
 import { useMemo, useState } from "react";
 import {
   FEATURE_CONFIGURATION,
-  FEATURE_MEANS,
+  FEATURE_MEANS_FOR_ZSCORE,
   FEATURE_WEIGHTS,
   type IDRome,
 } from "@/lib/consts";
@@ -87,7 +87,7 @@ function featuresToIDRomeZscores(
         ? {
             case: "ok",
             value:
-              (value.value - (FEATURE_MEANS[idrome] as any)[featureID]) *
+              (value.value - (FEATURE_MEANS_FOR_ZSCORE[idrome] as any)[featureID]) *
               (FEATURE_WEIGHTS[idrome] as any)[featureID],
           }
         : value,

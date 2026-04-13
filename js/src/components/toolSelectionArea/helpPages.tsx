@@ -27,7 +27,7 @@ export function GenerateKOHelp() {
       <p className="text-sm max-w-xs leading-relaxed">
         A "feature knockout" starts from a reference (input) sequence and uses
         point mutations to try and drive a user-defined subset of features to
-        the IDRome average, while keeping the other sequence features unchanged.
+        the IDRome minimum, while keeping the other sequence features unchanged.
         This has been explored in this preprint:
       </p>
       <Link

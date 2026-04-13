@@ -116,7 +116,7 @@ export default function GenerateKOArea(props: {
         <>
           <IdromePicker
             disabled={requestStarted}
-            includeMeans={true}
+            includeMinimums={true}
             idromeState={idromeState}
           ></IdromePicker>
           <GenerateKOSubmissionArea
@@ -171,7 +171,7 @@ function GenerateKOHeader() {
         <p className="text-justify text-muted-foreground">
           {`Use this program to design a sequence that preserves ${NUM_FEATURES} sequence features of your inputted sequence, `}
           but set some sequence features that you want to ablate to the IDRome
-          average. In other words, it "knocks out" those features.
+          minimum. In other words, it "knocks out" those features.
         </p>
       </div>
     </>
@@ -209,7 +209,7 @@ function GenerateKOSubmissionArea(props: {
         <p>
           About the two lists below: the list on the left is the list of
           features to be preserved in your sequence, and the list on the right
-          is the list of features to set to IDRome average.
+          is the list of features to set to IDRome minimum.
         </p>
         <p>
           Pick features to knockout by clicking on the cards in the left list,
@@ -219,7 +219,7 @@ function GenerateKOSubmissionArea(props: {
         <p>
           In the list on the right, each of the cards should display the
           original feature value and the intended target value in the format
-          "(original value) → (IDRome average value)".
+          "(original value) → (IDRome minimum value)".
         </p>
       </div>
 
@@ -233,8 +233,8 @@ function GenerateKOSubmissionArea(props: {
       ></GenerateKOTargetPicker>
       <Alert>
         {numFeaturesKO > 0
-          ? `Setting ${numFeaturesKO} feature${numFeaturesKO > 1 ? "s" : ""} to IDRome average`
-          : "Please choose at least one feature to knockout (set to IDRome average)"}
+          ? `Setting ${numFeaturesKO} feature${numFeaturesKO > 1 ? "s" : ""} to IDRome minimum`
+          : "Please choose at least one feature to knockout (set to IDRome minimum)"}
       </Alert>
       {numFeaturesKO > 0 && (
         <div className="text-muted-foreground">
@@ -283,7 +283,7 @@ function GenerateKOTargetPicker(props: {
         leftListState={[defaultList, setDefaultList]}
         leftListTitle="Features to preserve"
         rightListState={[KOList, setKOList]}
-        rightListTitle="Features to set to IDRome average"
+        rightListTitle="Features to set to IDRome minimum"
         renderItem={(item, toggleSelect, whichList) => (
           <li key={item.propKey}>
             <GenerateKOFeatureCard

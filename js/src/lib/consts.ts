@@ -1,10 +1,12 @@
 import {
-  FEATURE_MEANS as YEAST_FEATURE_MEANS,
+  FEATURE_MINIMUMS as YEAST_FEATURE_MINIMUMS,
   FEATURE_WEIGHTS as YEAST_FEATURE_WEIGHTS,
+  FEATURE_MEANS as YEAST_FEATURE_MEANS,
 } from "./featureConfiguration/yeast";
 import {
-  FEATURE_MEANS as HUMAN_FEATURE_MEANS,
+  FEATURE_MINIMUMS as HUMAN_FEATURE_MINIMUMS,
   FEATURE_WEIGHTS as HUMAN_FEATURE_WEIGHTS,
+  FEATURE_MEANS as HUMAN_FEATURE_MEANS,
 } from "./featureConfiguration/human";
 /** The minimum sequence length good enough
  * for the scope of this project. */
@@ -17,10 +19,15 @@ export const SEQUENCE_VALIDATION_PARAMETERS = {
   omitMode: "strict",
   capitalizeMode: "strict",
 };
-/** IDRomes used as feature weights or means. */
+/** IDRomes used as feature weights, means, or minimums. */
 export type IDRome = "yeast" | "human";
-/** Feature means over different IDRomes for KO design. */
-export const FEATURE_MEANS: Record<IDRome, Record<string, number>> = {
+/** Feature minimums over different IDRomes for KO design. */
+export const FEATURE_MINIMUMS: Record<IDRome, Record<string, number>> = {
+  yeast: YEAST_FEATURE_MINIMUMS,
+  human: HUMAN_FEATURE_MINIMUMS,
+};
+/** Feature means over different IDRomes for Z-score computation. */
+export const FEATURE_MEANS_FOR_ZSCORE: Record<IDRome, Record<string, number>> = {
   yeast: YEAST_FEATURE_MEANS,
   human: HUMAN_FEATURE_MEANS,
 };

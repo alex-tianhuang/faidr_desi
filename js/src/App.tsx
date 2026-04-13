@@ -4,7 +4,7 @@ import ToolSelectionArea from "./components/toolSelectionArea";
 import GenerateMimicArea from "./features/generateMimic";
 import {
   FEATURE_CONFIGURATION,
-  FEATURE_MEANS,
+  FEATURE_MINIMUMS,
   FEATURE_WEIGHTS,
   NUM_FEATURES,
   type IDRome,
@@ -157,7 +157,7 @@ function PageFooter(props: {
         featureConfiguration={FEATURE_CONFIGURATION}
         featureWeights={FEATURE_WEIGHTS[idrome]}
         requestStartedState={requestStartedState}
-        KOFeatureTargets={FEATURE_MEANS[idrome]}
+        KOFeatureTargets={FEATURE_MINIMUMS[idrome]}
         idromeState={[idrome, setIdrome]}
       ></GenerateKOArea>
     );
