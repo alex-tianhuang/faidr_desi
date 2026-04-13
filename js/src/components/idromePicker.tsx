@@ -6,12 +6,12 @@ import { Toggle } from "./ui/toggle";
 export default function IdromePicker(props: {
   idromeState: [IDRome, (_: IDRome) => void];
   disabled: boolean;
-  includeMinimums: boolean;
+  forKO: boolean;
 }) {
   const {
     idromeState: [idrome, setIdrome],
     disabled,
-    includeMinimums,
+    forKO,
   } = props;
   return (
     <div
@@ -24,15 +24,15 @@ export default function IdromePicker(props: {
         Choose IDRome background
       </p>
       <p className="text-muted-foreground">
-        During design, features are treated as Z-scores against the {includeMinimums && "minimums and"}{" "}
-        standard deviations of a user-chosen IDRome. This way features that are
-        percentages (such as percent glycine) that range from 0-1 and features
-        that are counts (such as motifs) can be treated equally.
+        During design, features are scaled down by the standard deviations of a
+        user-chosen IDRome. This way features that are percentages (such as
+        percent glycine) that range from 0-1 and features that are counts (such
+        as motifs) can be treated equally.
       </p>
       <p className="text-muted-foreground">
-        Currently you can choose between {includeMinimums && " minimums and"}{" "}
-        weights generated from a human or a yeast IDRome. Click the buttons
-        below to change which IDRome is being used.
+        Currently you can choose between {forKO && " minimums and"} weights of
+        feature values in a human or a yeast IDRome. Click the buttons below to
+        change which IDRome is being used.
       </p>
 
       <div className="flex flex-row flex-wrap gap-2 items-center text-start w-full">
@@ -53,7 +53,7 @@ export default function IdromePicker(props: {
             pressed={idrome === option.key}
           >
             <span>
-              {option.name} IDRome {includeMinimums && "minimums and"} weights
+              {option.name} IDRome {forKO && "minimums and"} weights
             </span>
           </Toggle>
         ))}
@@ -61,7 +61,7 @@ export default function IdromePicker(props: {
       <Alert>
         <span>
           Using <span className="underline">{idrome}</span> IDRome
-          {includeMinimums && " minimums and"} weights for design.
+          {forKO && " minimums and"} weights for design.
         </span>
       </Alert>
     </div>

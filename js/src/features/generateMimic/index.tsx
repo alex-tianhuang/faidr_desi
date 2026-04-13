@@ -62,7 +62,7 @@ export default function GenerateMimicArea(props: {
       <GenerateMimicHeader />
       <IdromePicker
         disabled={requestStarted}
-        includeMinimums={false}
+        forKO={false}
         idromeState={idromeState}
       ></IdromePicker>
       <GenerateMimicSubmissionArea

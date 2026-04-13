@@ -116,7 +116,7 @@ export default function GenerateKOArea(props: {
         <>
           <IdromePicker
             disabled={requestStarted}
-            includeMinimums={true}
+            forKO={true}
             idromeState={idromeState}
           ></IdromePicker>
           <GenerateKOSubmissionArea
