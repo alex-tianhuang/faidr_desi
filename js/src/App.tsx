@@ -26,7 +26,7 @@ export default function Page() {
     }
   }, [sequence, tool]);
   return (
-    <>
+    <div className="flex flex-col h-screen w-screen">
       <Banner />
       <div className="flex flex-col item-center px-5 pt-2 pb-5 gap-2 min-w-80">
         <PageHeader
@@ -42,7 +42,7 @@ export default function Page() {
         ></PageContent>
       </div>
       <PageFooter />
-    </>
+    </div>
   );
 }
 function PageHeader(props: {
@@ -163,7 +163,7 @@ function PageContent(props: {
 }
 function PageFooter() {
   return (
-    <div className="bg-muted text-center text-sm pt-2 px-5 pb-3 border-t">
+    <div className="bg-muted text-center text-sm pt-2 px-5 pb-3 border-t h-full">
       Alan Moses / Julie Forman Kay Labs © 2026
     </div>
   );
