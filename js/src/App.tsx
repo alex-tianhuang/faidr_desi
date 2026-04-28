@@ -12,7 +12,7 @@ import {
 import FeaturizeArea from "./features/featurize";
 import GenerateKOArea from "./features/generateKO";
 import Link from "./components/link";
-import { ThemeToggle } from "./components/themeToggle";
+import Banner from "./components/banner";
 
 export default function Page() {
   const [sequence, setSequence] = useState<string | null>(null);
@@ -26,19 +26,22 @@ export default function Page() {
     }
   }, [sequence, tool]);
   return (
-    <div className="flex flex-col item-center m-5 gap-2 min-w-80">
-      <PageHeader
-        sequenceState={[sequence, setSequence]}
-        toolState={[tool, setTool]}
-        disabled={requestStarted}
-      ></PageHeader>
-      <PageFooter
-        sequence={sequence}
-        tool={tool}
-        requestStartedState={[requestStarted, setRequestStarted]}
-        idromeState={[idrome, setIdrome]}
-      ></PageFooter>
-    </div>
+    <>
+      <Banner/>
+      <div className="flex flex-col item-center mx-5 mt-2 mb-5 gap-2 min-w-80">
+        <PageHeader
+          sequenceState={[sequence, setSequence]}
+          toolState={[tool, setTool]}
+          disabled={requestStarted}
+        ></PageHeader>
+        <PageFooter
+          sequence={sequence}
+          tool={tool}
+          requestStartedState={[requestStarted, setRequestStarted]}
+          idromeState={[idrome, setIdrome]}
+        ></PageFooter>
+      </div>
+    </>
   );
 }
 function PageHeader(props: {
@@ -56,9 +59,6 @@ function PageHeader(props: {
   } = props;
   return (
     <div className="flex flex-col gap-2">
-      <div className="fixed top-4 right-4 z-50">
-        <ThemeToggle></ThemeToggle>
-      </div>
       <Preamble />
       <SequenceArea
         disabled={disabled || activeTool !== null}
@@ -74,7 +74,6 @@ function PageHeader(props: {
 function Preamble() {
   return (
     <div className="flex flex-col gap-2">
-      <p className="text-2xl font-bold text-center underline">FAIDR-desi</p>
       <p className="text-muted-foreground text-justify">
         Welcome to{" "}
         <span className="font-semibold">
