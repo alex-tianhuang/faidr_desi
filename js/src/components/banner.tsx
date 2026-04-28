@@ -2,10 +2,20 @@ import { ThemeToggle } from "./themeToggle";
 
 export default function Banner() {
   return (
-    <div className="sticky w-full top-0 px-5 pt-3 pb-2 shadow border-b text-center font-extrabold text-3xl underline bg-background z-50">
-      FAIDR-desi
-      <div className="fixed top-2 right-4">
-        <ThemeToggle></ThemeToggle>
+    <div className="flex flex-col sticky w-full top-0 px-5 pt-3 pb-2 shadow border-b bg-background gap-2 z-50">
+      <div className="text-center font-extrabold text-3xl underline">
+        FAIDR-Desi
+        <div className="absolute top-2.5 right-4">
+          <ThemeToggle></ThemeToggle>
+        </div>
+      </div>
+      <div className="text-center text-sm text-muted-foreground font-semibold">
+        <span className="underline">F</span>eature{" "}
+        <span className="underline">A</span>nalysis of{" "}
+        <span className="underline">I</span>ntrinsically{" "}
+        <span className="underline">D</span>isordered{" "}
+        <span className="underline">R</span>egions{" "}
+        <span className="underline">Desi</span>gn Tool
       </div>
     </div>
   );
