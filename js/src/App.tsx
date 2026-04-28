@@ -74,13 +74,15 @@ function PageHeader(props: {
 function Preamble() {
   return (
     <div className="flex flex-col gap-2">
-      <p className="text-2xl font-bold text-center underline">
-        Simple IDR Design
-      </p>
+      <p className="text-2xl font-bold text-center underline">FAIDR-desi</p>
       <p className="text-muted-foreground text-justify">
-        Welcome to a simple webapp that uses a greedy sequence feature matching
-        algorithm to design intrinsically disordered protein regions (IDRs).
-        This tool is based on{" "}
+        Welcome to{" "}
+        <span className="font-semibold">
+          FAIDR (Feature Analysis of Intrinsically Disordered Regions) desi(gn)
+        </span>
+        , a simple webapp that uses a greedy sequence feature matching algorithm
+        to design intrinsically disordered protein regions (IDRs). This tool is
+        based on{" "}
         <Link
           href="https://www.biorxiv.org/content/10.1101/2023.04.28.538739v1"
           inline={true}

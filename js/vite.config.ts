@@ -11,5 +11,5 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  base: "/idr/idrdesign-app"
+  base: "/idr/faidr-desi"
 })
