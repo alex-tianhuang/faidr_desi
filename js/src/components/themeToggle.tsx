@@ -1,5 +1,5 @@
 import { useTheme } from "next-themes";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Moon, Sun } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
