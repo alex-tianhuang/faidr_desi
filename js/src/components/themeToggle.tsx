@@ -1,5 +1,5 @@
 import { useTheme } from "next-themes";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Moon, Sun } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
@@ -10,13 +10,12 @@ export function ThemeToggle() {
   return (
     <Tooltip>
       <TooltipTrigger>
-        <Button
-          variant="ghost"
-          size="icon"
+        <div
+          className={buttonVariants({ variant: "ghost", size: "icon" })}
           onClick={() => setTheme(otherTheme)}
         >
           {resolvedTheme === "dark" ? <Sun /> : <Moon />}
-        </Button>
+        </div>
       </TooltipTrigger>
       <TooltipContent>Change to {otherTheme} mode</TooltipContent>
     </Tooltip>
