@@ -28,19 +28,20 @@ export default function Page() {
   return (
     <>
       <Banner />
-      <div className="flex flex-col item-center mx-5 mt-2 mb-5 gap-2 min-w-80">
+      <div className="flex flex-col item-center px-5 pt-2 pb-5 gap-2 min-w-80">
         <PageHeader
           sequenceState={[sequence, setSequence]}
           toolState={[tool, setTool]}
           disabled={requestStarted}
         ></PageHeader>
-        <PageFooter
+        <PageContent
           sequence={sequence}
           tool={tool}
           requestStartedState={[requestStarted, setRequestStarted]}
           idromeState={[idrome, setIdrome]}
-        ></PageFooter>
+        ></PageContent>
       </div>
+      <PageFooter />
     </>
   );
 }
@@ -114,7 +115,7 @@ function Preamble() {
     </div>
   );
 }
-function PageFooter(props: {
+function PageContent(props: {
   sequence: string | null;
   tool: "mimic" | "ko" | "feats" | null;
   requestStartedState: [boolean, (_: boolean) => void];
@@ -159,4 +160,11 @@ function PageFooter(props: {
       ></GenerateKOArea>
     );
   }
+}
+function PageFooter() {
+  return (
+    <div className="bg-muted text-center text-sm pt-2 px-5 pb-3 border-t">
+      Alan Moses / Julie Forman Kay Labs © 2026
+    </div>
+  );
 }
