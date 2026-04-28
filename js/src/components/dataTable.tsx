@@ -5,7 +5,7 @@ import {
   type ColumnDef,
 } from "@tanstack/react-table";
 import { generateCsv } from "export-to-csv";
-import type { AcceptedData } from "node_modules/export-to-csv/output/lib/types";
+import type { AcceptedData } from "@/../node_modules/export-to-csv/output/lib/types";
 import { Button } from "./ui/button";
 import {
   Table,
