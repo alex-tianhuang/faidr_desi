@@ -51,6 +51,7 @@ export default function IdromePicker(props: {
             onClick={() => setIdrome(option.key)}
             disabled={disabled}
             pressed={idrome === option.key}
+            key={option.key}
           >
             <span>
               {option.name} IDRome {forKO && "minimums and"} weights
