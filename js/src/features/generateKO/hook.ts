@@ -1,8 +1,14 @@
 import { useBackend, type RecvMessage } from "@/backend";
 import { SEQUENCE_VALIDATION_PARAMETERS } from "@/lib/consts";
 import { useState } from "react";
-import { InitializationError, Initialized, Progress, type ProgressRaw } from "./types";
+import {
+  InitializationError,
+  Initialized,
+  Progress,
+  type ProgressRaw,
+} from "./types";
 import { mutationToString } from "@/lib/utils";
+import z from "zod";
 
 export default function useGenerateKOEndpoint(args: {
   sequence: string;
@@ -45,13 +51,15 @@ export default function useGenerateKOEndpoint(args: {
       setProgressData({
         done: false,
         currentMutation: null,
-        iterations: [{
-          sequence,
-          featureDistance: r.data.featureDistance,
-          mutation: "",
-          iteration: 0
-        }]
-      })
+        iterations: [
+          {
+            sequence,
+            featureDistance: r.data.featureDistance,
+            mutation: "",
+            iteration: 0,
+          },
+        ],
+      });
       while (true) {
         const r = parseProgress(await recv());
         if (r.ctrl === "break") {
@@ -59,7 +67,11 @@ export default function useGenerateKOEndpoint(args: {
           return;
         }
         if (r.data.done) {
-          setProgressData(({ iterations }) => ({ done: true, currentMutation: null, iterations }));
+          setProgressData(({ iterations }) => ({
+            done: true,
+            currentMutation: null,
+            iterations,
+          }));
           return;
         }
         setProgressData(({ currentMutation, iterations }) => {
@@ -96,7 +108,13 @@ export default function useGenerateKOEndpoint(args: {
       });
       setProgressError(null);
     },
-    deps: [sequence, featureConfiguration, featureWeights, featureTargets, reqTimestamp],
+    deps: [
+      sequence,
+      featureConfiguration,
+      featureWeights,
+      featureTargets,
+      reqTimestamp,
+    ],
   });
   return {
     initError,
@@ -139,7 +157,7 @@ function parseInit(init: RecvMessage):
   }
   const de = Initialized.safeParse(init.data);
   if (!de.success) {
-    const reason = de.error.message;
+    const reason = z.prettifyError(de.error);
     return {
       ctrl: "break",
       error: reason,
@@ -183,7 +201,7 @@ function parseProgress(progress: RecvMessage):
   }
   const de = Progress.safeParse(progress.data);
   if (!de.success) {
-    const reason = de.error.message;
+    const reason = z.prettifyError(de.error);
     return {
       ctrl: "break",
       error: reason,

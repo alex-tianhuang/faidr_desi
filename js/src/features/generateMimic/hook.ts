@@ -3,6 +3,7 @@ import { SEQUENCE_VALIDATION_PARAMETERS } from "@/lib/consts";
 import { useState } from "react";
 import { InitializationError, Initialized, Progress, type ProgressRaw } from "./types";
 import { mutationToString } from "@/lib/utils";
+import z from "zod";
 
 export default function useGenerateMimicEndpoint(args: {
   sequence: string;
@@ -136,7 +137,7 @@ function parseInit(init: RecvMessage):
   }
   const de = Initialized.safeParse(init.data);
   if (!de.success) {
-    const reason = de.error.message;
+    const reason = z.prettifyError(de.error);
     return {
       ctrl: "break",
       error: reason,
@@ -180,7 +181,7 @@ function parseProgress(progress: RecvMessage):
   }
   const de = Progress.safeParse(progress.data);
   if (!de.success) {
-    const reason = de.error.message;
+    const reason = z.prettifyError(de.error);
     return {
       ctrl: "break",
       error: reason,

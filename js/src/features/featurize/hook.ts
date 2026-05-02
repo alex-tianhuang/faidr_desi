@@ -2,6 +2,7 @@ import { useBackend, type RecvMessage } from "@/backend";
 import { SEQUENCE_VALIDATION_PARAMETERS } from "@/lib/consts";
 import { useState } from "react";
 import { Featurized, Initialized, Progress } from "./types";
+import z from "zod";
 
 export default function useFeaturizeEndpoint(args: {
   sequence: string;
@@ -109,7 +110,7 @@ function parseProgress(progress: RecvMessage):
   }
   const de = Progress.safeParse(progress.data);
   if (!de.success) {
-    const reason = de.error.message;
+    const reason = z.prettifyError(de.error);
     return {
       ctrl: "break",
       error: reason,
