@@ -94,8 +94,8 @@ export default function SequenceArea(props: {
           disabled && "opacity-50",
         )}
       >
-        Try it out by pasting a sequence in the box below, uploading a sequence
-        file, or using the example sequence.
+        Paste a sequence in the box below, upload a sequence file or use the
+        example sequence.
       </p>
       <CodeMirror
         editable={!disabled}
