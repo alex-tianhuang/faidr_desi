@@ -27,7 +27,10 @@ export const FEATURE_MINIMUMS: Record<IDRome, Record<string, number>> = {
   human: HUMAN_FEATURE_MINIMUMS,
 };
 /** Feature means over different IDRomes for Z-score computation. */
-export const FEATURE_MEANS_FOR_ZSCORE: Record<IDRome, Record<string, number>> = {
+export const FEATURE_MEANS_FOR_ZSCORE: Record<
+  IDRome,
+  Record<string, number>
+> = {
   yeast: YEAST_FEATURE_MEANS,
   human: HUMAN_FEATURE_MEANS,
 };
@@ -126,7 +129,7 @@ export const FEATURE_CONFIGURATION = {
   },
   DEG_APCC_KENBOX_2: {
     compute: "regex-motif-count",
-    pattern: ".KEN.",
+    pattern: "KEN",
     takeAverage: false,
   },
   DEG_Kelch_Keap1_1: {
@@ -141,7 +144,7 @@ export const FEATURE_CONFIGURATION = {
   },
   DOC_ANK_TNKS_1: {
     compute: "regex-motif-count",
-    pattern: ".R..[PGAV][DEIP]G.",
+    pattern: "R..[PGAV][DEIP]G",
     takeAverage: false,
   },
   DOC_CYCLIN_RxL_1: {
@@ -161,7 +164,7 @@ export const FEATURE_CONFIGURATION = {
   },
   DOC_MAPK_NFAT4_5: {
     compute: "regex-motif-count",
-    pattern: "[RK][^P][^P][LIM].L.[LIVMF].",
+    pattern: "[RK][^P][^P][LIM].L.[LIVMF]",
     takeAverage: false,
   },
   DOC_MAPK_gen_1: {
@@ -171,12 +174,12 @@ export const FEATURE_CONFIGURATION = {
   },
   DOC_PP1_RVXF_1: {
     compute: "regex-motif-count",
-    pattern: "..[RK].{0,1}[VIL][^P][FW].",
+    pattern: "[RK].{0,1}[VIL][^P][FW]",
     takeAverage: false,
   },
   DOC_PP2A_B56_1: {
     compute: "regex-motif-count",
-    pattern: "([LMFYWIC]..I.E)|(L..[IVLWC].E).",
+    pattern: "([LMFYWIC]..I.E)|(L..[IVLWC].E)",
     takeAverage: false,
   },
   DOC_PP4_FxxP_1: {
@@ -186,7 +189,7 @@ export const FEATURE_CONFIGURATION = {
   },
   DOC_WW_Pin1_4: {
     compute: "regex-motif-count",
-    pattern: "...([ST])P.",
+    pattern: "([ST])P",
     takeAverage: false,
   },
   D_repeats: {
@@ -295,7 +298,7 @@ export const FEATURE_CONFIGURATION = {
   },
   LIG_EH_1: {
     compute: "regex-motif-count",
-    pattern: ".NPF.",
+    pattern: "NPF",
     takeAverage: false,
   },
   "LIG_HCF-1_HBM_1": {
@@ -325,27 +328,27 @@ export const FEATURE_CONFIGURATION = {
   },
   LIG_PAM2_1: {
     compute: "regex-motif-count",
-    pattern: "..[LFP][NS][PIVTAFL].A..(([FY].[PYLF])|(W..)).",
+    pattern: "[LFP][NS][PIVTAFL].A..(([FY].[PYLF])|(W..))",
     takeAverage: false,
   },
   LIG_PCNA_PIPBox_1: {
     compute: "regex-motif-count",
-    pattern: "[QM].[^FHWY][LIVM][^P][^PFWYMLIV](([FYHL][FYW])|([FYH][FYWL]))..",
+    pattern: "[QM].[^FHWY][LIVM][^P][^PFWYMLIV](([FYHL][FYW])|([FYH][FYWL]))",
     takeAverage: false,
   },
   LIG_PDZ_Class_1: {
     compute: "regex-motif-count",
-    pattern: "...[ST].[ACVILF]$",
+    pattern: "[ST].[ACVILF]$",
     takeAverage: false,
   },
   LIG_PDZ_Wminus1_1: {
     compute: "regex-motif-count",
-    pattern: ".W[ACGILV]$",
+    pattern: "W[ACGILV]$",
     takeAverage: false,
   },
   LIG_PTAP_UEV_1: {
     compute: "regex-motif-count",
-    pattern: ".P[TS]AP.",
+    pattern: "P[TS]AP",
     takeAverage: false,
   },
   LIG_PTB_Apo_2: {
@@ -370,7 +373,7 @@ export const FEATURE_CONFIGURATION = {
   },
   LIG_SH2_GRB2like: {
     compute: "regex-motif-count",
-    pattern: "(Y)([EDST]|[MLIVAFYHQW])N.",
+    pattern: "(Y)([EDST]|[MLIVAFYHQW])N",
     takeAverage: false,
   },
   LIG_SH2_NCK_1: {
@@ -390,7 +393,7 @@ export const FEATURE_CONFIGURATION = {
   },
   LIG_SH2_STAT5: {
     compute: "regex-motif-count",
-    pattern: "(Y)[VLTFIC]..",
+    pattern: "(Y)[VLTFIC]",
     takeAverage: false,
   },
   LIG_SH3_2: {
@@ -410,27 +413,27 @@ export const FEATURE_CONFIGURATION = {
   },
   MOD_CDK_SPK_2: {
     compute: "regex-motif-count",
-    pattern: "...([ST])P[RK]",
+    pattern: "([ST])P[RK]",
     takeAverage: false,
   },
   MOD_CDK_SPxK_1: {
     compute: "regex-motif-count",
-    pattern: "...([ST])P.[KR]",
+    pattern: "([ST])P.[KR]",
     takeAverage: false,
   },
   MOD_CDK_SPxxK_3: {
     compute: "regex-motif-count",
-    pattern: "...([ST])P..[RK]",
+    pattern: "([ST])P..[RK]",
     takeAverage: false,
   },
   MOD_CK1_1: {
     compute: "regex-motif-count",
-    pattern: "S..([ST])...",
+    pattern: "S..([ST])",
     takeAverage: false,
   },
   MOD_CK2_1: {
     compute: "regex-motif-count",
-    pattern: "...([ST])..E",
+    pattern: "([ST])..E",
     takeAverage: false,
   },
   MOD_DYRK1A_RPxSP_1: {
@@ -440,12 +443,12 @@ export const FEATURE_CONFIGURATION = {
   },
   MOD_GSK3_1: {
     compute: "regex-motif-count",
-    pattern: "...([ST])...[ST]",
+    pattern: "([ST])...[ST]",
     takeAverage: false,
   },
   "MOD_N-GLC_1": {
     compute: "regex-motif-count",
-    pattern: ".(N)[^P][ST]..",
+    pattern: "(N)[^P][ST]",
     takeAverage: false,
   },
   MOD_NMyristoyl: {
@@ -455,32 +458,32 @@ export const FEATURE_CONFIGURATION = {
   },
   MOD_PIKK_1: {
     compute: "regex-motif-count",
-    pattern: "...([ST])Q..",
+    pattern: "([ST])Q",
     takeAverage: false,
   },
   MOD_PKA_1: {
     compute: "regex-motif-count",
-    pattern: "[RK][RK].([ST])[^P]..",
+    pattern: "[RK][RK].([ST])[^P]",
     takeAverage: false,
   },
   MOD_PKA_2: {
     compute: "regex-motif-count",
-    pattern: ".R.([ST])[^P]..",
+    pattern: "R.([ST])[^P]",
     takeAverage: false,
   },
   MOD_PKB_1: {
     compute: "regex-motif-count",
-    pattern: "R.R..([ST])[^P]..",
+    pattern: "R.R..([ST])[^P]",
     takeAverage: false,
   },
   MOD_Plk_1: {
     compute: "regex-motif-count",
-    pattern: ".[DNE][^PG][ST](([FYILMVW]..)|([^PEDGKN][FWYLIVM]).)",
+    pattern: "[DNE][^PG][ST](([FYILMVW]..)|([^PEDGKN][FWYLIVM]).)",
     takeAverage: false,
   },
   MOD_ProDKin_1: {
     compute: "regex-motif-count",
-    pattern: "...([ST])P..",
+    pattern: "([ST])P",
     takeAverage: false,
   },
   MOD_SUMO_for_1: {
