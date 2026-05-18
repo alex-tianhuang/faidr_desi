@@ -33,7 +33,6 @@ test("features can reproduce old implementation", async ({ page }) => {
     modifiedSequences: {},
     phase: "initialized",
     sequenceValidationErrors: {},
-    statisticsIncluded: false,
   });
   const results = new Array(EXPECTED_FEATURE_VALUES.length);
   for (const yielded of result.yielded.slice(1)) {
