@@ -47,14 +47,6 @@ impl FeaturizerContextProvider {
             .as_ref()
             .expect("compiler should have setup residue counts in provider")
     }
-    /// Get some reusable memory from the context provider.
-    pub fn arena(&mut self) -> ArenaCtx<'_> {
-        ArenaCtx::new(
-            self.arena
-                .as_mut()
-                .expect("compiler should have setup arena in provider"),
-        )
-    }
     /// Get a [`Ctx2`] context.
     ///
     /// As of Feb 16th, 2026, this is for nardini spacing and SCD.
