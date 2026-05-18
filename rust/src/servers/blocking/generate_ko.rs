@@ -22,7 +22,6 @@ macro_rules! tri {
 pub async fn generate_ko(request: RequestPayload, sender: SenderHandle) -> Result<(), JsValue> {
     let RequestPayload {
         initial_sequence,
-        sequence_validation_settings,
         feature_configuration,
         feature_weights,
         feature_targets,
@@ -34,8 +33,7 @@ pub async fn generate_ko(request: RequestPayload, sender: SenderHandle) -> Resul
         feature_origin,
         initial_sequence: mut sequence,
     } = tri!(init_job_generate_ko(
-        initial_sequence,
-        sequence_validation_settings,
+        initial_sequence.into(),
         &feature_configuration,
         feature_weights,
         feature_targets,
@@ -77,14 +75,9 @@ pub async fn generate_ko(request: RequestPayload, sender: SenderHandle) -> Resul
 }
 mod init_job {
     use crate::{
-        AAStringValidationParameters, AAStringValidator,
-        adapters::{SenderHandle},
+        adapters::SenderHandle,
         datatypes::{
-            AACanonicalString, StandardError, into_standard_error,
-            webworker_messages::blocking::{
-                
-                generate_ko::{ClosePayload, Initialized, YieldPayload},
-            },
+            AACanonicalString, StandardError, aa_canonical_str, webworker_messages::blocking::generate_ko::{ClosePayload, Initialized, YieldPayload}
         },
 
         seq_features::featurize::{FeatureContainerUserFacing, Featurizer, FeaturizerCompilation},
@@ -107,8 +100,7 @@ mod init_job {
     /// generate a starting sequence,
     /// and send that to frontend.
     pub async fn init_job_generate_ko(
-        initial_sequence: String,
-        sequence_validation_settings: AAStringValidationParameters,
+        initial_sequence: AACanonicalString,
         feature_configuration: &FeatureContainerUserFacing,
         feature_weights: HashMap<String, f64>,
         feature_targets: HashMap<String, f64>,
@@ -148,9 +140,8 @@ mod init_job {
                     return Ok(ControlFlow::Break(()));
                 }
             };
-        let (initial_norm, initial_sequence) = match validate_one_sequence(
+        let initial_norm = match validate_one_sequence(
             &initial_sequence,
-            sequence_validation_settings,
             &mut featurizer,
             &feature_origin,
             &feature_weights,
@@ -178,24 +169,13 @@ mod init_job {
     /// Validate the sequence and then generate
     /// the initial feature space norm for the one given sequence.
     fn validate_one_sequence(
-        sequence: &str,
-        sequence_validation_settings: AAStringValidationParameters,
+        sequence: &aa_canonical_str,
         featurizer: &mut Featurizer,
         origin: &[f64],
         weights: &[f64],
-    ) -> Result<(f64, AACanonicalString), StandardError> {
-        AAStringValidator::new(sequence_validation_settings)
-            .validate_cow(sequence.as_bytes())
-            .map_err(into_standard_error)
-            .and_then(|seq| {
-                if seq.len() != sequence.len() {
-                    return Err(StandardError::from_str(
-                        "only strict sequence validation on frontend is currently supported",
-                    ));
-                }
-                let initial_norm = euclidean_design_norm(featurizer, &seq, origin, weights)?;
-                Ok((initial_norm, seq.into_owned()))
-            })
+    ) -> Result<f64, StandardError> {
+        let initial_norm = euclidean_design_norm(featurizer, sequence, origin, weights)?;
+        Ok(initial_norm)
     }
 
     /// Helper function for [`init_job_generate_ko`].

@@ -20,7 +20,6 @@ macro_rules! tri {
 pub async fn generate_mimic(request: RequestPayload, sender: SenderHandle) -> Result<(), JsValue> {
     let RequestPayload {
         target_sequence,
-        sequence_validation_settings,
         feature_configuration,
         feature_weights,
         rng,
@@ -32,8 +31,7 @@ pub async fn generate_mimic(request: RequestPayload, sender: SenderHandle) -> Re
         feature_origin,
         initial_sequence: mut sequence,
     } = tri!(init_job_generate_mimic(
-        target_sequence,
-        sequence_validation_settings,
+        target_sequence.into(),
         &feature_configuration,
         feature_weights,
         rng,
@@ -75,13 +73,9 @@ pub async fn generate_mimic(request: RequestPayload, sender: SenderHandle) -> Re
 }
 mod init_job {
     use crate::{
-        AAStringValidationParameters, AAStringValidator,
-        adapters::{SenderHandle},
+        adapters::SenderHandle,
         datatypes::{
-            AACanonicalString, AMINOACIDS, StandardError, into_standard_error,
-            webworker_messages::blocking::{
-                generate_mimic::{ClosePayload, Initialized, YieldPayload},
-            },
+            AACanonicalString, AMINOACIDS, StandardError, aa_canonical_str, webworker_messages::blocking::generate_mimic::{ClosePayload, Initialized, YieldPayload}
         },
         rng::{Rng, RngSpec},
         seq_features::featurize::{FeatureContainerUserFacing, Featurizer, FeaturizerCompilation},
@@ -105,8 +99,7 @@ mod init_job {
     /// generate a starting sequence,
     /// and send that to frontend.
     pub async fn init_job_generate_mimic(
-        sequence: String,
-        sequence_validation_settings: AAStringValidationParameters,
+        sequence: AACanonicalString,
         feature_configuration: &FeatureContainerUserFacing,
         feature_weights: HashMap<String, f64>,
         rng: RngSpec,
@@ -136,7 +129,7 @@ mod init_job {
                 }
             };
         let feature_origin =
-            match validate_one_sequence(&sequence, sequence_validation_settings, &mut featurizer) {
+            match validate_one_sequence(&sequence, &mut featurizer) {
                 Ok(origin) => origin,
                 Err(error) => {
                     let msg = ClosePayload::InitializationError(error);
@@ -184,21 +177,10 @@ mod init_job {
     /// Generate the target feature vector
     /// for the one given sequence.
     fn validate_one_sequence(
-        sequence: &str,
-        sequence_validation_settings: AAStringValidationParameters,
+        sequence: &aa_canonical_str,
         featurizer: &mut Featurizer,
     ) -> Result<Vec<f64>, StandardError> {
-        AAStringValidator::new(sequence_validation_settings)
-            .validate_cow(sequence.as_bytes())
-            .map_err(into_standard_error)
-            .and_then(|seq| {
-                if seq.len() != sequence.len() {
-                    return Err(StandardError::from_str(
-                        "only strict sequence validation on frontend is currently supported",
-                    ));
-                }
-                featurizer.featurize(&seq).collect::<Result<Vec<_>, _>>()
-            })
+        featurizer.featurize(&sequence).collect::<Result<Vec<_>, _>>()
     }
 
     /// Generate a random starting sequence

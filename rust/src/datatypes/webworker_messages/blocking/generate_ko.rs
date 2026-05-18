@@ -1,4 +1,4 @@
-use crate::{AAStringValidationParameters, seq_features::featurize::FeatureContainerUserFacing};
+use crate::{datatypes::sequences::AACanonicalStringStrict, seq_features::featurize::FeatureContainerUserFacing};
 pub use close_data::ClosePayload;
 use serde::Deserialize;
 use std::collections::HashMap;
@@ -9,9 +9,7 @@ pub use yield_data::{DesignIteration, Initialized, Progress, YieldPayload};
 #[serde(rename_all = "camelCase")]
 pub struct RequestPayload {
     /// The sequence to start from.
-    pub initial_sequence: String,
-    /// Parameters for the validation of the sequences.
-    pub sequence_validation_settings: AAStringValidationParameters,
+    pub initial_sequence: AACanonicalStringStrict,
     /// Features to compute.
     pub feature_configuration: FeatureContainerUserFacing,
     /// Target feature values for each feature.
