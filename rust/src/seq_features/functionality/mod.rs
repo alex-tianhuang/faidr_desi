@@ -36,10 +36,6 @@
 //! a really grotesque looking trait gives my linter an
 //! easier job of telling me what work I have left to do when
 //! I'm adding a new container of features.
-use crate::seq_features::functionality::{
-    compile::CompilableSeqFeats, featurize::FeaturizableSeqFeats,
-    featdim::FeatDim
-};
 pub(crate) mod compile;
 pub(crate) mod featurize;
 pub(crate) mod featdim;
