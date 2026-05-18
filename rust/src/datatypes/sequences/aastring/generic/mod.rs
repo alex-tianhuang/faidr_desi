@@ -1,11 +1,11 @@
 //! Module defining some generic "aminoacid string" datatypes,
 //! which are just wrappers around slices that can be cast safely to strings.
-//! 
+//!
 //! See [`aa_str`] and [`AAString`].
 use std::fmt::Debug;
 mod borrowed;
 mod owned;
-pub use borrowed::{NotAAStrError, aa_str};
+pub use borrowed::aa_str;
 pub use owned::{AAString, AAStringStrict};
 /// A one-byte datatype that is representable by a subset
 /// (single-byte, not arbitrary chars) of displayable characters.
