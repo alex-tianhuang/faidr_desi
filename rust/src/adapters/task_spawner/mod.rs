@@ -10,8 +10,6 @@ use tsify::Tsify;
 use wasm_bindgen::{UnwrapThrowExt, prelude::Closure};
 use web_sys::js_sys::{Function, Promise};
 mod scoped_handle;
-mod stream_handle;
-pub(crate) use stream_handle::StreamHandle;
 
 /// Wraps a `spawnBatch` handler which communicates with sub-workers
 /// to do (primarily blocking) tasks.
@@ -48,7 +46,6 @@ macro_rules! recv_js_to_rust {
         })
     };
 }
-pub(crate) use recv_js_to_rust;
 /// Shorthand for calling the `spawn_batch` JS closure in rust.
 macro_rules! call_spawn_batch {
     ($spawn_batch:expr, $msg:expr, $body_closure:expr) => {
@@ -60,7 +57,6 @@ macro_rules! call_spawn_batch {
         )
     };
 }
-pub(crate) use call_spawn_batch;
 impl TaskSpawner {
     /// Send a list of requests to sub-workers.
     ///
@@ -95,28 +91,6 @@ impl TaskSpawner {
             body_closure,
             spawn_batch_promise,
         }
-    }
-    /// Send a list of requests to sub-workers.
-    ///
-    /// Serialization of the `msg` into a JsValue should
-    /// never fail, or the backend will terminate.
-    ///
-    /// Dev note
-    /// --------
-    /// The difference between this and [`TaskSpawner::spawn_batch_scoped`]
-    /// is that this returns an object which can be pinned and iterated over.
-    ///
-    /// This is slightly more natural for my use cases in rust,
-    /// as it avoids the shenanigans involved in returning values to an outer
-    /// scope from an interior closure by using an `Rc<RefCell<..>>`.
-    ///
-    /// Unfortunately it took up a lot of dev time and was a bit rushed
-    /// and not yet tested in any capacity.
-    pub(crate) fn spawn_batch_streaming<T: AsRef<[JsValuePreserved]> + Serialize>(
-        &self,
-        req: Request<T>,
-    ) -> StreamHandle {
-        StreamHandle::new(serialize(&req), Function::clone(&self.spawn_batch))
     }
 
     /// Number of concurrent workers this spawner contains.

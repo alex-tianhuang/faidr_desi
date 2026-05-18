@@ -15,7 +15,6 @@ pub use sender::Sender;
 pub(crate) use sender::SenderHandle;
 use serde::Serialize;
 use serde_wasm_bindgen::Serializer;
-pub(crate) use task_spawner::StreamHandle;
 pub use task_spawner::TaskSpawner;
 use wasm_bindgen::JsValue;
 use wasm_bindgen::throw_str;
