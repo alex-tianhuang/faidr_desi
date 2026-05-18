@@ -7,4 +7,4 @@ pub use aaset::AASet;
 pub(crate) use aastring::{
     AACanonicalString, AACanonicalStringStrict, aa_canonical_str,
 };
-pub(crate) use aminoacid::{AAIndex, AMINOACIDS, Aminoacid, NotAminoacidError};
+pub(crate) use aminoacid::{AAIndex, AMINOACIDS, Aminoacid};

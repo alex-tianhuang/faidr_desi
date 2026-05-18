@@ -2,7 +2,7 @@ pub(crate) mod sequences;
 mod standard_error;
 pub(crate) mod webworker_messages;
 pub(crate) use sequences::{
-    AACanonicalString, AAIndex, AMINOACIDS, Aminoacid, NotAminoacidError, aa_canonical_str,
+    AACanonicalString, AAIndex, AMINOACIDS, Aminoacid, aa_canonical_str,
 };
 pub use sequences::{AAMap, AASet, JSFacingAAMap};
 pub use standard_error::{StandardError, into_standard_error};

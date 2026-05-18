@@ -43,16 +43,6 @@ impl<K, V> Default for PseudoMap<K, V> {
         Self(Vec::default())
     }
 }
-impl<K, V> PseudoMap<K, V> {
-    /// See [`Vec::with_capacity`].
-    pub fn with_capacity(capacity: usize) -> Self {
-        Self(Vec::with_capacity(capacity))
-    }
-    /// Re-interpret this `PseudoMap` as an owned vector.
-    pub fn into_vec(self) -> Vec<(K, V)> {
-        self.0
-    }
-}
 impl<'de, V: Deserialize<'de>> Deserialize<'de> for PseudoMap<String, V> {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where
