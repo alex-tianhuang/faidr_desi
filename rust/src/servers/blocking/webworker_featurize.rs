@@ -1,7 +1,7 @@
 use crate::{
     adapters::SenderHandle,
     datatypes::{
-        StandardStatisticsVec, aa_canonical_str,
+        aa_canonical_str,
         webworker_messages::{
             blocking::webworker_featurize::{RequestPayload, YieldPayload},
             common::featurize::Featurized,
