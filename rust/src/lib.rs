@@ -1,5 +1,4 @@
 mod adapters;
-mod batching;
 mod datatypes;
 mod rng;
 mod seq_features;
