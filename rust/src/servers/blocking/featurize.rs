@@ -5,17 +5,14 @@ use crate::{
         common::featurize::Featurized,
     },
     seq_features::featurize::FeaturizerCompilation,
-    servers::common::compile_and_validate_features,
+    servers::blocking::common::compile_and_validate_features,
 };
 use wasm_bindgen::JsValue;
 
 /// Endpoint for computing sequence features of many sequences.
 ///
 /// The user-facing contract is described in [`crate::datatypes::webworker_messages::non_blocking::featurize`].
-pub async fn featurize(
-    request: RequestPayload,
-    sender: SenderHandle,
-) -> Result<(), JsValue> {
+pub async fn featurize(request: RequestPayload, sender: SenderHandle) -> Result<(), JsValue> {
     let FeaturizerCompilation {
         feat_order,
         mut featurizer,

@@ -11,6 +11,7 @@ use wasm_bindgen::{JsValue, prelude::wasm_bindgen};
 mod featurize;
 mod generate_ko;
 mod generate_mimic;
+mod common;
 
 /// Shorthand for taking a future with output type `Result<(), JsValue>`
 /// and turning that into a future with unit output type.

@@ -82,7 +82,7 @@ mod init_job {
 
         seq_features::featurize::{FeatureContainerUserFacing, Featurizer, FeaturizerCompilation},
         seq_generator::{SeqGenerator, euclidean_design_norm},
-        servers::common::compile_and_validate_features,
+        servers::blocking::common::compile_and_validate_features,
     };
     use std::{collections::HashMap, ops::ControlFlow};
     use wasm_bindgen::JsValue;
