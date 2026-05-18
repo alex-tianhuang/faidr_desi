@@ -1,7 +1,6 @@
 import useFeaturizeEndpoint from "./hook";
 import { FeaturesTable } from "@/components/featuresTable";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import Link from "@/components/link";
+import { Alert } from "@/components/ui/alert";
 import { useMemo, useState } from "react";
 import {
   FEATURE_CONFIGURATION,
