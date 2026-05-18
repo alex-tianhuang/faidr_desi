@@ -2,7 +2,6 @@ mod aamap;
 mod aaset;
 mod aastring;
 mod aminoacid;
-pub(crate) use aamap::const_aamap;
 pub use aamap::{AAMap, JSFacingAAMap};
 pub use aaset::AASet;
 pub(crate) use aastring::{
