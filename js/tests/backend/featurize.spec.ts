@@ -30,7 +30,6 @@ test("features can reproduce old implementation", async ({ page }) => {
   expect(result.error).toBeNull();
   expect(result.closed).toEqual({ case: "ok" });
   expect(result.yielded[0]).toEqual({
-    featureCompileErrors: {},
     modifiedSequences: {},
     phase: "initialized",
     sequenceValidationErrors: {},
