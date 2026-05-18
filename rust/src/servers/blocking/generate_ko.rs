@@ -78,14 +78,13 @@ pub async fn generate_ko(request: RequestPayload, sender: SenderHandle) -> Resul
 mod init_job {
     use crate::{
         AAStringValidationParameters, AAStringValidator,
-        adapters::{PseudoMap, SenderHandle},
+        adapters::{SenderHandle},
         datatypes::{
             AACanonicalString, StandardError, into_standard_error,
             webworker_messages::blocking::{
                 
-                generate_ko::{ClosePayload, InitializationError, Initialized, YieldPayload},
+                generate_ko::{ClosePayload, Initialized, YieldPayload},
             },
-            webworker_messages::non_blocking::featurize
         },
 
         seq_features::featurize::{FeatureContainerUserFacing, Featurizer, FeaturizerCompilation},
@@ -118,18 +117,11 @@ mod init_job {
         let FeaturizerCompilation {
             mut featurizer,
             feat_order,
-            compile_errors,
+            ..
         } = match compile_and_validate_features(feature_configuration) {
             Ok(compiled) => compiled,
-            Err(featurize::InitializationError {
-                error,
-                feature_compile_errors,
-                ..
-            }) => {
-                let msg = ClosePayload::InitializationError(InitializationError {
-                    error,
-                    feature_compile_errors,
-                });
+            Err(error) => {
+                let msg = ClosePayload::InitializationError(error);
                 sender.send_close(&msg).await?;
                 return Ok(ControlFlow::Break(()));
             }
@@ -140,10 +132,7 @@ mod init_job {
             }) {
                 Ok(weights) => weights,
                 Err(error) => {
-                    let msg = ClosePayload::InitializationError(InitializationError {
-                        error,
-                        feature_compile_errors: PseudoMap::from(compile_errors),
-                    });
+                    let msg = ClosePayload::InitializationError(error);
                     sender.send_close(&msg).await?;
                     return Ok(ControlFlow::Break(()));
                 }
@@ -154,10 +143,7 @@ mod init_job {
             }) {
                 Ok(origin) => origin,
                 Err(error) => {
-                    let msg = ClosePayload::InitializationError(InitializationError {
-                        error,
-                        feature_compile_errors: PseudoMap::from(compile_errors),
-                    });
+                    let msg = ClosePayload::InitializationError(error);
                     sender.send_close(&msg).await?;
                     return Ok(ControlFlow::Break(()));
                 }
@@ -171,10 +157,7 @@ mod init_job {
         ) {
             Ok(data) => data,
             Err(error) => {
-                let msg = ClosePayload::InitializationError(InitializationError {
-                    error,
-                    feature_compile_errors: PseudoMap::from(compile_errors),
-                });
+                let msg = ClosePayload::InitializationError(error);
                 sender.send_close(&msg).await?;
                 return Ok(ControlFlow::Break(()));
             }

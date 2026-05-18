@@ -76,13 +76,12 @@ pub async fn generate_mimic(request: RequestPayload, sender: SenderHandle) -> Re
 mod init_job {
     use crate::{
         AAStringValidationParameters, AAStringValidator,
-        adapters::{PseudoMap, SenderHandle},
+        adapters::{SenderHandle},
         datatypes::{
             AACanonicalString, AMINOACIDS, StandardError, into_standard_error,
             webworker_messages::blocking::{
-                generate_mimic::{ClosePayload, InitializationError, Initialized, YieldPayload},
+                generate_mimic::{ClosePayload, Initialized, YieldPayload},
             },
-            webworker_messages::non_blocking::featurize
         },
         rng::{Rng, RngSpec},
         seq_features::featurize::{FeatureContainerUserFacing, Featurizer, FeaturizerCompilation},
@@ -116,18 +115,11 @@ mod init_job {
         let FeaturizerCompilation {
             mut featurizer,
             feat_order,
-            compile_errors,
+            ..
         } = match compile_and_validate_features(feature_configuration) {
             Ok(compiled) => compiled,
-            Err(featurize::InitializationError {
-                error,
-                feature_compile_errors,
-                ..
-            }) => {
-                let msg = ClosePayload::InitializationError(InitializationError {
-                    error,
-                    feature_compile_errors,
-                });
+            Err(error) => {
+                let msg = ClosePayload::InitializationError(error);
                 sender.send_close(&msg).await?;
                 return Ok(ControlFlow::Break(()));
             }
@@ -138,10 +130,7 @@ mod init_job {
             }) {
                 Ok(weights) => weights,
                 Err(error) => {
-                    let msg = ClosePayload::InitializationError(InitializationError {
-                        error,
-                        feature_compile_errors: PseudoMap::from(compile_errors),
-                    });
+                    let msg = ClosePayload::InitializationError(error);
                     sender.send_close(&msg).await?;
                     return Ok(ControlFlow::Break(()));
                 }
@@ -150,10 +139,7 @@ mod init_job {
             match validate_one_sequence(&sequence, sequence_validation_settings, &mut featurizer) {
                 Ok(origin) => origin,
                 Err(error) => {
-                    let msg = ClosePayload::InitializationError(InitializationError {
-                        error,
-                        feature_compile_errors: PseudoMap::from(compile_errors),
-                    });
+                    let msg = ClosePayload::InitializationError(error);
                     sender.send_close(&msg).await?;
                     return Ok(ControlFlow::Break(()));
                 }
@@ -167,10 +153,7 @@ mod init_job {
         ) {
             Ok(seq) => seq,
             Err(error) => {
-                let msg = ClosePayload::InitializationError(InitializationError {
-                    error,
-                    feature_compile_errors: PseudoMap::from(compile_errors),
-                });
+                let msg = ClosePayload::InitializationError(error);
                 sender.send_close(&msg).await?;
                 return Ok(ControlFlow::Break(()));
             }

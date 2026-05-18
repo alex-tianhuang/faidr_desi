@@ -142,7 +142,7 @@ function parseInit(init: RecvMessage):
     if (init.case === "close") {
       const de = InitializationError.safeParse(init.data);
       const reason = de.success
-        ? de.data.error.reason
+        ? de.data.reason
         : "Unexpected error occurred.";
       return {
         ctrl: "break",

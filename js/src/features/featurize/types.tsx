@@ -2,14 +2,9 @@ import z from "zod";
 export const StandardError = z.object({
   reason: z.string(),
 });
-export const Initialized = z.object({
-  featureCompileErrors: z.record(z.string(), StandardError),
-})
 export const InitializationError = z.object({
   case: z.literal("initialization-error"),
-  error: z.object({
-    reason: z.string(),
-  }),
+  reason: z.string(),
 });
 export const Featurized = z.discriminatedUnion("case", [
   z.object({

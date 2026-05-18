@@ -1,9 +1,8 @@
 use crate::{
     AAStringValidationParameters, AAStringValidator,
-    adapters::PseudoMap,
+    adapters::{PseudoMap, serialize},
     datatypes::{
         AACanonicalString, StandardError, into_standard_error,
-        webworker_messages::non_blocking::featurize::InitializationError,
     },
     seq_features::featurize::{
         FeatureContainerUserFacing, Featurizer, FeaturizerCompilation, compile_features,
@@ -32,7 +31,7 @@ pub struct ValidatedSequences {
 pub fn validate_sequences(
     sequences: Vec<String>,
     validation_params: AAStringValidationParameters,
-) -> Result<ValidatedSequences, InitializationError<'static>> {
+) -> Result<ValidatedSequences, StandardError> {
     let mut unmodified_sequences = Vec::with_capacity(sequences.len());
     let mut modified_sequences = PseudoMap::default();
     let mut sequence_validation_errors = PseudoMap::default();
@@ -57,11 +56,7 @@ pub fn validate_sequences(
     }
     let num_validated_sequences = unmodified_sequences.len() + modified_sequences.len();
     if num_validated_sequences == 0 {
-        Err(InitializationError {
-            error: StandardError::from_str("no sequences passed validation"),
-            sequence_validation_errors,
-            feature_compile_errors: PseudoMap::default(),
-        })
+        Err(StandardError::from_str("sequence failed to validate"))
     } else {
         Ok(ValidatedSequences {
             unmodified_sequences,
@@ -75,14 +70,12 @@ pub fn validate_sequences(
 /// If the featurizer is empty, it returns only the compile errors.
 pub fn compile_and_validate_features<'a>(
     feature_configuration: &'a FeatureContainerUserFacing,
-) -> Result<FeaturizerCompilation<'a, Featurizer>, InitializationError<'a>> {
+) -> Result<FeaturizerCompilation<'a, Featurizer>, StandardError> {
     let compiled = compile_features::<Featurizer>(&feature_configuration);
-    if compiled.feat_order.is_empty() {
-        Err(InitializationError {
-            error: StandardError::from_str("not able to compile any features into featurizer"),
-            sequence_validation_errors: PseudoMap::default(),
-            feature_compile_errors: PseudoMap::from(compiled.compile_errors),
-        })
+    if !compiled.compile_errors.is_empty() {
+        web_sys::console::error_2(&"failed to compile the following features".into(), &serialize(&compiled.compile_errors));
+        // Err(StandardError::from_str("featurizer failed to fully compile"))
+        Ok(compiled)
     } else {
         Ok(compiled)
     }

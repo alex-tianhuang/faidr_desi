@@ -63,7 +63,7 @@ pub async fn featurize(
 mod initialize {
     use crate::{
         AAStringValidationParameters,
-        adapters::{PseudoMap, SenderHandle},
+        adapters::SenderHandle,
         datatypes::{
             AACanonicalString,
             webworker_messages::non_blocking::featurize::{
@@ -124,24 +124,19 @@ mod initialize {
             && determine_if_statistics_can_be_included(
                 unmodified_sequences.len() + modified_sequences.len(),
             );
-        let FeaturizerCompilation {
-            feat_order,
-            compile_errors,
-            ..
-        } = match compile_and_validate_features(&feature_configuration) {
-            Ok(data) => data,
-            Err(mut error) => {
-                error.sequence_validation_errors = sequence_validation_errors;
-                sender
-                    .send_close(&ClosePayload::InitializationError(error))
-                    .await?;
-                return Ok(ControlFlow::Break(()));
-            }
-        };
+        let FeaturizerCompilation { feat_order, .. } =
+            match compile_and_validate_features(&feature_configuration) {
+                Ok(data) => data,
+                Err(error) => {
+                    sender
+                        .send_close(&ClosePayload::InitializationError(error))
+                        .await?;
+                    return Ok(ControlFlow::Break(()));
+                }
+            };
         let initialized = Initialized {
             sequence_validation_errors,
             modified_sequences,
-            feature_compile_errors: PseudoMap::from(compile_errors),
             statistics_included,
         };
         let sender = sender

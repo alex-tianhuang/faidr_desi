@@ -186,6 +186,14 @@ function GenerateMimicResultsArea(props: {
     useGenerateMimicEndpoint(props);
   const error = initError ?? progressError;
 
+  if (error) {
+    return (
+      <UnexpectedError
+        while="designing your feature mimic sequence"
+        error={error}
+      ></UnexpectedError>
+    );
+  }
   const finalSequence =
     (progressData.done ? progressData.iterations.at(-1)?.sequence : null) ??
     null;
@@ -219,8 +227,6 @@ function GenerateMimicResultsArea(props: {
             </span>
           </div>
         </div>
-      ) : error ? (
-        <ErrorDiv title="Could not design sequence:" message={error}></ErrorDiv>
       ) : (
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <Loading>

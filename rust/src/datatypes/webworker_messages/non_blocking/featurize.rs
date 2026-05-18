@@ -12,7 +12,7 @@
 //! - sequence features for a batch of sequences (retrievable by index)
 //! - statistics for sequence features across this job cumulatively
 //! It returns unit (equivalent to nothing) on a successful finish.
-pub use close_data::{ClosePayload, InitializationError};
+pub use close_data::ClosePayload;
 use serde::Deserialize;
 pub use statistics::StandardFeatureStatistics;
 use tsify::Tsify;
@@ -43,7 +43,7 @@ pub struct RequestPayload {
     ///         "0": {
     ///             // Features or errors for 1st sequence in list
     ///         },
-    ///         "1": { 
+    ///         "1": {
     ///             // Features or errors for 2nd sequence in list
     ///         },
     ///         // ...
@@ -57,15 +57,16 @@ pub struct RequestPayload {
     pub feature_configuration: FeatureContainerUserFacing,
     /// Whether or not to return feature statistics,
     /// if there are enough sequences for it.
-    pub statistics_included: bool
+    pub statistics_included: bool,
 }
 mod yield_data {
     use crate::{
         adapters::PseudoMap,
         datatypes::{
-            AACanonicalString, StandardError, webworker_messages::{
+            AACanonicalString, StandardError,
+            webworker_messages::{
                 common::featurize::Featurized, non_blocking::featurize::StandardFeatureStatistics,
-            }
+            },
         },
     };
     use serde::Serialize;
@@ -76,23 +77,20 @@ mod yield_data {
     pub enum YieldPayload<'a> {
         /// Response yielded after sequence validation
         /// and featurizer compilation.
-        Initialized(&'a Initialized<'a>),
+        Initialized(&'a Initialized),
         /// Response yielded for the rest of the job.
         Progress(&'a Progress<'a>),
     }
     /// Sequence validation and feature compilation results.
     #[derive(Serialize)]
     #[serde(rename_all = "camelCase")]
-    pub struct Initialized<'a> {
+    pub struct Initialized {
         /// Sequences which do not pass validation,
         /// and the error associated with it.
         pub sequence_validation_errors: PseudoMap<u32, StandardError>,
         /// Sequences that were modified (capitalized, trimmed, etc.)
         /// during validation.
         pub modified_sequences: PseudoMap<u32, AACanonicalString>,
-        /// Features which could not compile,
-        /// and the error associated with it.
-        pub feature_compile_errors: PseudoMap<&'a str, StandardError>,
         /// Whether or not statistics will be included in responses
         /// from this endpoint.
         pub statistics_included: bool,
@@ -122,7 +120,7 @@ mod yield_data {
         pub sequence_by_feature_matrix: PseudoMap<u32, PseudoMap<&'a str, Featurized>>,
         /// Counts, means, variances, and correlations of features.
         /// These results are cumulative.
-        /// 
+        ///
         /// Statistics are not included if there are too few sequences.
         /// That is indicated in the [`Initialized`] message.
         #[serde(skip_serializing_if = "Option::is_none")]
@@ -131,31 +129,19 @@ mod yield_data {
 }
 
 mod close_data {
-    use crate::{adapters::PseudoMap, datatypes::StandardError};
     use serde::Serialize;
+
+    use crate::datatypes::StandardError;
 
     /// Response type that terminates a job at the
     /// public `featurize` endpoint.
     #[derive(Serialize)]
     #[serde(tag = "case", rename_all = "kebab-case")]
-    pub enum ClosePayload<'a> {
+    pub enum ClosePayload {
         /// Job completed.
         Ok,
         /// Job failed to initialize for some reason.
-        InitializationError(InitializationError<'a>),
-    }
-    /// Reason that a job could not be initialized.
-    #[derive(Serialize)]
-    #[serde(rename_all = "camelCase")]
-    pub struct InitializationError<'a> {
-        /// The main/overall reason the job failed.
-        pub error: StandardError,
-        /// Sequences that could not be validated (labelled by index),
-        /// along with the error that caused it.
-        pub sequence_validation_errors: PseudoMap<u32, StandardError>,
-        /// Features that could not compiled (labelled by feature ID),
-        /// along with the error that caused it.
-        pub feature_compile_errors: PseudoMap<&'a str, StandardError>,
+        InitializationError(StandardError),
     }
 }
 mod statistics {

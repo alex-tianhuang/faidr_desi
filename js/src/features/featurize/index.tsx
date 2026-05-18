@@ -41,24 +41,25 @@ export default function FeaturizeArea(props: {
   return (
     <div className="flex flex-col gap-2">
       <FeaturizeHeader />
-      {error && (
+      {error ? (
         <UnexpectedError
           while="computing sequence features of your input sequence"
           error={error}
         ></UnexpectedError>
+      ) : (
+        <FeaturizeResultsArea
+          featurized={featurized}
+          postProcessingState={[
+            postProcessing,
+            (option) => {
+              setPostProcessing(option);
+              if (option === "yeast" || option === "human") {
+                setIdrome(option);
+              }
+            },
+          ]}
+        ></FeaturizeResultsArea>
       )}
-      <FeaturizeResultsArea
-        featurized={featurized}
-        postProcessingState={[
-          postProcessing,
-          (option) => {
-            setPostProcessing(option);
-            if (option === "yeast" || option === "human") {
-              setIdrome(option);
-            }
-          },
-        ]}
-      ></FeaturizeResultsArea>
     </div>
   );
 }

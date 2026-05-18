@@ -1,7 +1,7 @@
 use crate::{
     AAStringValidationParameters, rng::RngSpec, seq_features::featurize::FeatureContainerUserFacing,
 };
-pub use close_data::{ClosePayload, InitializationError};
+pub use close_data::ClosePayload;
 use serde::Deserialize;
 use std::collections::HashMap;
 pub use yield_data::{DesignIteration, Initialized, Progress, YieldPayload};
@@ -22,7 +22,10 @@ pub struct RequestPayload {
     pub rng: RngSpec,
 }
 mod yield_data {
-    use crate::{datatypes::{AACanonicalString, aa_canonical_str}, seq_generator::PointMutation};
+    use crate::{
+        datatypes::{AACanonicalString, aa_canonical_str},
+        seq_generator::PointMutation,
+    };
     use serde::Serialize;
     /// Progress type returned at the `generate-mimic` endpoint.
     #[derive(Serialize)]
@@ -40,7 +43,7 @@ mod yield_data {
     #[serde(rename_all = "camelCase")]
     pub struct Initialized<'a> {
         pub feature_distance: f64,
-        pub sequence: &'a aa_canonical_str
+        pub sequence: &'a aa_canonical_str,
     }
     /// Response containing data for a batch of design iterations.
     #[derive(Serialize)]
@@ -65,26 +68,16 @@ mod yield_data {
     }
 }
 mod close_data {
-    use crate::{adapters::PseudoMap, datatypes::StandardError};
+    use crate::datatypes::StandardError;
     use serde::Serialize;
 
     /// Terminating response for the `generate-mimic` endpoint.
     #[derive(Serialize)]
     #[serde(tag = "case", rename_all = "kebab-case")]
-    pub enum ClosePayload<'a> {
+    pub enum ClosePayload {
         /// Sequence was designed successfully.
         Ok,
         /// Sequence validation or feature compilation failed.
-        InitializationError(InitializationError<'a>),
-    }
-    /// Reason that a job could not be initialized.
-    #[derive(Serialize)]
-    #[serde(rename_all = "camelCase")]
-    pub struct InitializationError<'a> {
-        /// The main/overall reason the job failed.
-        pub error: StandardError,
-        /// Features that could not compiled (labelled by feature ID),
-        /// along with the error that caused it.
-        pub feature_compile_errors: PseudoMap<&'a str, StandardError>,
+        InitializationError(StandardError),
     }
 }

@@ -1,7 +1,7 @@
 import { useBackend, type RecvMessage } from "@/backend";
 import { SEQUENCE_VALIDATION_PARAMETERS } from "@/lib/consts";
 import { useState } from "react";
-import { Featurized, Initialized, Progress } from "./types";
+import { Featurized, InitializationError, Progress } from "./types";
 import z from "zod";
 
 export default function useFeaturizeEndpoint(args: {
@@ -65,19 +65,18 @@ function parseInit(init: RecvMessage):
       error: null,
     };
   if (init.case !== "yield") {
-    const reason =
-      init.case === "error" ? init.reason : "Unexpected error occurred.";
-    return {
-      ctrl: "break",
-      error: reason,
-    };
-  }
-  const r = Initialized.safeParse(init.data);
-  if (!r.success) {
-    const reason = `${r.error}`;
-    return {
-      ctrl: "break",
-      error: reason
+    if (init.case === "error") {
+      return {
+        ctrl: "break",
+        error: init.reason,
+      };
+    } else {
+      const r = InitializationError.safeParse(init.data);
+      console.log(init.data);
+      return {
+        ctrl: "break",
+        error: r.success ? r.data.reason : z.prettifyError(r.error),
+      };
     }
   }
   return {

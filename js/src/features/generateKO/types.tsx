@@ -1,10 +1,7 @@
 import z from "zod";
 export const InitializationError = z.object({
   case: z.literal("initialization-error"),
-  error: z.object({
-    reason: z.string(),
-  }),
-  // featureCompileErrors: // PseudoMap<&'a str, StandardError>,
+  reason: z.string(),
 });
 
 export const Initialized = z.object({

@@ -1,5 +1,5 @@
 use crate::{AAStringValidationParameters, seq_features::featurize::FeatureContainerUserFacing};
-pub use close_data::{ClosePayload, InitializationError};
+pub use close_data::ClosePayload;
 use serde::Deserialize;
 use std::collections::HashMap;
 pub use yield_data::{DesignIteration, Initialized, Progress, YieldPayload};
@@ -46,7 +46,7 @@ mod yield_data {
         pub iterations: &'a [DesignIteration],
         // the latest mutation being worked on
         #[serde(skip_serializing_if = "Option::is_none")]
-        pub current_mutation: Option<PointMutation>
+        pub current_mutation: Option<PointMutation>,
     }
     /// Data associated to a single design iteration.
     #[derive(Serialize)]
@@ -62,26 +62,16 @@ mod yield_data {
     }
 }
 mod close_data {
-    use crate::{adapters::PseudoMap, datatypes::StandardError};
+    use crate::datatypes::StandardError;
     use serde::Serialize;
 
     /// Terminating response for the `generate-ko` endpoint.
     #[derive(Serialize)]
     #[serde(tag = "case", rename_all = "kebab-case")]
-    pub enum ClosePayload<'a> {
+    pub enum ClosePayload {
         /// Sequence was designed successfully.
         Ok,
         /// Sequence validation or feature compilation failed.
-        InitializationError(InitializationError<'a>),
-    }
-    /// Reason that a job could not be initialized.
-    #[derive(Serialize)]
-    #[serde(rename_all = "camelCase")]
-    pub struct InitializationError<'a> {
-        /// The main/overall reason the job failed.
-        pub error: StandardError,
-        /// Features that could not compiled (labelled by feature ID),
-        /// along with the error that caused it.
-        pub feature_compile_errors: PseudoMap<&'a str, StandardError>,
+        InitializationError(StandardError),
     }
 }

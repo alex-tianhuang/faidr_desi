@@ -15,7 +15,7 @@ import {
 } from "@/lib/utils";
 import FinalSequenceDiv from "@/components/finalSequenceDiv";
 import ErrorDiv from "@/components/errorDiv";
-import { Alert } from "@/components/ui/alert";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   Tooltip,
   TooltipContent,
@@ -387,15 +387,31 @@ function GenerateKOResultsArea(props: {
   const finalSequence =
     (progressData.done ? progressData.iterations.at(-1)?.sequence : null) ??
     null;
-  const checkError =
-    progressData?.done && progressData.iterations.length === 1
-      ? "Starting sequence is already at local optimum in feature space.\nThis can happen when too few features are allowed to vary and the system becomes overconstrained.\nWe recommend choosing more or different features to knockout."
-      : null;
-  const error = initError ?? progressError ?? checkError;
+  const error = initError ?? progressError;
+  if (error) {
+    return (
+      <UnexpectedError
+        while="designing your knock out sequence"
+        error={error}
+      ></UnexpectedError>
+    );
+  }
+  const localOptError =
+    progressData?.done && progressData.iterations.length === 1;
   return (
     <div className="flex flex-col gap-2 p-4 border rounded-md border-primary">
-      {error ? (
-        <ErrorDiv title="Could not design sequence:" message={error}></ErrorDiv>
+      {localOptError ? (
+        <Alert variant="destructive">
+          <AlertTitle>
+            {"We're sorry! We could not design your knock out sequence."}
+          </AlertTitle>
+          <AlertDescription>
+            Starting sequence is already at local optimum in feature space. This
+            can happen when too few features are allowed to vary and the system
+            becomes overconstrained. We recommend choosing more or different
+            features to knockout.
+          </AlertDescription>
+        </Alert>
       ) : finalSequence ? (
         <div className="flex flex-col border border-input rounded-md p-4 gap-2">
           <span className="text-md font-bold underline">Designed Sequence</span>
