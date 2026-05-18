@@ -31,7 +31,7 @@ use crate::{
             percent_resgroup::PercentResidueGroup,
             percent_residue::PercentResidue, regex_motifs::RegexMotifs, repeat_spans::RepeatSpans,
             sequence_charge_decoration::SCD, sequence_complexity::SequenceComplexity,
-            sequence_hydropathy_decoration::SHD, simple_score::SimpleScore,
+            simple_score::SimpleScore,
             simple_spacing::SimpleSpacingContainer,
         },
     },
@@ -79,9 +79,6 @@ r#macro::define_compiler_and_featurizer! {
             #[ftz(context = provider.ctx2())]
             #[ftz(map_err = into_standard_error)]
             let scd: SCD;
-            #[ftz(context = provider.arena())]
-            #[ftz(map_err = into_standard_error)]
-            let shd: SHD;
             #[ftz(context = provider.residue_counts())]
             #[ftz(map_err = into_standard_error)]
             let log_ratio: LogRatioContainer;
@@ -127,7 +124,6 @@ r#macro::define_compiler_and_featurizer! {
             match data {
                 SeqFeatureUserFacing::IsoelectricPoint => tri!(isoelectric_point.compile(&(), feature_id)),
                 SeqFeatureUserFacing::SCD => tri!(scd.compile(&(), feature_id)),
-                SeqFeatureUserFacing::SHD => tri!(shd.compile(&(), feature_id)),
                 SeqFeatureUserFacing::LogRatio(data) => tri!(log_ratio.compile(data, feature_id)),
                 SeqFeatureUserFacing::PercentResGroup(data) => {
                     tri!(percent_res_group.compile(data, feature_id))
@@ -154,8 +150,7 @@ r#macro::define_compiler_and_featurizer! {
                 || percent_residue.has_features()
                 || sequence_complexity.has_features()
                 || simple_score.has_features();
-            let needs_arena = scd.has_features()
-                || shd.has_features();
+            let needs_arena = scd.has_features();
             FeaturizerContextProvider::new(
                 needs_residue_counts, needs_arena
             )

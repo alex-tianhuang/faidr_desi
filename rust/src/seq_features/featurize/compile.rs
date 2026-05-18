@@ -81,8 +81,6 @@ pub enum SeqFeatureUserFacing {
     IsoelectricPoint,
     #[serde(rename = "scd")]
     SCD,
-    #[serde(rename = "shd")]
-    SHD,
     LogRatio(LogRatioUserFacing),
     PercentResGroup(PercentResidueGroupUserFacing),
     PercentResidue(PercentResidueUserFacing),

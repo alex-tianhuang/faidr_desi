@@ -7,7 +7,6 @@ pub(crate) mod repeat_spans;
 pub(crate) mod regex_motifs;
 pub(crate) mod sequence_charge_decoration;
 pub(crate) mod sequence_complexity;
-pub(crate) mod sequence_hydropathy_decoration;
 pub(crate) mod simple_score;
 pub(crate) mod simple_spacing;
 /// Token to signify that two identical features are
