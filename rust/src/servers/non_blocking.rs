@@ -1,8 +1,14 @@
 use super::is_hup_error;
 use crate::{Receiver, Sender, TaskSpawner, datatypes::webworker_messages::get_connection_id};
-use wasm_bindgen::{JsValue, prelude::wasm_bindgen};
-mod featurize;
-mod forward;
+use crate::{
+    ResponsePayloadWithWorkerID,
+    adapters::SenderHandle,
+    datatypes::{Request, Response},
+};
+use serde_wasm_bindgen::from_value;
+use wasm_bindgen::JsValue;
+use wasm_bindgen::prelude::wasm_bindgen;
+use wasm_bindgen_futures::future_to_promise;
 
 /// Shorthand for taking a future with output type `Result<(), JsValue>`
 /// and turning that into a future with unit output type for
@@ -68,6 +74,48 @@ pub async fn non_blocking_server(
                 .into());
             }
         };
-        new_task!(forward::forward_request(received, &task_spawner, sender));
+        new_task!(forward_request(received, &task_spawner, sender));
     }
+}
+
+/// Forward the received request into the [`TaskSpawner`].
+///
+/// All responses from the given job are propagated
+/// back to the [`SenderHandle`].
+///
+/// This function panics if the `request` does not have a `data` field.
+/// Use [`crate::datatypes::webworker_messages::non_blocking::request_is_forwardable`] to validate this.
+pub fn forward_request(
+    request: JsValue,
+    task_spawner: &TaskSpawner,
+    sender: SenderHandle,
+) -> impl Future<Output = Result<(), JsValue>> + 'static {
+    let Request { data } = from_value(request).expect("expected request with `data` field");
+    let request = Request { data: [data] };
+    let task = task_spawner.spawn_batch_scoped(request, |recv| {
+        future_to_promise(async move {
+            let mut sender = sender;
+            loop {
+                match recv().await.map_err(|e| e.reject())? {
+                    Response::Yield {
+                        data: ResponsePayloadWithWorkerID { data, .. },
+                    } => {
+                        sender = sender.send_data(&data).await?;
+                        continue;
+                    }
+                    Response::Close {
+                        data: ResponsePayloadWithWorkerID { data, .. },
+                    } => {
+                        sender.send_close(&data).await?;
+                        return Ok(JsValue::NULL);
+                    }
+                    Response::Error { reason } => {
+                        sender.send_error(&reason).await?;
+                        return Ok(JsValue::NULL);
+                    }
+                }
+            }
+        })
+    });
+    async { task.await.map_err(|e| e.reject()) }
 }
