@@ -1,14 +1,5 @@
-use crate::{
-    Receiver, Sender, TaskSpawner,
-    datatypes::{
-        Request, webworker_messages::{
-            get_connection_id,
-            non_blocking::{request_is_forwardable},
-        }
-    },
-};
 use super::is_hup_error;
-use serde_wasm_bindgen::from_value;
+use crate::{Receiver, Sender, TaskSpawner, datatypes::webworker_messages::get_connection_id};
 use wasm_bindgen::{JsValue, prelude::wasm_bindgen};
 mod featurize;
 mod forward;
@@ -18,7 +9,7 @@ mod forward;
 /// [`wasm_bindgen_futures::spawn_local`].
 ///
 /// At the moment just logs it.
-/// 
+///
 /// Dev note
 /// --------
 /// I've tried to keep the type of error logged here to be one
@@ -56,7 +47,7 @@ macro_rules! new_task {
 ///    Preferably this function should reject the promise in JS if the connection is closed.
 ///    (see [`Sender`] docs).
 /// 3. An async function that communicates with workers (see [`TaskSpawner`] docs).
-/// 
+///
 /// It crashes for reasons in the [`Receiver`], [`Sender`], or [`TaskSpawner`] docs,
 /// or if it fails to deserialize a connection ID from an received message.
 #[wasm_bindgen(js_name = "nonBlockingServer")]
@@ -69,7 +60,13 @@ pub async fn non_blocking_server(
         let received = receiver.recv().await?;
         let sender = match get_connection_id(received.clone()) {
             Ok(conn_id) => sender.handle(conn_id),
-            Err(_) => return Err(format!("[nonBlockingServer] received a message without any connection ID: {:?}", received).into()),
+            Err(_) => {
+                return Err(format!(
+                    "[nonBlockingServer] received a message without any connection ID: {:?}",
+                    received
+                )
+                .into());
+            }
         };
         new_task!(forward::forward_request(received, &task_spawner, sender));
     }
