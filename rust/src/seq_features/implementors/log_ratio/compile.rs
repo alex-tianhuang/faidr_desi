@@ -1,6 +1,4 @@
 use serde::{Deserialize, Serialize};
-use thiserror::Error;
-
 use crate::{
     datatypes::{Aminoacid, StandardError},
     seq_features::{
