@@ -86,3 +86,10 @@ fn end_of_current_header(bytes: &[u8]) -> Option<usize> {
 fn next_start_of_header(bytes: &[u8]) -> Option<usize> {
     bytes.windows(2).position(|pair| pair == b"\n>")
 }
+
+/// Turn a size-hint from a possibly untrusted source to a reasonable one.
+///
+/// Copied from `serde::core::de`.
+pub(crate) fn cautious(hint: Option<usize>) -> usize {
+    std::cmp::min(hint.unwrap_or(0), 4096)
+}
