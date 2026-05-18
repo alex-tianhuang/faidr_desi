@@ -66,16 +66,6 @@ impl<T> AAMap<T> {
         AAMap(self.0.each_ref().map(f))
     }
 }
-/// Construct an [`AAMap`] from an array of ([`Aminoacid`], value)
-/// pairs as a `const` expression.
-macro_rules! const_aamap {
-    ([(_, $default:expr),$($pair:expr),+]) => {{
-        let mut map = [$default; 20];
-        $(let (aa, value): (crate::datatypes::Aminoacid, _) = $pair; map[aa.to_aaindex() as usize] = value;)+
-        crate::datatypes::AAMap(map)
-    }};
-}
-pub(crate) use const_aamap;
 impl<T> Index<Aminoacid> for AAMap<T> {
     type Output = T;
     fn index(&self, index: Aminoacid) -> &Self::Output {
