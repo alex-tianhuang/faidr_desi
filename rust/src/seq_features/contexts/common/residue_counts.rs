@@ -24,15 +24,6 @@ impl ResidueCounts {
             counter[aa] += 1;
         }
     }
-    /// Count the number of residues in the given residue group.
-    pub fn count_residue_group(&self, res_group: &AASet) -> usize {
-        let ResidueCounts(counter) = self;
-        counter
-            .iter()
-            .filter(|(aa, _)| res_group.contains(*aa))
-            .map(|(_, count)| *count)
-            .sum::<usize>()
-    }
 }
 impl Deref for ResidueCounts {
     type Target = AAMap<usize>;
