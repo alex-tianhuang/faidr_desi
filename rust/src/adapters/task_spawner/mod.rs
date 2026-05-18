@@ -25,8 +25,6 @@ mod scoped_handle;
 #[tsify(from_wasm_abi)]
 #[serde(rename_all = "camelCase")]
 pub struct TaskSpawner {
-    /// Number of concurrent workers this spawner contains.
-    num_workers: u32,
     /// Inner JS callback for spawning tasks.
     #[tsify(
         type = "(msg: Request<unknown[]>, body: (recv: () => Promise<Response<string, ResponsePayloadWithWorkerID>>) => Promise<void>) => Promise<void>"
