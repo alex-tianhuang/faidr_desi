@@ -1,9 +1,9 @@
 //! Module defining [`RequestPayload`] and [`Endpoint`].
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
-pub mod webworker_featurize;
 pub mod generate_ko;
 pub mod generate_mimic;
+pub mod featurize;
 
 /// Macro used to define [`RequestPayload`] and [`Endpoint`].
 /// 
@@ -31,7 +31,7 @@ macro_rules! define_variants {
 
 define_variants! {
     /// Private endpoint for computing sequence features of many sequences.
-    WebworkerFeaturize(webworker_featurize::RequestPayload),
+    Featurize(featurize::RequestPayload),
     /// Blocking endpoint for designing a single feature mimic.
     #[serde(skip_serializing)]
     GenerateMimic(generate_mimic::RequestPayload),

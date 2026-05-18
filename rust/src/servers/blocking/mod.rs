@@ -8,7 +8,7 @@ use crate::{
 };
 use serde_wasm_bindgen::from_value;
 use wasm_bindgen::{JsValue, prelude::wasm_bindgen};
-mod webworker_featurize;
+mod featurize;
 mod generate_ko;
 mod generate_mimic;
 
@@ -61,7 +61,7 @@ pub async fn blocking_server(receiver: Receiver, sender: Sender) -> Result<JsVal
             Ok(conn_id) => sender.handle(conn_id),
             Err(_) => {
                 return Err(format!(
-                    "[blockingServer] received a message without any connection ID: {:?}",
+                    "[server] received a message without any connection ID: {:?}",
                     received
                 )
                 .into());
@@ -70,20 +70,19 @@ pub async fn blocking_server(receiver: Receiver, sender: Sender) -> Result<JsVal
         let request = match from_value::<Request<RequestPayload>>(received) {
             Ok(request) => request,
             Err(err) => {
-                new_task!(sender.send_error(&format!(
-                    "[blockingServer] failed to deserialize request ({})",
-                    err
-                )));
+                new_task!(
+                    sender.send_error(&format!("[server] failed to deserialize request ({})", err))
+                );
                 continue;
             }
         };
         match request.data {
-            RequestPayload::WebworkerFeaturize(request) => {
-                new_task!(webworker_featurize::webworker_featurize(request, sender))
+            RequestPayload::Featurize(request) => {
+                new_task!(featurize::featurize(request, sender))
             }
             RequestPayload::GenerateMimic(request) => {
                 new_task!(generate_mimic::generate_mimic(request, sender))
-            },
+            }
             RequestPayload::GenerateKo(request) => {
                 new_task!(generate_ko::generate_ko(request, sender))
             }

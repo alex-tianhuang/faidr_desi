@@ -8,7 +8,9 @@ import { test, expect } from "./fixtures";
 import { Progress as GenerateMimicProgress } from "@/features/generateMimic/types";
 import type { Featurized } from "@/features/featurize/types";
 
-test("simple knockout design algorithm can reproduce old implementation", async ({ page }) => {
+test("simple knockout design algorithm can reproduce old implementation", async ({
+  page,
+}) => {
   // console.log(scratch)
   // throw new Error()
   const result = await page.evaluate(
@@ -18,26 +20,27 @@ test("simple knockout design algorithm can reproduce old implementation", async 
         FEATURE_WEIGHTS,
         SEQUENCE_VALIDATION_PARAMETERS,
         INITIAL_SEQUENCE,
-        KO_FEATURE_TARGETS 
+        KO_FEATURE_TARGETS,
       } = imports;
-      const {yielded} = await window.__communicate({
+      const { closed } = await window.__communicate({
         endpoint: "featurize",
-        sequences: [INITIAL_SEQUENCE],
+        sequence: INITIAL_SEQUENCE,
         featureConfiguration: FEATURE_CONFIGURATION,
-        sequenceValidationSettings: SEQUENCE_VALIDATION_PARAMETERS,
-        statisticsIncluded: false,
       });
-      const { sequenceByFeatureMatrix: { "0": initialSequenceFeatures } } = yielded[1] as any;
+      const { data: initialSequenceFeatures } = closed as any;
       const featureTargets: Record<string, number> = {};
-      for (const [featureID, featurized] of Object.entries(initialSequenceFeatures as Record<string, Featurized>)) {
+      for (const [featureID, featurized] of Object.entries(
+        initialSequenceFeatures as Record<string, Featurized>,
+      )) {
         if (featurized.case !== "ok") {
-          throw new Error("could not set up target vector for KO test")
+          throw new Error("could not set up target vector for KO test");
         }
-        featureTargets[featureID] = featurized.value
+        featureTargets[featureID] = featurized.value;
       }
-      
-      const FEATURE_TO_TEST_KO_OF = "net_charge"
-      featureTargets[FEATURE_TO_TEST_KO_OF] = KO_FEATURE_TARGETS[FEATURE_TO_TEST_KO_OF];
+
+      const FEATURE_TO_TEST_KO_OF = "net_charge";
+      featureTargets[FEATURE_TO_TEST_KO_OF] =
+        KO_FEATURE_TARGETS[FEATURE_TO_TEST_KO_OF];
 
       const request = {
         endpoint: "generate-ko",
@@ -54,14 +57,13 @@ test("simple knockout design algorithm can reproduce old implementation", async 
       FEATURE_WEIGHTS,
       SEQUENCE_VALIDATION_PARAMETERS,
       INITIAL_SEQUENCE: TEST_SEQUENCE,
-      KO_FEATURE_TARGETS
+      KO_FEATURE_TARGETS,
     },
   );
 
   expect(result.error).toBeNull();
   expect(result.closed).toEqual({ case: "ok" });
-  const { case: initialized } = result
-    .yielded[0] as any;
+  const { case: initialized } = result.yielded[0] as any;
   expect(initialized).toEqual("initialized");
   const iterationSequences = ([] as string[]).concat(
     ...result.yielded.slice(1).map((item) => {

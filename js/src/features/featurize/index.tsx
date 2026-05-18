@@ -22,9 +22,8 @@ export default function FeaturizeArea(props: {
     idromeState: [idrome, setIdrome],
   } = props;
   const {
-    initError,
+    featurizationError,
     featurized: featurizedRaw,
-    featurizedError,
   } = useFeaturizeEndpoint(props);
   const [postProcessing, setPostProcessing] = useState<IDRome | "none">(idrome);
   const featurized = useMemo(
@@ -36,14 +35,13 @@ export default function FeaturizeArea(props: {
         : featurizedRaw,
     [featurizedRaw, postProcessing],
   );
-  const error = initError ?? featurizedError;
   return (
     <div className="flex flex-col gap-2">
       <FeaturizeHeader />
-      {error ? (
+      {featurizationError ? (
         <UnexpectedError
           while="computing sequence features of your input sequence"
-          error={error}
+          error={featurizationError}
         ></UnexpectedError>
       ) : (
         <FeaturizeResultsArea

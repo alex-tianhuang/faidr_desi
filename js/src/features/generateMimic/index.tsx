@@ -38,7 +38,7 @@ export default function GenerateMimicArea(props: {
   const rngInfo = parseRngHint(rngHint, reqTimestamp);
   const { rngSeed } = rngInfo;
   const rng = { seed: rngSeed };
-  const { initError, featurized, featurizedError } = useFeaturizeEndpoint({
+  const { featurizationError, featurized } = useFeaturizeEndpoint({
     sequence,
     featureConfiguration: FEATURE_CONFIGURATION,
   });
@@ -57,13 +57,12 @@ export default function GenerateMimicArea(props: {
       </div>
     );
   }
-  const error = initError ?? featurizedError;
-  if (error) {
+  if (featurizationError) {
     return (
       <div className="flex flex-col gap-2">
         <UnexpectedError
           while="computing sequence features of your input sequence"
-          error={error}
+          error={featurizationError}
         ></UnexpectedError>
       </div>
     );

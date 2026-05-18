@@ -48,7 +48,7 @@ export default function GenerateKOArea(props: {
     requestStartedState: [requestStarted, setRequestStarted],
     idromeState,
   } = props;
-  const { initError, featurized, featurizedError } = useFeaturizeEndpoint({
+  const { featurizationError, featurized } = useFeaturizeEndpoint({
     sequence,
     featureConfiguration,
   });
@@ -109,13 +109,12 @@ export default function GenerateKOArea(props: {
       </div>
     );
   }
-  const error = initError ?? featurizedError;
-  if (error) {
+  if (featurizationError) {
     return (
       <div className="flex flex-col gap-2">
         <UnexpectedError
           while="computing sequence features of your input sequence"
-          error={error}
+          error={featurizationError}
         ></UnexpectedError>
       </div>
     );

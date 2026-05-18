@@ -3,7 +3,7 @@ use crate::{
     datatypes::{
         Request, webworker_messages::{
             get_connection_id,
-            non_blocking::{RequestPayload, request_is_forwardable},
+            non_blocking::{request_is_forwardable},
         }
     },
 };
@@ -71,24 +71,6 @@ pub async fn non_blocking_server(
             Ok(conn_id) => sender.handle(conn_id),
             Err(_) => return Err(format!("[nonBlockingServer] received a message without any connection ID: {:?}", received).into()),
         };
-        if request_is_forwardable(received.clone()) {
-            new_task!(forward::forward_request(received, &task_spawner, sender));
-            continue;
-        }
-        let request = match from_value::<Request<RequestPayload>>(received.clone()) {
-            Ok(request) => request,
-            Err(err) => {
-                new_task!(sender.send_error(&format!(
-                    "[nonBlockingServer] failed to deserialize request ({})",
-                    err
-                )));
-                continue;
-            }
-        };
-        match request.data {
-            RequestPayload::Featurize(request) => {
-                new_task!(featurize::featurize(request, task_spawner.clone(), sender))
-            },
-        }
+        new_task!(forward::forward_request(received, &task_spawner, sender));
     }
 }

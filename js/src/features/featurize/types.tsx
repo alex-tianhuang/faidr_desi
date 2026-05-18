@@ -17,9 +17,7 @@ export const Featurized = z.discriminatedUnion("case", [
   }),
 ]);
 export type Featurized = z.infer<typeof Featurized>;
-export const Progress = z.object({
-  sequenceByFeatureMatrix: z.object({
-    0: z.record(z.string(), Featurized),
-  }),
+export const EndpointResult = z.object({
+  data: z.record(z.string(), Featurized)
 });
-export type Progress = z.infer<typeof Progress>;
+export type EndpointResult = z.infer<typeof EndpointResult>;

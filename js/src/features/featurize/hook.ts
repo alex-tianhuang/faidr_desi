@@ -1,7 +1,6 @@
 import { useBackend, type RecvMessage } from "@/backend";
-import { SEQUENCE_VALIDATION_PARAMETERS } from "@/lib/consts";
 import { useState } from "react";
-import { Featurized, InitializationError, Progress } from "./types";
+import { EndpointResult, Featurized, InitializationError } from "./types";
 import z from "zod";
 
 export default function useFeaturizeEndpoint(args: {
@@ -11,113 +10,73 @@ export default function useFeaturizeEndpoint(args: {
   const { sequence, featureConfiguration } = args;
   const request = {
     endpoint: "featurize",
-    sequences: [sequence],
+    sequence,
     featureConfiguration,
-    sequenceValidationSettings: SEQUENCE_VALIDATION_PARAMETERS,
-    statisticsIncluded: false,
   };
-  const [initError, setInitError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [featurized, setFeaturized] = useState<Record<
     string,
     Featurized
   > | null>(null);
-  const [featurizedError, setFeaturizedError] = useState<string | null>(null);
   useBackend({
     msg: request,
     body: async (recv) => {
-      const rInit = parseInit(await recv());
-      if (rInit.ctrl === "break") {
-        rInit.error !== null && setInitError(rInit.error);
+      const rResult = parseResult(await recv());
+      if (rResult.ctrl === "break") {
+        rResult.error !== null && setError(rResult.error);
         return;
       }
-      const rProgress = parseProgress(await recv());
-      if (rProgress.ctrl === "break") {
-        rProgress.error !== null && setFeaturizedError(rProgress.error);
-        return;
-      }
-      setFeaturized(rProgress.data);
+      setFeaturized(rResult.data);
     },
     setup: () => {
-      setInitError(null);
+      setError(null);
       setFeaturized(null);
-      setFeaturizedError(null);
     },
     deps: [sequence, featureConfiguration],
   });
   return {
-    initError,
+    featurizationError: error,
     featurized,
-    featurizedError,
   };
 }
 
-function parseInit(init: RecvMessage):
+function parseResult(result: RecvMessage):
   | {
       ctrl: "continue";
+      data: Record<string, Featurized>
     }
   | {
       ctrl: "break";
       error: string | null;
     } {
-  if (init.case === "unmounted")
+  if (result.case === "unmounted")
     return {
       ctrl: "break",
       error: null,
     };
-  if (init.case !== "yield") {
-    if (init.case === "error") {
+  if (result.case !== "close") {
+    if (result.case === "error") {
       return {
         ctrl: "break",
-        error: init.reason,
+        error: result.reason,
       };
     } else {
-      const r = InitializationError.safeParse(init.data);
-      console.log(init.data);
+      const r = InitializationError.safeParse(result.data);
       return {
         ctrl: "break",
         error: r.success ? r.data.reason : z.prettifyError(r.error),
       };
     }
   }
+  const r = EndpointResult.safeParse(result.data)
+  if (!r.success) {
+    return {
+      ctrl: "break",
+      error: z.prettifyError(r.error)
+    }
+  }
   return {
     ctrl: "continue",
+    data: r.data.data
   };
-}
-function parseProgress(progress: RecvMessage):
-  | {
-      ctrl: "continue";
-      data: Record<string, Featurized>;
-    }
-  | {
-      ctrl: "break";
-      error: string | null;
-    } {
-  if (progress.case === "unmounted")
-    return {
-      ctrl: "break",
-      error: null,
-    };
-  if (progress.case !== "yield") {
-    const reason =
-      progress.case === "error"
-        ? progress.reason
-        : "Unexpected error occurred.";
-    return {
-      ctrl: "break",
-      error: reason,
-    };
-  }
-  const de = Progress.safeParse(progress.data);
-  if (!de.success) {
-    const reason = z.prettifyError(de.error);
-    return {
-      ctrl: "break",
-      error: reason,
-    };
-  } else {
-    return {
-      ctrl: "continue",
-      data: de.data.sequenceByFeatureMatrix[0],
-    };
-  }
 }
