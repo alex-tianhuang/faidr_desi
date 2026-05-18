@@ -36,7 +36,7 @@
 //!    (so in a featurizer of featdim `F`, the first
 //!    `F` objects in the return schema are
 //!    features/errors for the first sequence).
-use crate::{adapters::JsValuePreserved, datatypes::{AACanonicalString, StandardStatisticsVec, sequences::AACanonicalStringStrict, webworker_messages::common::featurize::Featurized}, seq_features::featurize::FeatureContainerUserFacing};
+use crate::{adapters::JsValuePreserved, datatypes::{AACanonicalString, sequences::AACanonicalStringStrict, webworker_messages::common::featurize::Featurized}, seq_features::featurize::FeatureContainerUserFacing};
 use serde::{Deserialize, Serialize};
 
 /// Request type for `webworker-featurize` endpoint.
@@ -59,8 +59,6 @@ pub enum RequestPayload {
         sequences: Vec<AACanonicalStringStrict>,
         /// Features to compute.
         feature_configuration: FeatureContainerUserFacing,
-        /// Whether or not to return feature statistics.
-        statistics_included: bool
     },
     #[serde(rename_all = "camelCase", skip_deserializing)]
     Serialize {
@@ -79,8 +77,6 @@ pub enum RequestPayload {
         /// duplicate work.
         #[serde(rename = "featureConfiguration")]
         feature_configuration_preserialized: JsValuePreserved,
-        /// Whether or not to return feature statistics.
-        statistics_included: bool
     }
 }
 /// Response type (progressive) for the private
@@ -100,11 +96,4 @@ pub struct YieldPayload {
     /// Rows come in order that the
     /// sequences were submitted.
     pub sequence_by_feature_matrix: Vec<Featurized>,
-    /// The mean and covariance statistics associated
-    /// with this batch of sequences' features.
-    /// 
-    /// This field will not be returned if
-    /// `statisticsIncluded=False` in the [`RequestPayload`].
-    #[serde(skip_serializing_if = "Option::is_none", default)]
-    pub feature_statistics: Option<StandardStatisticsVec>,
 }

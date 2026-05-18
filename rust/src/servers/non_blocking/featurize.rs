@@ -31,13 +31,11 @@ pub async fn featurize(
     let InitJobFeaturize {
         sequences,
         feat_order,
-        statistics_included,
         sender,
     } = tri!(init_job_featurize(
         request.sequences,
         request.sequence_validation_settings,
         &request.feature_configuration,
-        request.statistics_included,
         sender,
     ));
     let BatchedWorkFeaturize {
@@ -46,14 +44,12 @@ pub async fn featurize(
     } = batch_work_featurize(
         sequences,
         &request.feature_configuration,
-        statistics_included,
         task_spawner.num_workers(),
     );
     loop_report_progress_featurize(
         task_spawner.spawn_batch_streaming(Request { data: requests }),
         sequence_ids,
         feat_order,
-        statistics_included,
         sender,
     )
     .await
@@ -84,9 +80,6 @@ mod initialize {
         pub sequences: Vec<(u32, AACanonicalString)>,
         /// Order of features, for decoding index-organized feature vectors.
         pub feat_order: Vec<&'a str>,
-        /// Whether or not statistics will be included in responses
-        /// from this endpoint.
-        pub statistics_included: bool,
         /// The place to send responses, which had to be
         /// consumed and returned by the [`init_job_featurize`] method.
         pub sender: SenderHandle,
@@ -104,7 +97,6 @@ mod initialize {
         sequences: Vec<String>,
         sequence_validation_settings: AAStringValidationParameters,
         feature_configuration: &FeatureContainerUserFacing,
-        statistics_included: bool,
         sender: SenderHandle,
     ) -> Result<ControlFlow<(), InitJobFeaturize<'_>>, JsValue> {
         let ValidatedSequences {
@@ -120,10 +112,6 @@ mod initialize {
                 return Ok(ControlFlow::Break(()));
             }
         };
-        let statistics_included = statistics_included
-            && determine_if_statistics_can_be_included(
-                unmodified_sequences.len() + modified_sequences.len(),
-            );
         let FeaturizerCompilation { feat_order, .. } =
             match compile_and_validate_features(&feature_configuration) {
                 Ok(data) => data,
@@ -137,7 +125,6 @@ mod initialize {
         let initialized = Initialized {
             sequence_validation_errors,
             modified_sequences,
-            statistics_included,
         };
         let sender = sender
             .send_data(&YieldPayload::Initialized(&initialized))
@@ -149,19 +136,8 @@ mod initialize {
         Ok(ControlFlow::Continue(InitJobFeaturize {
             sequences,
             feat_order,
-            statistics_included,
             sender,
         }))
-    }
-    /// Returns true if this response's endpoints will involve
-    /// statistics of the sequence feature distributions.
-    ///
-    /// If there are too few sequences, don't include statistics.
-    fn determine_if_statistics_can_be_included(n_sequences: usize) -> bool {
-        /// The minimum number of sequences required for
-        /// the endpoint to report feature statistics.
-        const STATISTICS_INCLUDED_THRESHOLD: usize = 2;
-        n_sequences >= STATISTICS_INCLUDED_THRESHOLD
     }
 }
 /// Module defining [`batch_work_featurize`].
@@ -189,7 +165,6 @@ mod batch_work {
     pub fn batch_work_featurize(
         sequences: Vec<(u32, AACanonicalString)>,
         feature_configuration: &FeatureContainerUserFacing,
-        statistics_included: bool,
         max_num_workers: usize,
     ) -> BatchedWorkFeaturize {
         let BatchingParameters {
@@ -214,7 +189,6 @@ mod batch_work {
                 sequences_for_worker,
                 batch_size,
                 feature_configuration_preserialized.clone(),
-                statistics_included,
             );
             sequence_ids.push(worker_sequence_ids.into_iter());
             requests.push(worker_request);
@@ -258,7 +232,6 @@ mod batch_work {
         worker_sequences: impl ExactSizeIterator<Item = (u32, AACanonicalString)>,
         batch_size: u32,
         feature_configuration_preserialized: JsValuePreserved,
-        statistics_included: bool,
     ) -> Workload {
         let (worker_sequence_ids, worker_sequences): (Vec<_>, Vec<_>) = worker_sequences.unzip();
         let worker_request = blocking::RequestPayload::WebworkerFeaturize(
@@ -266,7 +239,6 @@ mod batch_work {
                 batch_size,
                 sequences: worker_sequences,
                 feature_configuration_preserialized,
-                statistics_included,
             },
         );
         Workload {
@@ -282,19 +254,17 @@ mod progress {
         ResponsePayloadWithWorkerID,
         adapters::{JsValuePreserved, PseudoMap, SenderHandle, StreamHandle},
         datatypes::{
-            Response, StandardStatisticsVec,
+            Response,
             webworker_messages::{
                 blocking,
                 common::featurize::Featurized,
-                non_blocking::featurize::{
-                    ClosePayload, Progress, StandardFeatureStatistics, YieldPayload,
-                },
+                non_blocking::featurize::{ClosePayload, Progress, YieldPayload},
             },
         },
     };
     use serde_wasm_bindgen::from_value;
     use std::{ops::ControlFlow, vec};
-    use wasm_bindgen::{JsValue, UnwrapThrowExt};
+    use wasm_bindgen::JsValue;
 
     /// Decode the unlabelled feature results yielded from `computation`
     /// into [`YieldPayload`]s, and send them to the frontend.
@@ -302,10 +272,9 @@ mod progress {
         mut computation: StreamHandle,
         sequence_ids: Vec<vec::IntoIter<u32>>,
         feat_order: Vec<&str>,
-        statistics_included: bool,
         mut sender: SenderHandle,
     ) -> Result<(), JsValue> {
-        let mut progress = ProgressManager::new(feat_order, sequence_ids, statistics_included);
+        let mut progress = ProgressManager::new(feat_order, sequence_ids);
         let mut num_workers_remaining = progress.num_workers();
         loop {
             match computation.next_or_err().await?.map_err(|e| e.reject())? {
@@ -360,11 +329,6 @@ mod progress {
         /// A buffer in which to write [`Progress`] values
         /// and accumulate feature statistics.
         progress_buffer: Progress<'a>,
-        /// A buffer in which to accumulate unlabelled feature statistics.
-        ///
-        /// This then is converted into feature ID labelled statistics
-        /// in [`Progress::feature_statistics`].
-        master_statistics_buffer: Option<StandardStatisticsVec>,
         /// A buffer containing vectors with the correct allocation
         /// size but which are not in use right now.
         spare_vectors: Vec<PseudoMap<&'a str, Featurized>>,
@@ -374,16 +338,11 @@ mod progress {
         pub fn new(
             feat_order: Vec<&'a str>,
             sequence_ids: Vec<vec::IntoIter<u32>>,
-            statistics_included: bool,
         ) -> Self {
             Self {
                 progress_buffer: Progress {
                     sequence_by_feature_matrix: PseudoMap::default(),
-                    feature_statistics: statistics_included
-                        .then(|| StandardFeatureStatistics::new(feat_order.iter().cloned())),
                 },
-                master_statistics_buffer: statistics_included
-                    .then(|| StandardStatisticsVec::new(feat_order.len())),
                 spare_vectors: Vec::default(),
                 feat_order,
                 sequence_id_decoder: SequenceIDsDecoder::new(sequence_ids),
@@ -426,14 +385,12 @@ mod progress {
                     .sequence_by_feature_matrix
                     .push((sequence_id, result_vector))
             }
-            self.accumulate_statistics(message.feature_statistics);
         }
         /// Serialize and send the progress to the frontend.
         pub async fn flush_progress(
             &mut self,
             sender: SenderHandle,
         ) -> Result<SenderHandle, JsValue> {
-            self.flush_statistics();
             let sender = sender
                 .send_data(&YieldPayload::Progress(&self.progress_buffer))
                 .await?;
@@ -443,29 +400,6 @@ mod progress {
         /// Number of workers for which this struct is decoding results for.
         pub fn num_workers(&self) -> usize {
             self.sequence_id_decoder.data.len()
-        }
-        /// Shorthand for adding one batch's statistics to the master
-        /// statistics if requested.
-        fn accumulate_statistics(&mut self, batch_statistics: Option<StandardStatisticsVec>) {
-            if let Some(master_statistics) = &mut self.master_statistics_buffer {
-                *master_statistics += batch_statistics.as_ref().expect_throw(
-                    "[featurize::progress] expected that feature statistics are included",
-                );
-            };
-        }
-        /// Shorthand for decoding the unlabelled master statistics
-        /// into the feature ID labelled stats in theprogress buffer,
-        /// if requested.
-        fn flush_statistics(&mut self) {
-            if let Some(feature_id_labelled_statistics) =
-                &mut self.progress_buffer.feature_statistics
-            {
-                feature_id_labelled_statistics.compute(
-                    self.master_statistics_buffer.as_ref().expect(
-                        "[featurize::progress] expected that feature statistics are included",
-                    ),
-                )
-            }
         }
         /// Clear the sequence by feature matrix, but save the allocated vectors.
         fn clear_sequence_by_feature_matrix(&mut self) {

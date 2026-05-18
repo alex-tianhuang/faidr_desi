@@ -5,7 +5,6 @@ mod rng;
 mod seq_features;
 mod seq_generator;
 mod servers;
-mod statistics;
 mod utils;
 mod validators;
 pub use adapters::{Receiver, Sender, TaskSpawner};
