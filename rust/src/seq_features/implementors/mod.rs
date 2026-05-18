@@ -1,7 +1,6 @@
 use thiserror::Error;
 pub(crate) mod isoelectric_point;
 pub(crate) mod log_ratio;
-pub(crate) mod nardini_spacing;
 pub(crate) mod percent_resgroup;
 pub(crate) mod percent_residue;
 pub(crate) mod repeat_spans;

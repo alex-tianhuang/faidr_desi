@@ -38,12 +38,10 @@
 //! I'm adding a new container of features.
 use crate::seq_features::functionality::{
     compile::CompilableSeqFeats, featurize::FeaturizableSeqFeats,
-    render::RenderableSeqFeats,
     featdim::FeatDim
 };
 pub(crate) mod compile;
 pub(crate) mod featurize;
-pub(crate) mod render;
 pub(crate) mod featdim;
 
 

@@ -16,7 +16,6 @@ use crate::{datatypes::AASet, seq_features::functionality::featdim::FeatDim};
 use thiserror::Error;
 pub(crate) mod compile;
 mod featurize;
-mod render;
 
 /// Parameters for a single, simple-spacing feature
 /// that quantifies clustering of certain residues

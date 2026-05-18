@@ -4,7 +4,6 @@ use crate::seq_features::{
 
 mod compile;
 mod featurize;
-mod render;
 
 /// A single feature for computing global sequence complexity.
 pub struct SequenceComplexity {

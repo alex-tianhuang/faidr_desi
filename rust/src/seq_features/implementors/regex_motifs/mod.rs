@@ -3,7 +3,6 @@ use regex::Regex;
 use crate::seq_features::functionality::featdim::FeatDim;
 pub(crate) mod compile;
 mod featurize;
-mod render;
 /// Container of regexes to do motif-related operations.
 ///
 /// Currently supports:

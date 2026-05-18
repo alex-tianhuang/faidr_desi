@@ -1,16 +1,23 @@
-use crate::{adapters::PseudoMap, seq_features::{
-    functionality::compile::{CompilableSeqFeats, CompilerImplementor},
-    implementors::{
-        log_ratio::compile::LogRatioUserFacing, nardini_spacing::compile::{
-            NardiniSpacingUserFacing, deserialize_nardini_delta, deserialize_nardini_omega,
-        }, percent_resgroup::compile::PercentResidueGroupUserFacing, percent_residue::compile::PercentResidueUserFacing, regex_motifs::compile::{
-            RegexMotifUserFacing, deserialize_count_motif, deserialize_span_of_motif,
-        }, repeat_spans::compile::RepeatSpanUserFacing, simple_score::compile::SimpleScoreUserFacing, simple_spacing::compile::{
-            SimpleSpacingUserFacing, deserialize_simple_spacing_delta,
-            deserialize_simple_spacing_omega,
-        }
+use crate::{
+    adapters::PseudoMap,
+    seq_features::{
+        functionality::compile::{CompilableSeqFeats, CompilerImplementor},
+        implementors::{
+            log_ratio::compile::LogRatioUserFacing,
+            percent_resgroup::compile::PercentResidueGroupUserFacing,
+            percent_residue::compile::PercentResidueUserFacing,
+            regex_motifs::compile::{
+                RegexMotifUserFacing, deserialize_count_motif, deserialize_span_of_motif,
+            },
+            repeat_spans::compile::RepeatSpanUserFacing,
+            simple_score::compile::SimpleScoreUserFacing,
+            simple_spacing::compile::{
+                SimpleSpacingUserFacing, deserialize_simple_spacing_delta,
+                deserialize_simple_spacing_omega,
+            },
+        },
     },
-}};
+};
 use serde::{Deserialize, Serialize};
 
 /// A user-facing data struct to describe
@@ -77,8 +84,6 @@ pub enum SeqFeatureUserFacing {
     #[serde(rename = "shd")]
     SHD,
     LogRatio(LogRatioUserFacing),
-    NardiniDelta(#[serde(deserialize_with = "deserialize_nardini_delta")] NardiniSpacingUserFacing),
-    NardiniOmega(#[serde(deserialize_with = "deserialize_nardini_omega")] NardiniSpacingUserFacing),
     PercentResGroup(PercentResidueGroupUserFacing),
     PercentResidue(PercentResidueUserFacing),
     RepeatSpan(RepeatSpanUserFacing),

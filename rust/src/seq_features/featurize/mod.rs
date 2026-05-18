@@ -28,7 +28,7 @@ use crate::{
         functionality::featdim::FeatDim,
         implementors::{
             isoelectric_point::IsoelectricPoint, log_ratio::LogRatioContainer,
-            nardini_spacing::NardiniSpacing, percent_resgroup::PercentResidueGroup,
+            percent_resgroup::PercentResidueGroup,
             percent_residue::PercentResidue, regex_motifs::RegexMotifs, repeat_spans::RepeatSpans,
             sequence_charge_decoration::SCD, sequence_complexity::SequenceComplexity,
             sequence_hydropathy_decoration::SHD, simple_score::SimpleScore,
@@ -85,9 +85,6 @@ r#macro::define_compiler_and_featurizer! {
             #[ftz(context = provider.residue_counts())]
             #[ftz(map_err = into_standard_error)]
             let log_ratio: LogRatioContainer;
-            #[ftz(context = provider.ctx2())]
-            #[ftz(map_err = into_standard_error)]
-            let nardini_spacing: NardiniSpacing;
             #[ftz(context = provider.residue_counts())]
             #[ftz(map_err = into_standard_error)]
             let percent_res_group: PercentResidueGroup;
@@ -132,9 +129,6 @@ r#macro::define_compiler_and_featurizer! {
                 SeqFeatureUserFacing::SCD => tri!(scd.compile(&(), feature_id)),
                 SeqFeatureUserFacing::SHD => tri!(shd.compile(&(), feature_id)),
                 SeqFeatureUserFacing::LogRatio(data) => tri!(log_ratio.compile(data, feature_id)),
-                SeqFeatureUserFacing::NardiniDelta(data) | SeqFeatureUserFacing::NardiniOmega(data) => {
-                    tri!(nardini_spacing.compile(data, feature_id))
-                }
                 SeqFeatureUserFacing::PercentResGroup(data) => {
                     tri!(percent_res_group.compile(data, feature_id))
                 }
@@ -156,14 +150,12 @@ r#macro::define_compiler_and_featurizer! {
             let needs_residue_counts = isoelectric_point.has_features()
                 || scd.has_features()
                 || log_ratio.has_features()
-                || nardini_spacing.has_features()
                 || percent_res_group.has_features()
                 || percent_residue.has_features()
                 || sequence_complexity.has_features()
                 || simple_score.has_features();
             let needs_arena = scd.has_features()
-                || shd.has_features()
-                || nardini_spacing.has_features();
+                || shd.has_features();
             FeaturizerContextProvider::new(
                 needs_residue_counts, needs_arena
             )

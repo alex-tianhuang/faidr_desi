@@ -1,7 +1,6 @@
 use crate::{datatypes::Aminoacid, seq_features::functionality::featdim::FeatDim};
 pub(crate) mod compile;
 mod featurize;
-mod render;
 /// Single log ratio feature.
 ///
 /// Computes a soft log ratio of two different aminoacids.

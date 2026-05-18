@@ -6,7 +6,6 @@ use crate::{
 };
 pub(crate) mod compile;
 mod featurize;
-mod render;
 /// Container full of features that are weighted sums
 /// over residue counts.
 ///

@@ -9,7 +9,7 @@ mod statistics;
 mod utils;
 mod validators;
 pub use adapters::{Receiver, Sender, TaskSpawner};
-pub use datatypes::{Graphic, JSFacingAAMap, ResponsePayloadWithWorkerID};
+pub use datatypes::{JSFacingAAMap, ResponsePayloadWithWorkerID};
 pub use servers::{blocking_server, non_blocking_server};
 pub use utils::{ParsedSequence, parse_text_as_sequence};
 pub(crate) use validators::AAStringValidator;
