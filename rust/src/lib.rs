@@ -11,11 +11,11 @@ mod validators;
 pub use adapters::{Receiver, Sender, TaskSpawner};
 pub use datatypes::{Graphic, JSFacingAAMap, ResponsePayloadWithWorkerID};
 pub use servers::{blocking_server, non_blocking_server};
-pub(crate) use validators::{AAStringParser, AAStringValidator};
+pub use utils::{ParsedSequence, parse_text_as_sequence};
+pub(crate) use validators::AAStringValidator;
 pub use validators::{
     AAStringParsingParameters, AAStringValidationParameters, CapitalizeMode, OmitMode,
 };
-pub use utils::{ParsedSequence, parse_text_as_sequence};
 
 /// Turn a size-hint from a possibly untrusted source to a reasonable one.
 ///
