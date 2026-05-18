@@ -24,6 +24,7 @@ import {
 import { ChevronsRight } from "lucide-react";
 import Loading from "@/components/loading";
 import IdromePicker from "@/components/idromePicker";
+import UnexpectedError from "@/components/unexpectedError";
 
 type FeatureCard = {
   propKey: string;
@@ -55,7 +56,6 @@ export default function GenerateKOArea(props: {
     () => checkAllFeatures(featurized),
     [featurized],
   );
-  const error = initError ?? featurizedError ?? checkError;
   const [defaultList, setDefaultList] = useState<FeatureCard[]>([]);
   const [KOList, setKOList] = useState<FeatureCard[]>([]);
   const [prevFeatureVector, setPrevFeatureVector] = useState(featureVector);
@@ -98,14 +98,25 @@ export default function GenerateKOArea(props: {
       setRequestStarted(false);
     }
   }, [numFeaturesKO]);
-  if (error) {
+  if (checkError) {
     return (
       <div className="flex flex-col gap-2">
         <GenerateKOHeader />
         <ErrorDiv
           title="Unfortunately, we cannot design knockouts of your inputted sequence."
-          message={`Some sequence features could not be computed: ${error}`}
+          message={`Some sequence features could not be computed: ${checkError}`}
         />
+      </div>
+    );
+  }
+  const error = initError ?? featurizedError;
+  if (error) {
+    return (
+      <div className="flex flex-col gap-2">
+        <UnexpectedError
+          while="computing sequence features of your input sequence"
+          error={error}
+        ></UnexpectedError>
       </div>
     );
   }

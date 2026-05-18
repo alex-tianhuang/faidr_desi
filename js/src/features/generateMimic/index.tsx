@@ -17,6 +17,7 @@ import { FEATURE_CONFIGURATION, NUM_FEATURES, type IDRome } from "@/lib/consts";
 import useFeaturizeEndpoint from "../featurize/hook";
 import Loading from "@/components/loading";
 import IdromePicker from "@/components/idromePicker";
+import UnexpectedError from "@/components/unexpectedError";
 
 export default function GenerateMimicArea(props: {
   sequence: string;
@@ -45,15 +46,25 @@ export default function GenerateMimicArea(props: {
     () => checkAllFeatures(featurized),
     [featurized],
   );
-  const error = initError ?? featurizedError ?? checkError;
-  if (error) {
+  if (checkError) {
     return (
       <div className="flex flex-col gap-2">
         <GenerateMimicHeader />
         <ErrorDiv
           title="Unfortunately, we cannot design mimics of your inputted sequence."
-          message={`Some sequence features could not be computed: ${error}`}
+          message={`Some sequence features could not be computed: ${checkError}`}
         />
+      </div>
+    );
+  }
+  const error = initError ?? featurizedError;
+  if (error) {
+    return (
+      <div className="flex flex-col gap-2">
+        <UnexpectedError
+          while="computing sequence features of your input sequence"
+          error={error}
+        ></UnexpectedError>
       </div>
     );
   }

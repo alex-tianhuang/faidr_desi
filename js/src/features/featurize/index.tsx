@@ -12,8 +12,8 @@ import {
 import type { Featurized } from "./types";
 import Loading from "@/components/loading";
 import { Toggle } from "@/components/ui/toggle";
+import UnexpectedError from "@/components/unexpectedError";
 
-const MY_EMAIL = "tianh.huang@mail.utoronto.ca";
 export default function FeaturizeArea(props: {
   sequence: string;
   featureConfiguration: unknown;
@@ -42,21 +42,10 @@ export default function FeaturizeArea(props: {
     <div className="flex flex-col gap-2">
       <FeaturizeHeader />
       {error && (
-        <Alert variant="destructive">
-          <AlertTitle>{"We're sorry! An internal error occurred."}</AlertTitle>
-          <AlertDescription>
-            Something we didn't account for went wrong while computing the
-            sequence features of your input sequence.
-            <br />
-            It would help us a lot if you could copy the error below and report
-            it to{" "}
-            <Link href={`mailto:${MY_EMAIL}`} inline={true}>
-              {MY_EMAIL}
-            </Link>
-            .<br />
-            <span className="underline">Error: {error}</span>
-          </AlertDescription>
-        </Alert>
+        <UnexpectedError
+          while="computing sequence features of your input sequence"
+          error={error}
+        ></UnexpectedError>
       )}
       <FeaturizeResultsArea
         featurized={featurized}
@@ -87,7 +76,8 @@ function featuresToIDRomeZscores(
         ? {
             case: "ok",
             value:
-              (value.value - (FEATURE_MEANS_FOR_ZSCORE[idrome] as any)[featureID]) *
+              (value.value -
+                (FEATURE_MEANS_FOR_ZSCORE[idrome] as any)[featureID]) *
               (FEATURE_WEIGHTS[idrome] as any)[featureID],
           }
         : value,
