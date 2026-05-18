@@ -23,7 +23,6 @@ const initServer = (
 ) =>
   initWasm().then(() =>
     nonBlockingServer(recvToServer, sendFromServer, {
-      numWorkers: concurrency,
       spawnBatch,
     }),
   );
