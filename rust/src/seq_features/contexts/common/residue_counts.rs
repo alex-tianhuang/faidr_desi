@@ -1,4 +1,4 @@
-use crate::datatypes::{AAMap, AASet, aa_canonical_str};
+use crate::datatypes::{AAMap, aa_canonical_str};
 use std::ops::Deref;
 
 /// A context containing the counts of each residue type in a sequence.
