@@ -1,10 +1,12 @@
+use std::convert::Infallible;
+
 use serde::{Deserialize, Serialize};
 
 use crate::{
     datatypes::{AASet, sequences::AACanonicalStringStrict},
     seq_features::{
         functionality::compile::{CompilableSeqFeats, CompilerImplementor},
-        implementors::{DuplicateFeatureError, percent_resgroup::PercentResidueGroup},
+        implementors::percent_resgroup::PercentResidueGroup,
     },
 };
 
@@ -19,7 +21,7 @@ pub struct PercentResidueGroupCompiler<'a> {
 }
 impl<'a> CompilerImplementor<'a> for PercentResidueGroupCompiler<'a> {
     type Container = PercentResidueGroup;
-    type Err = DuplicateFeatureError;
+    type Err = Infallible;
     type UserFacing = PercentResidueGroupUserFacing;
     /// Part of the [`CompilableSeqFeats`] template.
     ///
@@ -27,16 +29,8 @@ impl<'a> CompilerImplementor<'a> for PercentResidueGroupCompiler<'a> {
     /// checking for uniqueness.
     fn compile(&mut self, data: &Self::UserFacing, feature_id: &'a str) -> Result<(), Self::Err> {
         let res_group_new = data.res_group.into_iter().collect();
-        if self
-            .data
-            .iter()
-            .any(|(_, res_group_old)| res_group_old.eq(&res_group_new))
-        {
-            Err(DuplicateFeatureError)
-        } else {
-            self.data.push((feature_id, res_group_new));
-            Ok(())
-        }
+        self.data.push((feature_id, res_group_new));
+        Ok(())
     }
     /// Part of the [`CompilableSeqFeats`] template.
     ///

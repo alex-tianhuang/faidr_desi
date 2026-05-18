@@ -1,10 +1,8 @@
 use regex::Regex;
 use serde::{Deserialize, Deserializer, Serialize};
-use thiserror::Error;
-
 use crate::seq_features::{
     functionality::compile::{CompilableSeqFeats, CompilerImplementor},
-    implementors::{DuplicateFeatureError, regex_motifs::RegexMotifs},
+    implementors::{regex_motifs::RegexMotifs},
 };
 
 /// A single regex-based motif feature.
@@ -79,28 +77,19 @@ pub struct RegexMotifsCompiler<'a> {
 impl<'a> CompilerImplementor<'a> for RegexMotifsCompiler<'a> {
     type UserFacing = RegexMotifUserFacing;
     type Container = RegexMotifs;
-    type Err = CompileRegexMotifError;
+    type Err = regex::Error;
     /// Part of the [`CompilableSeqFeats`] template.
     ///
     /// Acts like an accumulator for [`RegexMotifUserFacing`]
     /// associated with a feature ID.
     fn compile(&mut self, data: &Self::UserFacing, feature_id: &'a str) -> Result<(), Self::Err> {
-        let pattern = Regex::new(&data.pattern).map_err(CompileRegexMotifError::RegexErr)?;
+        let pattern = Regex::new(&data.pattern)?;
         let dest = match (&data.mode, data.take_average) {
             (RegexMotifMode::Count, false) => &mut self.counts,
             (RegexMotifMode::Count, true) => &mut self.count_averages,
             (RegexMotifMode::Span, false) => &mut self.spans,
             (RegexMotifMode::Span, true) => &mut self.span_averages,
         };
-        if dest
-            .iter()
-            .find(|(_, other_pattern)| other_pattern.as_str() == &data.pattern)
-            .is_some()
-        {
-            return Err(CompileRegexMotifError::DuplicateFeatureError(
-                DuplicateFeatureError,
-            ));
-        }
         dest.push((feature_id, pattern));
         Ok(())
     }
@@ -131,13 +120,4 @@ impl<'a> CompilerImplementor<'a> for RegexMotifsCompiler<'a> {
 }
 impl CompilableSeqFeats for RegexMotifs {
     type Compiler<'a> = RegexMotifsCompiler<'a>;
-}
-/// Errors that can arise when compiling a regex-motif
-/// feature.
-#[derive(Debug, Error)]
-pub enum CompileRegexMotifError {
-    #[error("{0}")]
-    RegexErr(regex::Error),
-    #[error("{0}")]
-    DuplicateFeatureError(DuplicateFeatureError),
 }

@@ -1,6 +1,9 @@
-use crate::seq_features::{
-    functionality::compile::{CompilableSeqFeats, CompilerImplementor},
-    implementors::{DuplicateFeatureError, sequence_charge_decoration::SCD},
+use crate::{
+    datatypes::StandardError,
+    seq_features::{
+        functionality::compile::{CompilableSeqFeats, CompilerImplementor},
+        implementors::sequence_charge_decoration::SCD,
+    },
 };
 
 /// A one-feature compiler for sequence hydropathy decoration.
@@ -10,14 +13,14 @@ pub struct SCDCompiler<'a> {
 }
 impl<'a> CompilerImplementor<'a> for SCDCompiler<'a> {
     type Container = SCD;
-    type Err = DuplicateFeatureError;
+    type Err = StandardError;
     type UserFacing = ();
     /// Part of the [`CompilableSeqFeats`] template.
     ///
     /// Uses the one-feature compiler pattern.
     fn compile(&mut self, _data: &Self::UserFacing, feature_id: &'a str) -> Result<(), Self::Err> {
         if self.feature_id.is_some() {
-            Err(DuplicateFeatureError)
+            Err(StandardError::from_str("SCD was defined multiple times"))
         } else {
             self.feature_id = Some(feature_id);
             Ok(())

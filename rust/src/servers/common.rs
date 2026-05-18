@@ -74,8 +74,7 @@ pub fn compile_and_validate_features<'a>(
     let compiled = compile_features::<Featurizer>(&feature_configuration);
     if !compiled.compile_errors.is_empty() {
         web_sys::console::error_2(&"failed to compile the following features".into(), &serialize(&compiled.compile_errors));
-        // Err(StandardError::from_str("featurizer failed to fully compile"))
-        Ok(compiled)
+        Err(StandardError::from_str("featurizer failed to fully compile"))
     } else {
         Ok(compiled)
     }

@@ -1,7 +1,7 @@
-use crate::seq_features::{
+use crate::{datatypes::StandardError, seq_features::{
     functionality::compile::{CompilableSeqFeats, CompilerImplementor},
-    implementors::{DuplicateFeatureError, sequence_complexity::SequenceComplexity},
-};
+    implementors::sequence_complexity::SequenceComplexity,
+}};
 
 /// A one-feature compiler for sequence complexity.
 #[derive(Default)]
@@ -10,14 +10,14 @@ pub struct SequenceComplexityCompiler<'a> {
 }
 impl<'a> CompilerImplementor<'a> for SequenceComplexityCompiler<'a> {
     type Container = SequenceComplexity;
-    type Err = DuplicateFeatureError;
+    type Err = StandardError;
     type UserFacing = ();
     /// Part of the [`CompilableSeqFeats`] template.
     ///
     /// Uses the one-feature compiler pattern.
     fn compile(&mut self, _data: &Self::UserFacing, feature_id: &'a str) -> Result<(), Self::Err> {
         if self.feature_id.is_some() {
-            Err(DuplicateFeatureError)
+            Err(StandardError::from_str("sequence complexity was defined multiple times"))
         } else {
             self.feature_id = Some(feature_id);
             Ok(())

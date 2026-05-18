@@ -1,3 +1,5 @@
+use std::convert::Infallible;
+
 use serde::{Deserialize, Serialize};
 
 use crate::{
@@ -5,7 +7,7 @@ use crate::{
     datatypes::AAMap,
     seq_features::{
         functionality::compile::{CompilableSeqFeats, CompilerImplementor},
-        implementors::{DuplicateFeatureError, simple_score::SimpleScore},
+        implementors::simple_score::SimpleScore,
     },
 };
 
@@ -27,7 +29,7 @@ pub struct SimpleScoreCompiler<'a> {
 }
 impl<'a> CompilerImplementor<'a> for SimpleScoreCompiler<'a> {
     type Container = SimpleScore;
-    type Err = DuplicateFeatureError;
+    type Err = Infallible;
     type UserFacing = SimpleScoreUserFacing;
     /// Part of the [`CompilableSeqFeats`] template.
     ///
@@ -37,12 +39,8 @@ impl<'a> CompilerImplementor<'a> for SimpleScoreCompiler<'a> {
             false => &mut self.sums,
             true => &mut self.averages,
         };
-        if dest.iter().any(|(_, s)| s.eq(&data.weights)) {
-            Err(DuplicateFeatureError)
-        } else {
-            dest.push((feature_id, AAMap::clone(&data.weights)));
-            Ok(())
-        }
+        dest.push((feature_id, AAMap::clone(&data.weights)));
+        Ok(())
     }
     /// Part of the [`CompilableSeqFeats`] template.
     ///

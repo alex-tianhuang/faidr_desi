@@ -1,21 +1,28 @@
-
-use crate::seq_features::{functionality::compile::{CompilableSeqFeats, CompilerImplementor}, implementors::{DuplicateFeatureError, isoelectric_point::IsoelectricPoint}};
+use crate::{
+    datatypes::StandardError,
+    seq_features::{
+        functionality::compile::{CompilableSeqFeats, CompilerImplementor},
+        implementors::isoelectric_point::IsoelectricPoint,
+    },
+};
 
 /// A one-feature compiler for isoelectric point.
 #[derive(Default)]
 pub struct IsoelectricPointCompiler<'a> {
-    feature_id: Option<&'a str>
+    feature_id: Option<&'a str>,
 }
 impl<'a> CompilerImplementor<'a> for IsoelectricPointCompiler<'a> {
     type Container = IsoelectricPoint;
-    type Err = DuplicateFeatureError;
+    type Err = StandardError;
     type UserFacing = ();
     /// Part of the [`CompilableSeqFeats`] template.
-    /// 
+    ///
     /// A one-feature compiler pattern.
     fn compile(&mut self, _data: &Self::UserFacing, feature_id: &'a str) -> Result<(), Self::Err> {
         if self.feature_id.is_some() {
-            Err(DuplicateFeatureError)
+            Err(StandardError::from_str(
+                "isoelectric point was defined multiple times",
+            ))
         } else {
             self.feature_id = Some(feature_id);
             Ok(())

@@ -2,13 +2,10 @@ use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
 use crate::{
-    datatypes::Aminoacid,
+    datatypes::{Aminoacid, StandardError},
     seq_features::{
         functionality::compile::{CompilableSeqFeats, CompilerImplementor},
-        implementors::{
-            DuplicateFeatureError,
-            log_ratio::{LogRatio, LogRatioContainer},
-        },
+        implementors::log_ratio::{LogRatio, LogRatioContainer},
     },
 };
 use std::collections::BTreeMap;
@@ -26,7 +23,7 @@ pub struct LogRatioCompiler<'a> {
 impl<'a> CompilerImplementor<'a> for LogRatioCompiler<'a> {
     type UserFacing = LogRatioUserFacing;
     type Container = LogRatioContainer;
-    type Err = CompileLogRatioError;
+    type Err = StandardError;
     /// Part of the [`CompilableSeqFeats`] template.
     ///
     /// Checks for duplicates and if the numerator / denominator
@@ -37,16 +34,19 @@ impl<'a> CompilerImplementor<'a> for LogRatioCompiler<'a> {
             denominator,
         } = *data;
         if numerator == denominator {
-            return Err(CompileLogRatioError::NumeratorAndDenominatorSame);
+            return Err(StandardError::from_str(
+                "numerator and denominator are the same",
+            ));
         }
         let feature = LogRatio {
             numerator,
             denominator,
         };
         if self.data.contains_key(&feature) {
-            Err(CompileLogRatioError::DuplicateFeatureError(
-                DuplicateFeatureError,
-            ))
+            Err(StandardError::from_str(&format!(
+                "log ratio of {} over {} was defined multiple times",
+                feature.numerator, feature.denominator
+            )))
         } else {
             self.data.insert(feature, feature_id);
             Ok(())
@@ -70,11 +70,4 @@ impl<'a> CompilerImplementor<'a> for LogRatioCompiler<'a> {
 }
 impl CompilableSeqFeats for LogRatioContainer {
     type Compiler<'a> = LogRatioCompiler<'a>;
-}
-#[derive(Debug, Error)]
-pub enum CompileLogRatioError {
-    #[error("numerator and denominator are the same")]
-    NumeratorAndDenominatorSame,
-    #[error("{0}")]
-    DuplicateFeatureError(DuplicateFeatureError),
 }

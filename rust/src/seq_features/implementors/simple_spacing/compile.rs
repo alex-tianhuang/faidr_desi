@@ -1,17 +1,15 @@
 use std::mem;
 
 use crate::{
-    datatypes::{AASet, sequences::AACanonicalStringStrict},
+    datatypes::{AASet, StandardError, sequences::AACanonicalStringStrict},
     seq_features::{
         functionality::compile::{CompilableSeqFeats, CompilerImplementor},
-        implementors::{
-            DuplicateFeatureError,
-            simple_spacing::{SimpleSpacingContainer, SimpleSpacingDelta, SimpleSpacingOmega},
+        implementors::simple_spacing::{
+            SimpleSpacingContainer, SimpleSpacingDelta, SimpleSpacingOmega,
         },
     },
 };
 use serde::{Deserialize, Deserializer, Serialize};
-use thiserror::Error;
 
 /// A single simple-spacing feature.
 ///
@@ -80,7 +78,7 @@ pub struct SimpleSpacingCompiler<'a> {
 impl<'a> CompilerImplementor<'a> for SimpleSpacingCompiler<'a> {
     type UserFacing = SimpleSpacingUserFacing;
     type Container = SimpleSpacingContainer;
-    type Err = CompileSimpleSpacingError;
+    type Err = StandardError;
     /// Part of the [`CompilableSeqFeats`] template.
     ///
     /// Takes either a [`SimpleSpacingDeltaUserFacing`]
@@ -92,36 +90,16 @@ impl<'a> CompilerImplementor<'a> for SimpleSpacingCompiler<'a> {
         match data {
             SimpleSpacingUserFacing::Delta(data) => {
                 let feature = compile_delta(data)?;
-                if deltas
-                    .iter()
-                    .find(|(_, other_feature)| feature == *other_feature)
-                    .is_some()
-                {
-                    Err(CompileSimpleSpacingError::DuplicateFeatureError(
-                        DuplicateFeatureError,
-                    ))
-                } else {
-                    deltas.push((feature_id, feature));
-                    Ok(())
-                }
+                deltas.push((feature_id, feature));
+                Ok(())
             }
             SimpleSpacingUserFacing::Omega(data) => {
                 let feature = SimpleSpacingOmega {
                     res_group: data.res_group.into_iter().collect(),
                     blob_size: data.blob_size,
                 };
-                if omegas
-                    .iter()
-                    .find(|(_, other_feature)| feature == *other_feature)
-                    .is_some()
-                {
-                    Err(CompileSimpleSpacingError::DuplicateFeatureError(
-                        DuplicateFeatureError,
-                    ))
-                } else {
-                    omegas.push((feature_id, feature));
-                    Ok(())
-                }
+                omegas.push((feature_id, feature));
+                Ok(())
             }
         }
     }
@@ -160,9 +138,7 @@ impl CompilableSeqFeats for SimpleSpacingContainer {
 /// Otherwise returns an simple spacing delta feature,
 /// enforcing the convention that `res_group_a` < `res_group_b`
 /// (as the feature is symmetric in the two residue groups).
-fn compile_delta(
-    data: &SimpleSpacingDeltaUserFacing,
-) -> Result<SimpleSpacingDelta, CompileSimpleSpacingError> {
+fn compile_delta(data: &SimpleSpacingDeltaUserFacing) -> Result<SimpleSpacingDelta, StandardError> {
     let SimpleSpacingDeltaUserFacing {
         ref res_group_a,
         ref res_group_b,
@@ -171,7 +147,9 @@ fn compile_delta(
     let mut res_group_a = res_group_a.into_iter().collect::<AASet>();
     let mut res_group_b = res_group_b.into_iter().collect::<AASet>();
     if res_group_a.iter().any(|aa| res_group_b.contains(aa)) {
-        return Err(CompileSimpleSpacingError::OverlappingResGroups);
+        return Err(StandardError::from_str(
+            "residue groups for simple spacing delta have residues in common",
+        ));
     }
     if res_group_a > res_group_b {
         mem::swap(&mut res_group_a, &mut res_group_b)
@@ -181,12 +159,4 @@ fn compile_delta(
         res_group_b,
         blob_size,
     })
-}
-/// Error returned when compiling a simple-spacing feature.
-#[derive(Debug, Error)]
-pub enum CompileSimpleSpacingError {
-    #[error("residue groups for simple spacing delta have residues in common")]
-    OverlappingResGroups,
-    #[error("{0}")]
-    DuplicateFeatureError(DuplicateFeatureError),
 }
