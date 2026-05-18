@@ -92,9 +92,4 @@ impl TaskSpawner {
             spawn_batch_promise,
         }
     }
-
-    /// Number of concurrent workers this spawner contains.
-    pub(crate) fn num_workers(&self) -> usize {
-        self.num_workers as usize
-    }
 }
