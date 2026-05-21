@@ -1,12 +1,10 @@
-//! Various utilities for communicating with the JS runtime.
+//! Rust/JS interop.
 mod js_typed_fut;
 mod js_value_preserved;
 mod pseudomap;
 mod receiver;
 mod sender;
 mod task_spawner;
-use std::panic::Location;
-
 pub(crate) use js_typed_fut::JsTypedFuture;
 pub use js_value_preserved::JsValuePreserved;
 pub(crate) use pseudomap::PseudoMap;
@@ -15,6 +13,7 @@ pub use sender::Sender;
 pub(crate) use sender::SenderHandle;
 use serde::Serialize;
 use serde_wasm_bindgen::Serializer;
+use std::panic::Location;
 pub use task_spawner::TaskSpawner;
 use wasm_bindgen::JsValue;
 use wasm_bindgen::throw_str;
@@ -23,7 +22,8 @@ use wasm_bindgen::throw_str;
 ///
 /// Made the decision to throw a JS error on failure
 /// because serialization should never fail in my
-/// use cases, unless there has been developer error.
+/// use cases, unless there has been developer error
+/// at which point it is OK for the app to crash.
 #[track_caller]
 pub(crate) fn serialize<S: Serialize>(data: &S) -> JsValue {
     const SERIALIZER: Serializer = Serializer::json_compatible();

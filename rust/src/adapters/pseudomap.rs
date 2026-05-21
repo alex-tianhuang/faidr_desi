@@ -1,3 +1,4 @@
+//! Module defining [`PseudoMap`].
 use serde::{Deserialize, Serialize, Serializer};
 use std::{
     collections::HashSet,
@@ -16,27 +17,10 @@ use crate::utils::cautious;
 ///
 /// Used in situations where a rust-side lookup by key
 /// is never performed but the serialized JS format
-/// should look like a map.
+/// should look like a map. Probably premature optimization,
+/// but oh well!
 ///
 /// Serializing this stringifies keys.
-///
-/// Dev note
-/// --------
-/// Deserializing is (maybe?) expensive at the moment because
-/// I wanted to ensure that duplicate keys were treated
-/// the same way as a regular `HashMap` would treat them.
-///
-/// In particular, my de-duplication currently uses a
-/// `HashSet` to dedup keys and is probably non-optimal.
-///
-/// For those of you asking why not return the hashmap
-/// if I need to use hashing anyway, I needed a consistently
-/// ordered map between web workers. I am pretty sure web workers
-/// are on different threads and so the threadlocal hash builder
-/// ruins me. So I decided to collect into a vec and then dedup
-/// using a `HashSet`.
-///
-/// Probably the extra memory usage won't matter.
 pub struct PseudoMap<K, V>(Vec<(K, V)>);
 impl<K, V> Default for PseudoMap<K, V> {
     fn default() -> Self {

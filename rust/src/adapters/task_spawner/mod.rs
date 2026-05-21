@@ -1,3 +1,4 @@
+//! Module defining [`TaskSpawner`].
 use crate::{
     adapters::{
         JsTypedFuture, JsValuePreserved, js_typed_fut::JsTypedFutureError, serialize,
