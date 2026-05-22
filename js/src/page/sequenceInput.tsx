@@ -1,24 +1,17 @@
-import { parseTextAsSequence } from "@/backend/rust/idrdesign_app";
-import { Button } from "./ui/button";
+import { parseTextAsSequence } from "@/backend/rust/faidr_desi";
+import { Button } from "@/components/ui/button";
 import { useDropzone } from "react-dropzone";
-import { Input } from "./ui/input";
+import { Input } from "@/components/ui/input";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { EXAMPLE_TEXT_INPUT, MIN_SEQUENCE_LENGTH } from "@/lib/consts";
 import { EditorView, Decoration } from "@codemirror/view";
 import { StateField, StateEffect } from "@codemirror/state";
 import CodeMirror, { oneDark } from "@uiw/react-codemirror";
-import ErrorDiv from "./errorDiv";
 import { cn } from "@/lib/utils";
-import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useTheme } from "next-themes";
 
-/**
- * Text area / file upload that allows for sequence editing.
- *
- * Will parse the first sequence in a FASTA file (if the text area starts with `>`)
- * or will parse the whole text area as one sequence (ignores whitespace).
- */
-export default function SequenceArea(props: {
+export default function SequenceInput(props: {
   disabled: boolean;
   sequenceState: [string | null, (_: string | null) => void];
 }) {
@@ -94,7 +87,7 @@ export default function SequenceArea(props: {
           disabled && "opacity-50",
         )}
       >
-        Paste a sequence in the box below, upload a sequence file or use the
+        Paste a sequence in the box below, upload a sequence file, or use the
         example sequence.
       </p>
       <CodeMirror
@@ -130,8 +123,11 @@ export default function SequenceArea(props: {
           Try an example
         </Button>
       </div>
-      {error !== null && (
-        <ErrorDiv title="Cannot parse sequence" message={error}></ErrorDiv>
+      {error && (
+        <Alert variant="destructive">
+          <AlertTitle>Cannot parse sequence</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
       )}
       {sequence !== null && (
         <Alert variant="default" className="overflow-scroll">

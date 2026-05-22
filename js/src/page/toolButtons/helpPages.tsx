@@ -1,5 +1,5 @@
 import { NUM_FEATURES } from "@/lib/consts";
-import Link from "../link";
+import Link from "@/components/link";
 
 export function GenerateMimicHelp() {
   return (

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import SequenceArea from "./components/sequenceArea";
-import ToolSelectionArea from "./components/toolSelectionArea";
+import ToolButtons from "./page/toolButtons";
 import GenerateMimicArea from "./features/generateMimic";
 import {
   FEATURE_CONFIGURATION,
@@ -13,6 +12,7 @@ import GenerateKOArea from "./features/generateKO";
 import Banner from "./components/banner";
 import Preamble from "./page/preamble";
 import Footer from "./page/footer";
+import SequenceInput from "./page/sequenceInput";
 
 export default function App() {
   const [sequence, setSequence] = useState<string | null>(null);
@@ -30,14 +30,14 @@ export default function App() {
       <Banner />
       <div className="flex flex-col item-center px-5 pt-2 pb-5 gap-2 min-w-80">
         <Preamble />
-        <SequenceArea
+        <SequenceInput
           disabled={freezeInputs || tool !== null}
           sequenceState={[sequence, setSequence]}
-        ></SequenceArea>
-        <ToolSelectionArea
+        ></SequenceInput>
+        <ToolButtons
           toolState={[tool, setTool]}
           disabled={freezeInputs || sequence === null}
-        ></ToolSelectionArea>
+        ></ToolButtons>
         <ToolArea
           sequence={sequence}
           tool={tool}

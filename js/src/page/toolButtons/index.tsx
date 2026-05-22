@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { GenerateMimicHelp, GenerateKOHelp, FeaturizeHelp } from "./helpPages";
 import {
   Sheet,
@@ -7,7 +7,7 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from "../ui/sheet";
+} from "@/components/ui/sheet";
 import { useState } from "react";
 import { NUM_FEATURES } from "@/lib/consts";
 
@@ -32,7 +32,7 @@ const TOOL_INFO = [
     helpDiv: <FeaturizeHelp />,
   },
 ] as const;
-export default function ToolSelectionArea(props: {
+export default function ToolButtons(props: {
   toolState: [ToolType | null, (_: ToolType | null) => void];
   disabled: boolean;
 }) {
