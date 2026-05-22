@@ -15,7 +15,7 @@ import {
 } from "@/lib/utils";
 import FinalSequenceDiv from "@/components/finalSequenceDiv";
 import { NormalError, UnexpectedError } from "@/components/errors";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Alert } from "@/components/ui/alert";
 import {
   Tooltip,
   TooltipContent,
