@@ -1,4 +1,4 @@
-import GenerateMimicArea from "@/page/tools/generateMimic";
+import GenerateMimic from "@/page/tools/generateMimic";
 import {
   FEATURE_CONFIGURATION,
   FEATURE_MINIMUMS,
@@ -22,13 +22,13 @@ export default function Tool(props: {
   if (tool === null || sequence === null) return null;
   if (tool === "mimic") {
     return (
-      <GenerateMimicArea
+      <GenerateMimic
         sequence={sequence}
         featureConfiguration={FEATURE_CONFIGURATION}
         featureWeights={FEATURE_WEIGHTS[idrome]}
-        requestStartedState={freezeInputsState}
+        freezeInputsState={freezeInputsState}
         idromeState={[idrome, setIdrome]}
-      ></GenerateMimicArea>
+      ></GenerateMimic>
     );
   }
   if (tool === "ko") {
