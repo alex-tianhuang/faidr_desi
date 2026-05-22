@@ -1,9 +1,7 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React, { useMemo } from "react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../../../components/ui/tooltip";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
 
 /** Ripped from https://github.com/shadcn-ui/ui/issues/2114#issuecomment-2308012873 */
