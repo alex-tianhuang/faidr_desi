@@ -61,18 +61,6 @@ impl TaskSpawner {
     ///
     /// Serialization of the `msg` into a JsValue should
     /// never fail, or the backend will terminate.
-    ///
-    /// Dev note
-    /// --------
-    /// The difference between this and [`TaskSpawner::spawn_batch_streaming`]
-    /// is that this has a similar syntax as the JS-side function `communicate`.
-    ///
-    /// The idea is that you provide a function which processes the incoming
-    /// responses, and after the function exits you can be sure the connection
-    /// is terminated.
-    ///
-    /// Because it has a similar syntax as the JS-side,
-    /// this makes it much, much easier to write than the other function.
     pub(crate) fn spawn_batch_scoped<T: AsRef<[JsValuePreserved]> + Serialize>(
         &self,
         req: Request<T>,
