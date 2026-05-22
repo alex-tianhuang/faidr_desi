@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { communicate, type RecvMessage as GenericRecvMessage } from "./framework";
-import { Wk1NBPool } from "./framework/wk1";
+import { communicate, type RecvMessage as GenericRecvMessage } from "./lib";
+import { Wk1NBPool } from "./lib/wk1";
 import { v4 as uuidv4 } from "uuid";
 import Worker from "./wk1NB.ts?worker";
 const pool = new Wk1NBPool(new Worker(), uuidv4);
