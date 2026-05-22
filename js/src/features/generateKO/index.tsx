@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { DesignIterationsTable } from "@/components/designIterationsTable";
-import useGenerateKOEndpoint from "./hook";
-import useFeaturizeEndpoint from "../featurize/hook";
+import useGenerateKOEndpoint from "@/backend/apis/generateKO";
+import useFeaturizeEndpoint from "@/backend/apis/featurize";
 import TransferList from "@/components/transferList";
 import { Button } from "@/components/ui/button";
 import { NUM_FEATURES, type IDRome } from "@/lib/consts";

@@ -1,4 +1,4 @@
-import useFeaturizeEndpoint from "./hook";
+import useFeaturizeEndpoint from "@/backend/apis/featurize";
 import { FeaturesTable } from "@/components/featuresTable";
 import { Alert } from "@/components/ui/alert";
 import { useMemo, useState } from "react";
@@ -8,7 +8,7 @@ import {
   FEATURE_WEIGHTS,
   type IDRome,
 } from "@/lib/consts";
-import type { Featurized } from "../../types/featurize";
+import type { Featurized } from "@/types/featurize";
 import Loading from "@/components/loading";
 import { Toggle } from "@/components/ui/toggle";
 import { UnexpectedError } from "@/components/errors";

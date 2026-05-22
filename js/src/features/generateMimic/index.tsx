@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import useGenerateMimicEndpoint from "./hook";
+import useGenerateMimicEndpoint from "@/backend/apis/generateMimic";
 import RngPicker from "@/components/rngPicker";
 import { Button } from "@/components/ui/button";
 import { DesignIterationsTable } from "@/components/designIterationsTable";
@@ -14,7 +14,7 @@ import { Alert } from "@/components/ui/alert";
 import FinalSequenceDiv from "@/components/finalSequenceDiv";
 import { NormalError, UnexpectedError } from "@/components/errors";
 import { FEATURE_CONFIGURATION, NUM_FEATURES, type IDRome } from "@/lib/consts";
-import useFeaturizeEndpoint from "../featurize/hook";
+import useFeaturizeEndpoint from "@/backend/apis/featurize";
 import Loading from "@/components/loading";
 import IdromePicker from "@/components/idromePicker";
 
