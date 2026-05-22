@@ -396,20 +396,15 @@ function GenerateKOResultsArea(props: {
   }
   const localOptError =
     progressData?.done && progressData.iterations.length === 1;
+  const LOCAL_OPT_ERROR_MESSAGE =
+    "Starting sequence is already at local optimum in feature space. This can happen when too few features are allowed to vary and the system becomes overconstrained. We recommend choosing more or different features to knockout.";
   return (
     <div className="flex flex-col gap-2 p-4 border rounded-md border-primary">
       {localOptError ? (
-        <Alert variant="destructive">
-          <AlertTitle>
-            {"We're sorry! We could not design your knock out sequence."}
-          </AlertTitle>
-          <AlertDescription>
-            Starting sequence is already at local optimum in feature space. This
-            can happen when too few features are allowed to vary and the system
-            becomes overconstrained. We recommend choosing more or different
-            features to knockout.
-          </AlertDescription>
-        </Alert>
+        <NormalError
+          title="We're sorry! We could not design your knock out sequence."
+          message={LOCAL_OPT_ERROR_MESSAGE}
+        />
       ) : finalSequence ? (
         <div className="flex flex-col border border-input rounded-md p-4 gap-2">
           <span className="text-md font-bold underline">Designed Sequence</span>
