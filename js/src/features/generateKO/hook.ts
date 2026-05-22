@@ -1,5 +1,4 @@
 import { useBackend, type RecvMessage } from "@/backend";
-import { SEQUENCE_VALIDATION_PARAMETERS } from "@/lib/consts";
 import { useState } from "react";
 import {
   InitializationError,
@@ -30,7 +29,6 @@ export default function useGenerateKOEndpoint(args: {
     featureConfiguration,
     featureWeights,
     featureTargets,
-    sequenceValidationSettings: SEQUENCE_VALIDATION_PARAMETERS,
   };
   const [initError, setInitError] = useState<string | null>(null);
   const [progressData, setProgressData] = useState<Progress>(() => ({

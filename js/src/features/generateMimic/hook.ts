@@ -1,5 +1,4 @@
 import { useBackend, type RecvMessage } from "@/backend";
-import { SEQUENCE_VALIDATION_PARAMETERS } from "@/lib/consts";
 import { useState } from "react";
 import { InitializationError, Initialized, Progress, type ProgressRaw } from "./types";
 import { mutationToString } from "@/lib/utils";
@@ -22,7 +21,6 @@ export default function useGenerateMimicEndpoint(args: {
     featureConfiguration,
     featureWeights,
     rng,
-    sequenceValidationSettings: SEQUENCE_VALIDATION_PARAMETERS,
   };
   const [initError, setInitError] = useState<string | null>(null);
   const [progressData, setProgressData] = useState<Progress>(() => ({

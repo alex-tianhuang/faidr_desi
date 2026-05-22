@@ -1,4 +1,3 @@
-import { SEQUENCE_VALIDATION_PARAMETERS } from "@/lib/consts";
 import FEATURE_CONFIGURATION from "./data/kl_feature_configuration";
 import { FEATURE_WEIGHTS } from "./data/kl_design_weights";
 import ITERATIONS from "./data/generateKO/design_iterations.ko-net_charge";
@@ -18,7 +17,6 @@ test("simple knockout design algorithm can reproduce old implementation", async 
       const {
         FEATURE_CONFIGURATION,
         FEATURE_WEIGHTS,
-        SEQUENCE_VALIDATION_PARAMETERS,
         INITIAL_SEQUENCE,
         KO_FEATURE_TARGETS,
       } = imports;
@@ -48,14 +46,12 @@ test("simple knockout design algorithm can reproduce old implementation", async 
         featureConfiguration: FEATURE_CONFIGURATION,
         featureWeights: FEATURE_WEIGHTS,
         featureTargets,
-        sequenceValidationSettings: SEQUENCE_VALIDATION_PARAMETERS,
       };
       return await window.__communicate(request);
     },
     {
       FEATURE_CONFIGURATION,
       FEATURE_WEIGHTS,
-      SEQUENCE_VALIDATION_PARAMETERS,
       INITIAL_SEQUENCE: TEST_SEQUENCE,
       KO_FEATURE_TARGETS,
     },

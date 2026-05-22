@@ -11,14 +11,6 @@ import {
 /** The minimum sequence length good enough
  * for the scope of this project. */
 export const MIN_SEQUENCE_LENGTH = 5;
-/** Sequence validation parameters good enough
- * for the scope of this project.
- */
-export const SEQUENCE_VALIDATION_PARAMETERS = {
-  minSequenceLength: MIN_SEQUENCE_LENGTH,
-  omitMode: "strict",
-  capitalizeMode: "strict",
-};
 /** IDRomes used as feature weights, means, or minimums. */
 export type IDRome = "yeast" | "human";
 /** Feature minimums over different IDRomes for KO design. */
