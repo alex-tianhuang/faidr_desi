@@ -2,7 +2,7 @@ use std::time::Duration;
 use crate::{
     adapters::SenderHandle, datatypes::webworker_messages::blocking::generate_mimic::{
         ClosePayload, DesignIteration, Progress, RequestPayload, YieldPayload,
-    }, seq_generator::DesignProgress, servers::blocking::generate_mimic::init_job::{InitializedJob, init_job_generate_mimic}
+    }, seq_generator::DesignProgress, server::blocking::generate_mimic::init_job::{InitializedJob, init_job_generate_mimic}
 };
 use wasm_bindgen::JsValue;
 
@@ -80,7 +80,7 @@ mod init_job {
         rng::{Rng, RngSpec},
         seq_features::featurize::{FeatureContainerUserFacing, Featurizer, FeaturizerCompilation},
         seq_generator::{SeqGenerator, euclidean_design_norm},
-        servers::blocking::common::compile_and_validate_features,
+        server::blocking::common::compile_and_validate_features,
     };
     use rand::{Rng as _, distr::slice::Choose};
     use std::{collections::HashMap, ops::ControlFlow};

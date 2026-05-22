@@ -5,7 +5,7 @@ use crate::{
         common::featurize::Featurized,
     },
     seq_features::featurize::FeaturizerCompilation,
-    servers::blocking::common::compile_and_validate_features,
+    server::blocking::common::compile_and_validate_features,
 };
 use wasm_bindgen::JsValue;
 
