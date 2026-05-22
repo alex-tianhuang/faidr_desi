@@ -1,4 +1,4 @@
-//! Module defining the [`Aminoacid`] enum and [gapped] variants.
+//! Module defining the [`Aminoacid`] enum.
 use std::mem;
 use thiserror::Error;
 use tsify::Tsify;
