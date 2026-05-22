@@ -1,6 +1,6 @@
-import { Wk1BatchedPool } from "./framework/wk1/frontend/batched.js";
-import { Wk1BLKPool } from "./framework/wk1/index.js";
-import { NBBackend } from "./framework/wk1/webworker/nonBlocking.js";
+import { Wk1BatchedPool } from "./lib/wk1/frontend/batched.js";
+import { Wk1BLKPool } from "./lib/wk1/index.js";
+import { NBBackend } from "./lib/wk1/webworker/nonBlocking.js";
 import initWasm, {
   nonBlockingServer,
   type Receiver,
