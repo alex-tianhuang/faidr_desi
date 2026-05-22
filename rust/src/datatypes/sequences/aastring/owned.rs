@@ -1,13 +1,13 @@
 //! Module defining a generic owned aminoacid string, [`AACanonicalString`].
-use crate::datatypes::{Aminoacid, sequences::aastring::borrowed::{NotAAStrError, aa_canonical_str}};
-use serde::{Deserialize, Deserializer, Serialize};
-use std::{
-    mem::ManuallyDrop,
-    ops::{Deref, DerefMut},
+use crate::datatypes::{
+    Aminoacid,
+    sequences::aastring::borrowed::{NotAAStrError, aa_canonical_str},
 };
+use serde::{Deserialize, Deserializer, Serialize};
+use std::{mem::ManuallyDrop, ops::Deref};
 
 /// String of aminoacid-like bytes in owned form.
-/// 
+///
 /// This is essentially just a wrapper around `Vec`
 /// that can be treated as a valid UTF-8 string sometimes.
 ///
@@ -41,11 +41,6 @@ impl AACanonicalString {
         unsafe { Self(Vec::from_raw_parts(ptr, len, cap)) }
     }
 }
-// impl AsRef<Vec<Aminoacid>> for AACanonicalString {
-//     fn as_ref(&self) -> &Vec<Aminoacid> {
-//         &self.0
-//     }
-// }
 impl AsMut<Vec<Aminoacid>> for AACanonicalString {
     fn as_mut(&mut self) -> &mut Vec<Aminoacid> {
         &mut self.0
@@ -71,7 +66,6 @@ impl<'de> Deserialize<'de> for AACanonicalString {
         D: Deserializer<'de>,
     {
         let s = String::deserialize(deserializer)?;
-        AACanonicalString::from_bytes(s.into_bytes())
-            .map_err(serde::de::Error::custom)
+        AACanonicalString::from_bytes(s.into_bytes()).map_err(serde::de::Error::custom)
     }
 }
