@@ -1,4 +1,4 @@
-//! Module defining a generic owned aminoacid string, [`AAString`].
+//! Module defining a generic owned aminoacid string, [`AACanonicalString`].
 use crate::datatypes::{Aminoacid, sequences::aastring::borrowed::{NotAAStrError, aa_canonical_str}};
 use serde::{Deserialize, Deserializer, Serialize};
 use std::{
