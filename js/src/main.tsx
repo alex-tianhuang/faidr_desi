@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./styles/cyan.css";
+import "./index.css";
 import App from "./App.tsx";
 import initWasm from "./backend/rust/idrdesign_app";
 import { ThemeProvider } from "next-themes";
