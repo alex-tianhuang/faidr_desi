@@ -1,5 +1,5 @@
 use crate::seq_features::{
-    contexts::common::ResidueCounts, functionality::featurize::FeaturizableSeqFeats,
+    featurize::contexts::ResidueCounts, functionality::featurize::FeaturizableSeqFeats,
     implementors::percent_residue::PercentResidue,
 };
 use std::convert::Infallible;

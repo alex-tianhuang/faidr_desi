@@ -1,7 +1,7 @@
 use std::convert::Infallible;
 
 use crate::seq_features::{
-    contexts::common::ResidueCounts, functionality::featurize::FeaturizableSeqFeats,
+    featurize::contexts::ResidueCounts, functionality::featurize::FeaturizableSeqFeats,
     implementors::percent_resgroup::PercentResidueGroup,
 };
 

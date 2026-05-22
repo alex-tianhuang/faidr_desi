@@ -3,7 +3,7 @@ use thiserror::Error;
 use crate::{
     datatypes::Aminoacid,
     seq_features::{
-        contexts::common::ResidueCounts, functionality::featurize::FeaturizableSeqFeats,
+        featurize::contexts::ResidueCounts, functionality::featurize::FeaturizableSeqFeats,
         implementors::isoelectric_point::IsoelectricPoint,
     },
 };

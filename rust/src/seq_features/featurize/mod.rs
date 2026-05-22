@@ -7,11 +7,6 @@
 //! which represent a subclass of sequence features, such as
 //! motifs, simple-spacing, etc.
 //!
-//! The point of splitting this up the code this way is so that
-//! each subfeaturizer is a manageable amount of work to
-//! implement/update. The goal is development time for new
-//! sequence features, as I anticipate adding many new ones.
-//!
 //! The point of this submodule then is to tie the subfeaturizers
 //! together into one master struct. Currently, I inline each
 //! subclass of feature because the context required to compute
@@ -37,6 +32,7 @@ use crate::{
     },
 };
 pub use compile::{FeaturizerCompilation, SeqFeatureUserFacing, compile_features};
+pub mod contexts;
 use context_provider::FeaturizerContextProvider;
 mod compile;
 mod context_provider;
@@ -51,12 +47,10 @@ r#macro::define_compiler_and_featurizer! {
     /// A sequence feature computing struct that
     /// supports all features defined by [`SeqFeatureUserFacing`].
     ///
-    /// As of Feb 15th, 2026, this includes:
+    /// As of May 22nd, 2026, this includes:
     /// - Isoelectric point
     /// - Sequence charge decoration
-    /// - Sequence hydropathy decoration
     /// - Log ratio (soft log)
-    /// - Nardini spacing (delta/omega)
     /// - Percent residue group
     /// - Percent residue
     /// - Regex-based motifs (spans/counts)
@@ -76,7 +70,7 @@ r#macro::define_compiler_and_featurizer! {
             #[ftz(context = provider.residue_counts())]
             #[ftz(map_err = into_standard_error)]
             let isoelectric_point: IsoelectricPoint;
-            #[ftz(context = provider.ctx2())]
+            #[ftz(context = provider.scd_ctx())]
             #[ftz(map_err = into_standard_error)]
             let scd: SCD;
             #[ftz(context = provider.residue_counts())]

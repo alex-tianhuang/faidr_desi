@@ -1,7 +1,7 @@
 use crate::{
     datatypes::AAMap,
     seq_features::{
-        contexts::common::ResidueCounts, functionality::featurize::FeaturizableSeqFeats,
+        featurize::contexts::ResidueCounts, functionality::featurize::FeaturizableSeqFeats,
         implementors::simple_score::SimpleScore,
     },
 };

@@ -2,10 +2,7 @@ use bumpalo::Bump;
 
 use crate::{
     datatypes::aa_canonical_str,
-    seq_features::contexts::{
-        common::{ArenaCtx, ResidueCounts},
-        featurize::composite::Ctx2,
-    },
+    seq_features::featurize::contexts::{ArenaCtx, ResidueCounts, SCDCtx},
 };
 
 /// A context provider for the current featurizer
@@ -47,15 +44,13 @@ impl FeaturizerContextProvider {
             .as_ref()
             .expect("compiler should have setup residue counts in provider")
     }
-    /// Get a [`Ctx2`] context.
-    ///
-    /// As of Feb 16th, 2026, this is for nardini spacing and SCD.
-    pub fn ctx2(&mut self) -> Ctx2<'_> {
+    /// Get the context for sequence charge decoration.
+    pub fn scd_ctx(&mut self) -> SCDCtx<'_> {
         let Self {
             residue_counts,
             arena,
         } = self;
-        Ctx2 {
+        SCDCtx {
             residue_counts: residue_counts
                 .as_ref()
                 .expect("compiler should have setup residue counts in provider"),

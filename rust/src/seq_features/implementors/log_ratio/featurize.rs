@@ -1,7 +1,7 @@
 use std::convert::Infallible;
 
 use crate::seq_features::{
-    contexts::common::ResidueCounts,
+    featurize::contexts::ResidueCounts,
     functionality::featurize::FeaturizableSeqFeats,
     implementors::log_ratio::{LogRatio, LogRatioContainer},
 };

@@ -5,13 +5,13 @@ use bumpalo::collections::Vec;
 use crate::{
     datatypes::{Aminoacid, aa_canonical_str},
     seq_features::{
-        contexts::featurize::composite::Ctx2, functionality::featurize::FeaturizableSeqFeats,
+        featurize::contexts::SCDCtx, functionality::featurize::FeaturizableSeqFeats,
         implementors::sequence_charge_decoration::SCD,
     },
 };
 
 impl FeaturizableSeqFeats for SCD {
-    type Ctx<'a> = Ctx2<'a>;
+    type Ctx<'a> = SCDCtx<'a>;
     type Err = Infallible;
     /// Part of the [`FeaturizableSeqFeats`] template.
     ///
@@ -31,7 +31,7 @@ impl FeaturizableSeqFeats for SCD {
 }
 
 /// Function that computes sequence decoration for [`SCD::featurize`].
-fn compute_scd(sequence: &aa_canonical_str, ctx: &mut Ctx2<'_>) -> f64 {
+fn compute_scd(sequence: &aa_canonical_str, ctx: &mut SCDCtx<'_>) -> f64 {
     const SIMPLIFIED_CHARGED_RESIDUES: [Aminoacid; 4] =
         [Aminoacid::D, Aminoacid::E, Aminoacid::K, Aminoacid::R];
     let num_charged_residues = SIMPLIFIED_CHARGED_RESIDUES
