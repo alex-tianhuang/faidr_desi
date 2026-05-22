@@ -14,7 +14,7 @@ import {
   percentIdentity,
 } from "@/lib/utils";
 import FinalSequenceDiv from "@/components/finalSequenceDiv";
-import { Error, UnexpectedError } from "@/components/errors";
+import { NormalError, UnexpectedError } from "@/components/errors";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   Tooltip,
@@ -101,7 +101,7 @@ export default function GenerateKOArea(props: {
     return (
       <div className="flex flex-col gap-2">
         <GenerateKOHeader />
-        <Error
+        <NormalError
           title="Unfortunately, we cannot design knockouts of your inputted sequence."
           message={`Some sequence features could not be computed: ${checkError}`}
         />

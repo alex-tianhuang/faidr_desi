@@ -12,7 +12,7 @@ import {
 } from "@/lib/utils";
 import { Alert } from "@/components/ui/alert";
 import FinalSequenceDiv from "@/components/finalSequenceDiv";
-import { Error, UnexpectedError } from "@/components/errors";
+import { NormalError, UnexpectedError } from "@/components/errors";
 import { FEATURE_CONFIGURATION, NUM_FEATURES, type IDRome } from "@/lib/consts";
 import useFeaturizeEndpoint from "../featurize/hook";
 import Loading from "@/components/loading";
@@ -49,7 +49,7 @@ export default function GenerateMimicArea(props: {
     return (
       <div className="flex flex-col gap-2">
         <GenerateMimicHeader />
-        <Error
+        <NormalError
           title="Unfortunately, we cannot design mimics of your inputted sequence."
           message={`Some sequence features could not be computed: ${checkError}`}
         />

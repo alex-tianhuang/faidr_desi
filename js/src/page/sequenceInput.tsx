@@ -10,7 +10,7 @@ import CodeMirror, { oneDark } from "@uiw/react-codemirror";
 import { cn } from "@/lib/utils";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useTheme } from "next-themes";
-import { Error } from "@/components/errors";
+import { NormalError } from "@/components/errors";
 
 export default function SequenceInput(props: {
   disabled: boolean;
@@ -125,7 +125,7 @@ export default function SequenceInput(props: {
         </Button>
       </div>
       {error && (
-        <Error title="Cannot parse sequence" message={error}></Error>
+        <NormalError title="Cannot parse sequence" message={error}></NormalError>
       )}
       {sequence !== null && (
         <Alert variant="default" className="overflow-scroll">

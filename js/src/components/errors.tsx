@@ -1,7 +1,7 @@
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import Link from "./link";
 
-export function Error(props: { title: string; message: string }) {
+export function NormalError(props: { title: string; message: string }) {
   const { title, message } = props;
   return <Alert variant="destructive">
     <AlertTitle>{title}</AlertTitle>
