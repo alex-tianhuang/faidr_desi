@@ -11,7 +11,7 @@ import {
 import type { Featurized } from "./types";
 import Loading from "@/components/loading";
 import { Toggle } from "@/components/ui/toggle";
-import UnexpectedError from "@/components/unexpectedError";
+import { UnexpectedError } from "@/components/errors";
 
 export default function FeaturizeArea(props: {
   sequence: string;
@@ -21,10 +21,8 @@ export default function FeaturizeArea(props: {
   const {
     idromeState: [idrome, setIdrome],
   } = props;
-  const {
-    featurizationError,
-    featurized: featurizedRaw,
-  } = useFeaturizeEndpoint(props);
+  const { featurizationError, featurized: featurizedRaw } =
+    useFeaturizeEndpoint(props);
   const [postProcessing, setPostProcessing] = useState<IDRome | "none">(idrome);
   const featurized = useMemo(
     () =>

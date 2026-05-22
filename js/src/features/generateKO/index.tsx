@@ -14,7 +14,7 @@ import {
   percentIdentity,
 } from "@/lib/utils";
 import FinalSequenceDiv from "@/components/finalSequenceDiv";
-import ErrorDiv from "@/components/errorDiv";
+import { Error, UnexpectedError } from "@/components/errors";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   Tooltip,
@@ -24,7 +24,6 @@ import {
 import { ChevronsRight } from "lucide-react";
 import Loading from "@/components/loading";
 import IdromePicker from "@/components/idromePicker";
-import UnexpectedError from "@/components/unexpectedError";
 
 type FeatureCard = {
   propKey: string;
@@ -102,7 +101,7 @@ export default function GenerateKOArea(props: {
     return (
       <div className="flex flex-col gap-2">
         <GenerateKOHeader />
-        <ErrorDiv
+        <Error
           title="Unfortunately, we cannot design knockouts of your inputted sequence."
           message={`Some sequence features could not be computed: ${checkError}`}
         />

@@ -1,8 +1,17 @@
-import Link from "./link";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
+import Link from "./link";
+
+export function Error(props: { title: string; message: string }) {
+  const { title, message } = props;
+  return <Alert variant="destructive">
+    <AlertTitle>{title}</AlertTitle>
+    <AlertDescription>{message}</AlertDescription>
+  </Alert>;
+}
+
 
 const MY_EMAIL = "tianh.huang@mail.utoronto.ca";
-export default function UnexpectedError(props: {
+export function UnexpectedError(props: {
   error: string;
   while: string;
 }) {
