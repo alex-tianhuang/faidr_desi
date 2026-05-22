@@ -6,7 +6,7 @@ import initWasm, {
   type Receiver,
   type Sender,
   type TaskSpawner,
-} from "./rust/idrdesign_app.js";
+} from "./rust/faidr_desi";
 import { v4 as uuidv4 } from "uuid";
 import Worker from "./wk1BLK.ts?worker";
 const concurrency = Math.max(navigator.hardwareConcurrency, 1);

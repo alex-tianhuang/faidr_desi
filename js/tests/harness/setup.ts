@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 import { communicate } from "@/backend/lib";
 import { Wk1NBPool } from "@/backend/lib/wk1";
 import NBWorker from "@/backend/wk1NB.ts?worker";
-import initWasm, * as rustModule from "@/backend/rust/idrdesign_app";
+import initWasm, * as rustModule from "@/backend/rust/faidr_desi";
 
 const pool = new Wk1NBPool(new NBWorker(), uuidv4);
 
