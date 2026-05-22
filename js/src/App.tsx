@@ -9,7 +9,7 @@ import {
 } from "./lib/consts";
 import FeaturizeArea from "./features/featurize";
 import GenerateKOArea from "./features/generateKO";
-import Banner from "./components/banner";
+import Banner from "./page/banner";
 import Preamble from "./page/preamble";
 import Footer from "./page/footer";
 import SequenceInput from "./page/sequenceInput";

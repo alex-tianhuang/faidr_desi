@@ -1,4 +1,4 @@
-import { ThemeToggle } from "./themeToggle";
+import { ThemeToggle } from "../components/themeToggle";
 
 export default function Banner() {
   return (
