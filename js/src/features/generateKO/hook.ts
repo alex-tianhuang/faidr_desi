@@ -3,7 +3,7 @@ import { useState } from "react";
 import {
   InitializationError,
   Initialized,
-} from "../../types/generateKO";
+} from "@/types/generateKO";
 import { mutationToString } from "@/lib/utils";
 import z from "zod";
 import { DesignProgress, type DesignStatus } from "@/types/common";

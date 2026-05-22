@@ -1,6 +1,6 @@
 import { useBackend, type RecvMessage } from "@/backend";
 import { useState } from "react";
-import { EndpointResult, Featurized, InitializationError } from "../../types/featurize";
+import { EndpointResult, Featurized, InitializationError } from "@/types/featurize";
 import z from "zod";
 
 export default function useFeaturizeEndpoint(args: {
