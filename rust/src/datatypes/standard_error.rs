@@ -1,14 +1,15 @@
+//! Module defining [`StandardError`].
 use std::error::Error;
 use serde::{Deserialize, Serialize};
+use thiserror::Error;
 
 /// Minimal error struct.
 /// 
-/// Currently supports basic serialization and deserialization.
-#[derive(Debug, thiserror::Error)]
+/// Supports basic serialization and deserialization
+/// from a JS object that looks like `{ reason: string }`.
+#[derive(Debug, Error)]
 #[error("{reason}")]
 pub struct StandardError {
-    #[from]
-    #[source]
     reason: Box<dyn Error + Send + Sync + 'static>
 }
 impl StandardError {
@@ -17,7 +18,7 @@ impl StandardError {
         Self { reason: Box::from(s) }
     }
 }
-/// Quickest way to convert an error into a [`StandardError`].
+/// Shorthand for converting an error into a [`StandardError`].
 pub fn into_standard_error(error: impl Error + Send + Sync + 'static) -> StandardError {
     StandardError { reason: Box::from(error) }
 }
@@ -40,6 +41,6 @@ impl Serialize for StandardError {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
         where
             S: serde::Serializer {
-        StandardErrorUserFacing { reason: self.to_string() }.serialize(serializer)
+        StandardErrorUserFacing { reason: self.reason.to_string() }.serialize(serializer)
     }
 }
