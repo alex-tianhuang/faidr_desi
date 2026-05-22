@@ -3,4 +3,4 @@
 mod borrowed;
 mod owned;
 pub use borrowed::aa_canonical_str;
-pub use owned::{AACanonicalString, AACanonicalStringStrict};
+pub use owned::AACanonicalString;
