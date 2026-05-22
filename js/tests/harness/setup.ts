@@ -5,8 +5,8 @@
  * `window.__communicate` for Playwright to drive via `page.evaluate`.
  */
 import { v4 as uuidv4 } from "uuid";
-import { communicate } from "@/backend/framework";
-import { Wk1NBPool } from "@/backend/framework/wk1";
+import { communicate } from "@/backend/lib";
+import { Wk1NBPool } from "@/backend/lib/wk1";
 import NBWorker from "@/backend/wk1NB.ts?worker";
 import initWasm, * as rustModule from "@/backend/rust/idrdesign_app";
 

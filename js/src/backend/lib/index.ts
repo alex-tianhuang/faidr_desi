@@ -1,5 +1,5 @@
 /**
- * @module backend/framework
+ * @module backend/lib
  * 
  * The types and interfaces used to communicate with a computational backend.
  * The framework assumes that one message is sent from the frontend, resulting
