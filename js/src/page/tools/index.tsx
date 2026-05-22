@@ -1,12 +1,12 @@
-import GenerateMimicArea from "@/features/generateMimic";
+import GenerateMimicArea from "@/page/tools/generateMimic";
 import {
   FEATURE_CONFIGURATION,
   FEATURE_MINIMUMS,
   FEATURE_WEIGHTS,
   type IDRome,
 } from "@/lib/consts";
-import FeaturizeArea from "@/features/featurize";
-import GenerateKOArea from "@/features/generateKO";
+import FeaturizeArea from "@/page/tools/featurize";
+import GenerateKOArea from "@/page/tools/generateKO";
 export default function Tool(props: {
   sequence: string | null;
   tool: "mimic" | "ko" | "feats" | null;
