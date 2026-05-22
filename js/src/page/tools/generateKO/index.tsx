@@ -102,7 +102,7 @@ export default function GenerateKOArea(props: {
       <div className="flex flex-col gap-2">
         <GenerateKOHeader />
         <NormalError
-          title="Unfortunately, we cannot design knockouts of your inputted sequence."
+          title="We're sorry! We cannot design knockouts of your inputted sequence."
           message={`Some sequence features could not be computed: ${checkError}`}
         />
       </div>

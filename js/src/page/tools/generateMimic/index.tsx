@@ -50,7 +50,7 @@ export default function GenerateMimicArea(props: {
       <div className="flex flex-col gap-2">
         <GenerateMimicHeader />
         <NormalError
-          title="Unfortunately, we cannot design mimics of your inputted sequence."
+          title="We're sorry! We cannot design mimics of your inputted sequence."
           message={`Some sequence features could not be computed: ${checkError}`}
         />
       </div>

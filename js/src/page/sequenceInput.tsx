@@ -125,7 +125,7 @@ export default function SequenceInput(props: {
         </Button>
       </div>
       {error && (
-        <NormalError title="Cannot parse sequence" message={error}></NormalError>
+        <NormalError title="Uh oh! We can't parse your input as a sequence" message={error}></NormalError>
       )}
       {sequence !== null && (
         <Alert variant="default" className="overflow-scroll">
