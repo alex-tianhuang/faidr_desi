@@ -137,6 +137,7 @@ export default function GenerateKOArea(props: {
               ? "Click the button above and design results will be displayed here."
               : "Design results will be displayed here once you choose some features to knockout."
           }
+          disabled={numFeaturesKO === 0}
         ></SubmitButton>
       )}
       {hasActiveJob && (

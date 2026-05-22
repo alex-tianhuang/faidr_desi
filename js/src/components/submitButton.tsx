@@ -5,8 +5,9 @@ export default function SubmitButton(props: {
   setReqTimestamp: (_: number) => void;
   buttonText: string;
   footerText: string;
+  disabled?: boolean
 }) {
-  const { setActiveJob, setReqTimestamp, buttonText, footerText } = props;
+  const { setActiveJob, setReqTimestamp, buttonText, footerText, disabled } = props;
   return (
     <div className="flex flex-col gap-2">
       <Button
@@ -14,6 +15,7 @@ export default function SubmitButton(props: {
           setActiveJob(true);
           setReqTimestamp(Date.now());
         }}
+        disabled={disabled}
       >
         {buttonText}
       </Button>
