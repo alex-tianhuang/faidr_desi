@@ -4,7 +4,7 @@ import {
   useReactTable,
   type ColumnDef,
 } from "@tanstack/react-table";
-import { generateCsv } from "export-to-csv";
+import { asString, generateCsv } from "export-to-csv";
 import type { AcceptedData } from "@/../node_modules/export-to-csv/output/lib/types";
 import { Button } from "./ui/button";
 import {
@@ -50,8 +50,8 @@ export default function DataTable<TData extends Record<string, AcceptedData>, TV
         ]),
       ),
     );
-    const csv = generateCsv({ useKeysAsHeaders: true })(rowData);
-    saveFile(csv as unknown as string, suggestedFilename)
+    const csv = asString(generateCsv({ useKeysAsHeaders: true })(rowData));
+    saveFile(csv, suggestedFilename)
   };
 
   return (
