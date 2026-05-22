@@ -1,10 +1,10 @@
 import { useTheme } from "next-themes";
 import { buttonVariants } from "@/components/ui/button";
 import { Moon, Sun } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 /** Theme switch written by Claude Code. */
-export function ThemeToggle() {
+export default function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
   const otherTheme = resolvedTheme === "dark" ? "light" : "dark";
   return (

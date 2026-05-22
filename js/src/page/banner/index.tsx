@@ -1,4 +1,4 @@
-import { ThemeToggle } from "../components/themeToggle";
+import ThemeToggle from "./themeToggle";
 
 export default function Banner() {
   return (
@@ -6,7 +6,7 @@ export default function Banner() {
       <div className="text-center font-extrabold text-3xl underline">
         FAIDR-Desi
         <div className="absolute top-2.5 right-4">
-          <ThemeToggle></ThemeToggle>
+          <ThemeToggle/>
         </div>
       </div>
       <div className="text-center text-sm text-muted-foreground font-semibold">
