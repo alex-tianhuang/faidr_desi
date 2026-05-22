@@ -1,5 +1,3 @@
-//! Module defining the [`FeaturizableSeqFeats`] requirement.
-
 use crate::datatypes::aa_canonical_str;
 
 /// This trait specifies the requirement that a sequence feature

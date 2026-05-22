@@ -1,7 +1,3 @@
-//! Module defining the required structs/interfaces to
-//! ensure that a container of sequence features is
-//! compilable from a marshallable format.
-
 /// This trait specifies the requirement that a feature
 /// container has an associated type that compiles it.
 pub(crate) trait CompilableSeqFeats {

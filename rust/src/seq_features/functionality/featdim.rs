@@ -1,6 +1,3 @@
-//! Module defining the requirement of a feature container
-//! to have a dimension / number of features it yields.
-
 /// Requirement that a feature container know the number
 /// of features it yields.
 pub(crate) trait FeatDim {
