@@ -37,7 +37,7 @@ export default function Tool(props: {
         sequence={sequence}
         featureConfiguration={FEATURE_CONFIGURATION}
         featureWeights={FEATURE_WEIGHTS[idrome]}
-        requestStartedState={freezeInputsState}
+        freezeInputsState={freezeInputsState}
         KOFeatureTargets={FEATURE_MINIMUMS[idrome]}
         idromeState={[idrome, setIdrome]}
       ></GenerateKOArea>

@@ -8,3 +8,10 @@ export const Initialized = z.object({
   featureDistance: z.number(),
 });
 export type Initialized = z.infer<typeof Initialized>;
+
+export type FeatureCard = {
+  propKey: string;
+  selected: boolean;
+  searchKey: string;
+  value: number;
+};
