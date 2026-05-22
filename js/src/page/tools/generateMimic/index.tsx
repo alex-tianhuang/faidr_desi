@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import useGenerateMimicEndpoint from "@/backend/apis/generateMimic";
-import RngPicker from "@/components/rngPicker";
+import RngPicker from "@/page/tools/generateMimic/rngPicker";
 import { Button } from "@/components/ui/button";
 import { DesignIterationsTable } from "@/components/designIterationsTable";
 import {
