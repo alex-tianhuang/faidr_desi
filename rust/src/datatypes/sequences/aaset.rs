@@ -24,14 +24,6 @@ use crate::datatypes::{AAIndex, AAMap, AMINOACIDS, Aminoacid};
 ///     /* ... */
 /// }
 /// ```
-///
-/// Implementation
-/// --------------
-/// Light wrapper over [`AAMap`].
-///
-/// One day I can maybe be convinced to bring back
-/// a fun, space efficient, and possibly more
-/// compute heavy `u32` representation but not today.
 #[derive(Clone, Default)]
 pub struct AASet {
     data: AAMap<bool>,
