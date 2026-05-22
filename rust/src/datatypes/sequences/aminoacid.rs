@@ -87,51 +87,38 @@ define_aminoacids! {
     /// Tyrosine (Tyr)
     Y = b'Y'
 }
-/// Macro that implements common traits on aminoacid-like datatypes
-/// by interpreting the byte as a printable character.
-///
-/// Implements:
-/// - [`std::fmt::Debug`]
-/// - [`std::fmt::Display`]
-/// - [`serde::Deserialize`]
-/// - [`serde::Serialize`]
-macro_rules! derive_aa_as_char_impls {
-    ($aa_like:ty) => {
-        impl std::fmt::Debug for $aa_like {
-            fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-                std::fmt::Debug::fmt(&(u8::from(*self) as char), f)
-            }
-        }
-        impl std::fmt::Display for $aa_like {
-            fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-                std::fmt::Display::fmt(&(u8::from(*self) as char), f)
-            }
-        }
-        impl<'de> serde::Deserialize<'de> for $aa_like {
-            fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-            where
-                D: serde::Deserializer<'de>,
-            {
-                let ch = <char as serde::Deserialize>::deserialize(deserializer)?;
-                <$aa_like>::try_from(ch).map_err(serde::de::Error::custom)
-            }
-        }
-        impl serde::Serialize for $aa_like {
-            fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-            where
-                S: serde::Serializer,
-            {
-                <char as serde::Serialize>::serialize(&(u8::from(*self) as char), serializer)
-            }
-        }
-    };
+impl std::fmt::Debug for Aminoacid {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        std::fmt::Debug::fmt(&(u8::from(*self) as char), f)
+    }
+}
+impl std::fmt::Display for Aminoacid {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        std::fmt::Display::fmt(&(u8::from(*self) as char), f)
+    }
+}
+impl<'de> serde::Deserialize<'de> for Aminoacid {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        let ch = <char as serde::Deserialize>::deserialize(deserializer)?;
+        Aminoacid::try_from(ch).map_err(serde::de::Error::custom)
+    }
+}
+impl serde::Serialize for Aminoacid {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        <char as serde::Serialize>::serialize(&(u8::from(*self) as char), serializer)
+    }
 }
 impl From<Aminoacid> for u8 {
     fn from(value: Aminoacid) -> Self {
         value as u8
     }
 }
-derive_aa_as_char_impls!(Aminoacid);
 /// Error returned when converting a byte to an [`Aminoacid`].
 #[derive(Debug, Error)]
 #[error("expected single-letter aminoacid, got `{ch}`")]
