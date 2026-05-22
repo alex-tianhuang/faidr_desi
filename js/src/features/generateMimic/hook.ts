@@ -1,8 +1,9 @@
 import { useBackend, type RecvMessage } from "@/backend";
 import { useState } from "react";
-import { InitializationError, Initialized, Progress, type ProgressRaw } from "./types";
+import { InitializationError, Initialized } from "../../types/generateMimic";
 import { mutationToString } from "@/lib/utils";
 import z from "zod";
+import { DesignProgress, type DesignStatus } from "@/types/common";
 
 export default function useGenerateMimicEndpoint(args: {
   sequence: string;
@@ -23,7 +24,7 @@ export default function useGenerateMimicEndpoint(args: {
     rng,
   };
   const [initError, setInitError] = useState<string | null>(null);
-  const [progressData, setProgressData] = useState<Progress>(() => ({
+  const [progressData, setProgressData] = useState<DesignStatus>(() => ({
     done: false,
     currentMutation: null,
     iterations: [],
@@ -150,7 +151,7 @@ function parseInit(init: RecvMessage):
 function parseProgress(progress: RecvMessage):
   | {
       ctrl: "continue";
-      data: ProgressRaw
+      data: (DesignProgress & { done: boolean })
     }
   | {
       ctrl: "break";
@@ -177,7 +178,7 @@ function parseProgress(progress: RecvMessage):
       },
     };
   }
-  const de = Progress.safeParse(progress.data);
+  const de = DesignProgress.safeParse(progress.data);
   if (!de.success) {
     const reason = z.prettifyError(de.error);
     return {

@@ -4,8 +4,8 @@ import ITERATIONS from "./data/generateKO/design_iterations.ko-net_charge";
 import TEST_SEQUENCE from "./data/generateKO/test_sequence";
 import KO_FEATURE_TARGETS from "./data/generateKO/kl_ko_values_min";
 import { test, expect } from "./fixtures";
-import { Progress as GenerateMimicProgress } from "@/features/generateMimic/types";
-import type { Featurized } from "@/features/featurize/types";
+import { DesignProgress as GenerateMimicProgress } from "@/types/common";
+import type { Featurized } from "@/types/featurize";
 
 test("simple knockout design algorithm can reproduce old implementation", async ({
   page,

@@ -8,7 +8,7 @@ import {
   FEATURE_WEIGHTS,
   type IDRome,
 } from "@/lib/consts";
-import type { Featurized } from "./types";
+import type { Featurized } from "../../types/featurize";
 import Loading from "@/components/loading";
 import { Toggle } from "@/components/ui/toggle";
 import { UnexpectedError } from "@/components/errors";

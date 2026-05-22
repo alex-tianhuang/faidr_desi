@@ -4,7 +4,7 @@ import ITERATIONS from "./data/generateMimic/design_iterations.seed-2024";
 import TARGET_SEQUENCE from "./data/generateMimic/target_sequence";
 import INITIAL_SEQUENCE from "./data/generateMimic/initial_sequence.seed-2024";
 import { test, expect } from "./fixtures";
-import { Progress as GenerateMimicProgress } from "@/features/generateMimic/types";
+import { DesignProgress } from "@/types/common";
 
 test("greedy design algorithm can reproduce old implementation", async ({ page }) => {
   const result = await page.evaluate(
@@ -44,7 +44,7 @@ test("greedy design algorithm can reproduce old implementation", async ({ page }
     ...result.yielded.slice(1).map((item) => {
       const { case: progress } = item as any;
       expect(progress).toEqual("progress");
-      const { iterations } = GenerateMimicProgress.parse(item);
+      const { iterations } = DesignProgress.parse(item);
       return iterations.map((iter) => iter.sequence);
     }),
   );

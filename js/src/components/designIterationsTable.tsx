@@ -1,4 +1,4 @@
-import type { DesignIteration } from "@/features/generateMimic/types";
+import type { DesignIteration } from "@/types/common";
 import type { ColumnDef } from "@tanstack/react-table";
 import DataTable from "./dataTable";
 
