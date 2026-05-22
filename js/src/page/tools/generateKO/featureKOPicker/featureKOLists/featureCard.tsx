@@ -1,29 +1,29 @@
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
-export default function FeatureKOCard(props: {
+export default function FeatureCard(props: {
   disabled: boolean;
   toggleSelect: () => void;
   selected: boolean;
   featureID: string;
-  isKOList: boolean;
+  variant: "default" | "ko"
   featureVector: Record<string, number>;
   KOFeatureTargets: Record<string, number>;
-  userProbablyNeedsHint: boolean;
+  showHintOnHover: boolean;
 }) {
   const {
     disabled,
     toggleSelect,
     selected,
     featureID,
-    isKOList,
+    variant,
     featureVector,
     KOFeatureTargets,
-    userProbablyNeedsHint,
+    showHintOnHover,
   } = props;
   return (
     <Tooltip>
-      <TooltipTrigger disabled={!userProbablyNeedsHint} className="w-full">
+      <TooltipTrigger disabled={!showHintOnHover} className="w-full">
         <Button
           disabled={disabled}
           onClick={toggleSelect}
@@ -35,7 +35,7 @@ export default function FeatureKOCard(props: {
           </span>
           <span className="shrink-0 text-xs opacity-70 text-right self-right">
             {Number(featureVector[featureID]).toPrecision(3)}
-            {isKOList && (
+            {variant === "ko" && (
               <>
                 {" → "}
                 {Number(KOFeatureTargets[featureID]).toPrecision(3)}

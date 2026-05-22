@@ -9,7 +9,7 @@ export const Initialized = z.object({
 });
 export type Initialized = z.infer<typeof Initialized>;
 
-export type FeatureCard = {
+export type FeatureCardData = {
   propKey: string;
   selected: boolean;
   searchKey: string;

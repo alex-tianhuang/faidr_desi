@@ -12,7 +12,7 @@ import Header from "./header";
 import BackButton from "@/components/backButton";
 import SubmitButton from "@/components/submitButton";
 import GenerateKOActiveJob from "./activeJob";
-import type { FeatureCard } from "@/types/generateKO";
+import type { FeatureCardData } from "@/types/generateKO";
 import FeatureKOPicker from "./featureKOPicker";
 
 export default function GenerateKOArea(props: {
@@ -39,8 +39,8 @@ export default function GenerateKOArea(props: {
     () => checkAllFeatures(featurized),
     [featurized],
   );
-  const [defaultList, setDefaultList] = useState<FeatureCard[]>([]);
-  const [KOList, setKOList] = useState<FeatureCard[]>([]);
+  const [defaultList, setDefaultList] = useState<FeatureCardData[]>([]);
+  const [KOList, setKOList] = useState<FeatureCardData[]>([]);
   const [prevFeatureVector, setPrevFeatureVector] = useState(featureVector);
 
   if (prevFeatureVector !== featureVector) {

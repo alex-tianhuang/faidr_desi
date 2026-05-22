@@ -1,6 +1,6 @@
 import { Alert } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
-import type { FeatureCard } from "@/types/generateKO";
+import type { FeatureCardData } from "@/types/generateKO";
 import Preamble from "./preamble";
 import FeatureKOLists from "./featureKOLists";
 
@@ -9,8 +9,8 @@ export default function FeatureKOPicker(props: {
   featureVector: Record<string, number>;
   featureTargets: Record<string, number>;
   KOFeatureTargets: Record<string, number>;
-  defaultListState: [FeatureCard[], (_: FeatureCard[]) => void];
-  KOListState: [FeatureCard[], (_: FeatureCard[]) => void];
+  defaultListState: [FeatureCardData[], (_: FeatureCardData[]) => void];
+  KOListState: [FeatureCardData[], (_: FeatureCardData[]) => void];
   setReqTimestamp: (_: number) => void;
 }) {
   const {
@@ -28,7 +28,7 @@ export default function FeatureKOPicker(props: {
         disabled ? "border-input" : "border-primary",
       )}
     >
-      <Preamble/>
+      <Preamble />
       <FeatureKOLists
         disabled={disabled}
         defaultListState={[defaultList, setDefaultList]}
@@ -43,8 +43,8 @@ export default function FeatureKOPicker(props: {
       </Alert>
       {numFeaturesKO > 0 && (
         <div className="text-muted-foreground">
-          Once you have done selected your features to knockout, click the
-          button below to get your designed knockout sequence!
+          Once you have selected your features to knockout, click the button
+          below to get your designed knockout sequence!
         </div>
       )}
     </div>
