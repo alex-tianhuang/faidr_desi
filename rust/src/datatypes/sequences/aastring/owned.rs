@@ -26,15 +26,6 @@ impl AACanonicalString {
         // SAFETY: just checked that the bytes are all aminoacids.
         unsafe { Ok(Self::from_bytes_unchecked(buf)) }
     }
-    /// Consume the [`AACanonicalString`] and return a `Vec` of bytes.
-    pub fn into_bytes(self) -> Vec<u8> {
-        let mut buf = ManuallyDrop::new(self.0);
-        let ptr = buf.as_mut_ptr().cast::<u8>();
-        let len = buf.len();
-        let cap = buf.capacity();
-        // SAFETY: byte buffer points to something that exists and is well aligned
-        unsafe { Vec::from_raw_parts(ptr, len, cap) }
-    }
     /// Make a new [`AACanonicalString`] from a vector of bytes,
     /// without checking those bytes are aminoacids.
     ///
@@ -66,23 +57,6 @@ impl Deref for AACanonicalString {
         aa_canonical_str::new(&self.0)
     }
 }
-
-// impl<A: AALike> Borrow<aa_str<A>> for AACanonicalString {
-//     fn borrow(&self) -> &aa_str<A> {
-//         &*self
-//     }
-// }
-// impl<A: AALike> ToOwned for aa_str<A> {
-//     type Owned = AAString<A>;
-//     fn to_owned(&self) -> Self::Owned {
-//         AAString::new(self.as_slice().to_owned())
-//     }
-//     fn clone_into(&self, target: &mut Self::Owned) {
-//         target.0.clear();
-//         target.0.extend_from_slice(self.as_slice());
-//     }
-// }
-
 impl Serialize for AACanonicalString {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
