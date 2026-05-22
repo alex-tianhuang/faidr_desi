@@ -11,7 +11,7 @@ import {
   percentIdentity,
 } from "@/lib/utils";
 import { Alert } from "@/components/ui/alert";
-import FinalSequenceDiv from "@/components/finalSequenceDiv";
+import MonoSequenceDisplay from "@/components/monoSequenceDisplay";
 import { NormalError, UnexpectedError } from "@/components/errors";
 import { FEATURE_CONFIGURATION, NUM_FEATURES, type IDRome } from "@/lib/consts";
 import useFeaturizeEndpoint from "@/backend/apis/featurize";
@@ -201,7 +201,7 @@ function GenerateMimicResultsArea(props: {
       {finalSequence ? (
         <div className="flex flex-col border border-input rounded-md p-4 gap-2">
           <span className="text-md font-bold underline">Designed Sequence</span>
-          <FinalSequenceDiv sequence={finalSequence}></FinalSequenceDiv>
+          <MonoSequenceDisplay sequence={finalSequence}></MonoSequenceDisplay>
           <div className="flex flex-row items-center gap-2">
             <span className="text-sm text-muted-foreground">
               {percentIdentity(finalSequence, props.sequence).toFixed(1)}%

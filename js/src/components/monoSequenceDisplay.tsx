@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const COPY_COOLDOWN_MS = 2000;
 
-export default function FinalSequenceDiv(props: {
+export default function MonoSequenceDisplay(props: {
   sequence: string;
 }) {
   const { sequence } = props;
