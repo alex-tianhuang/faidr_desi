@@ -39,13 +39,7 @@ macro_rules! new_task {
         })
     }};
 }
-/// A function exposed to JS that runs the non-blocking
-/// or "public" endpoints of the server.
-///
-/// This part of the server is responsible for scheduling
-/// subworkers to do computations and communicating with the
-/// frontend, and is expected to have a "vaguely user friendly"
-/// API.
+/// Forwards requests to the blocking server.
 ///
 /// The function takes:
 /// 1. An async function that resolves on the next message to the server.
