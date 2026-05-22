@@ -7,8 +7,8 @@ import useFeaturizeEndpoint from "@/backend/apis/featurize";
 import IdromePicker from "@/components/idromePicker";
 import Header from "./header";
 import parseRngHint from "./parseRngHint";
-import SubmitButton from "./submitButton";
-import BackButton from "./backButton";
+import SubmitButton from "@/components/submitButton";
+import BackButton from "@/components/backButton";
 import GenerateMimicActiveJob from "./activeJob";
 
 export default function GenerateMimic(props: {
@@ -75,7 +75,7 @@ export default function GenerateMimic(props: {
         <SubmitButton
           setActiveJob={setActiveJob}
           setReqTimestamp={setReqTimestamp}
-        ></SubmitButton>
+        >Click to design</SubmitButton>
       )}
       {hasActiveJob && (
         <GenerateMimicActiveJob
