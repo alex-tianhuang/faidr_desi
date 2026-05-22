@@ -1,7 +1,7 @@
 pub use close_data::ClosePayload;
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
-use crate::{datatypes::sequences::AACanonicalStringStrict, seq_features::featurize::FeatureContainerUserFacing};
+use crate::{datatypes::sequences::AACanonicalString, seq_features::featurize::FeatureContainerUserFacing};
 
 /// Data for the `featurize` endpoint.
 ///
@@ -13,7 +13,7 @@ use crate::{datatypes::sequences::AACanonicalStringStrict, seq_features::featuri
 #[serde(rename_all = "camelCase")]
 pub struct RequestPayload {
     /// Sequence to featurize.
-    pub sequence: AACanonicalStringStrict,
+    pub sequence: AACanonicalString,
     /// Features to compute.
     pub feature_configuration: FeatureContainerUserFacing,
 }

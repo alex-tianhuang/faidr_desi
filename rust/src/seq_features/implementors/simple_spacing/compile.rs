@@ -1,7 +1,7 @@
 use std::mem;
 
 use crate::{
-    datatypes::{AASet, StandardError, sequences::AACanonicalStringStrict},
+    datatypes::{AASet, StandardError, sequences::AACanonicalString},
     seq_features::{
         functionality::compile::{CompilableSeqFeats, CompilerImplementor},
         implementors::simple_spacing::{
@@ -30,8 +30,8 @@ pub enum SimpleSpacingUserFacing {
 #[derive(Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SimpleSpacingDeltaUserFacing {
-    res_group_a: AACanonicalStringStrict,
-    res_group_b: AACanonicalStringStrict,
+    res_group_a: AACanonicalString,
+    res_group_b: AACanonicalString,
     blob_size: u32,
 }
 /// A single simple-spacing feature that computes
@@ -42,7 +42,7 @@ pub struct SimpleSpacingDeltaUserFacing {
 #[derive(Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SimpleSpacingOmegaUserFacing {
-    res_group: AACanonicalStringStrict,
+    res_group: AACanonicalString,
     blob_size: u32,
 }
 /// Deserialize a [`SimpleSpacingOmegaUserFacing`] but put it

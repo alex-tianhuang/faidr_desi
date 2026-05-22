@@ -3,7 +3,7 @@ use std::convert::Infallible;
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    datatypes::{AASet, sequences::AACanonicalStringStrict},
+    datatypes::{AASet, sequences::AACanonicalString},
     seq_features::{
         functionality::compile::{CompilableSeqFeats, CompilerImplementor},
         implementors::percent_resgroup::PercentResidueGroup,
@@ -13,7 +13,7 @@ use crate::{
 #[derive(Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PercentResidueGroupUserFacing {
-    res_group: AACanonicalStringStrict,
+    res_group: AACanonicalString,
 }
 #[derive(Default)]
 pub struct PercentResidueGroupCompiler<'a> {

@@ -1,5 +1,5 @@
 use crate::{
-    datatypes::sequences::AACanonicalStringStrict,
+    datatypes::sequences::AACanonicalString,
     seq_features::{
         functionality::compile::{CompilableSeqFeats, CompilerImplementor},
         implementors::repeat_spans::{RepeatSpan, RepeatSpans},
@@ -12,7 +12,7 @@ use std::convert::Infallible;
 #[derive(Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RepeatSpanUserFacing {
-    res_group: AACanonicalStringStrict,
+    res_group: AACanonicalString,
     take_average: bool,
 }
 /// Compiler for repeat span features.

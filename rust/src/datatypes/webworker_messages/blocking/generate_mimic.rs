@@ -1,5 +1,5 @@
 use crate::{
-    datatypes::sequences::AACanonicalStringStrict, rng::RngSpec, seq_features::featurize::FeatureContainerUserFacing
+    datatypes::sequences::AACanonicalString, rng::RngSpec, seq_features::featurize::FeatureContainerUserFacing
 };
 pub use close_data::ClosePayload;
 use serde::Deserialize;
@@ -11,7 +11,7 @@ pub use yield_data::{DesignIteration, Initialized, Progress, YieldPayload};
 #[serde(rename_all = "camelCase")]
 pub struct RequestPayload {
     /// The sequence to design a mimic for.
-    pub target_sequence: AACanonicalStringStrict,
+    pub target_sequence: AACanonicalString,
     /// Features to compute.
     pub feature_configuration: FeatureContainerUserFacing,
     /// Inverse standard deviations for each feature.

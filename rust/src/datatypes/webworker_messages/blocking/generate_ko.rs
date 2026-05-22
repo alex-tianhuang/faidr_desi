@@ -1,4 +1,4 @@
-use crate::{datatypes::sequences::AACanonicalStringStrict, seq_features::featurize::FeatureContainerUserFacing};
+use crate::{datatypes::sequences::AACanonicalString, seq_features::featurize::FeatureContainerUserFacing};
 pub use close_data::ClosePayload;
 use serde::Deserialize;
 use std::collections::HashMap;
@@ -9,7 +9,7 @@ pub use yield_data::{DesignIteration, Initialized, Progress, YieldPayload};
 #[serde(rename_all = "camelCase")]
 pub struct RequestPayload {
     /// The sequence to start from.
-    pub initial_sequence: AACanonicalStringStrict,
+    pub initial_sequence: AACanonicalString,
     /// Features to compute.
     pub feature_configuration: FeatureContainerUserFacing,
     /// Target feature values for each feature.

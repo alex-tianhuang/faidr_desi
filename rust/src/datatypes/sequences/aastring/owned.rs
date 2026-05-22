@@ -65,46 +65,13 @@ impl Serialize for AACanonicalString {
         self.as_str().serialize(serializer)
     }
 }
-/// Newtype utility struct to deserialize a string
-/// and validate that it is an [`AACanonicalString`].
-pub struct AACanonicalStringStrict(AACanonicalString);
-impl From<AACanonicalString> for AACanonicalStringStrict {
-    fn from(value: AACanonicalString) -> Self {
-        Self(value)
-    }
-}
-impl From<AACanonicalStringStrict> for AACanonicalString {
-    fn from(value: AACanonicalStringStrict) -> Self {
-        value.0
-    }
-}
-impl Deref for AACanonicalStringStrict {
-    type Target = AACanonicalString;
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl DerefMut for AACanonicalStringStrict {
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-impl<'de> Deserialize<'de> for AACanonicalStringStrict {
+impl<'de> Deserialize<'de> for AACanonicalString {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where
         D: Deserializer<'de>,
     {
         let s = String::deserialize(deserializer)?;
         AACanonicalString::from_bytes(s.into_bytes())
-            .map(Self)
             .map_err(serde::de::Error::custom)
-    }
-}
-impl Serialize for AACanonicalStringStrict {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: serde::Serializer,
-    {
-        self.0.serialize(serializer)
     }
 }
