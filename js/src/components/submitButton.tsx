@@ -1,16 +1,12 @@
 import { Button } from "@/components/ui/button";
-import type { ReactNode } from "react";
 
 export default function SubmitButton(props: {
   setActiveJob: (_: boolean) => void;
   setReqTimestamp: (_: number) => void;
-  children: ReactNode
+  buttonText: string;
+  footerText: string;
 }) {
-  const {
-    setActiveJob,
-    setReqTimestamp,
-    children
-  } = props;
+  const { setActiveJob, setReqTimestamp, buttonText, footerText } = props;
   return (
     <div className="flex flex-col gap-2">
       <Button
@@ -19,10 +15,10 @@ export default function SubmitButton(props: {
           setReqTimestamp(Date.now());
         }}
       >
-        {children}
+        {buttonText}
       </Button>
       <div className="p-4 border rounded-md border-input text-muted-foreground">
-        Click the button above and design results will be displayed here.
+        {footerText}
       </div>
     </div>
   );

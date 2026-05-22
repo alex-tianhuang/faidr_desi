@@ -75,7 +75,9 @@ export default function GenerateMimic(props: {
         <SubmitButton
           setActiveJob={setActiveJob}
           setReqTimestamp={setReqTimestamp}
-        >Click to design</SubmitButton>
+          buttonText="Click to design"
+          footerText="Click the button above and design results will be displayed here."
+        ></SubmitButton>
       )}
       {hasActiveJob && (
         <GenerateMimicActiveJob
