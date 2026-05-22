@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Alert } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
-import parseRngHint from "./parseRngHint";
+import { parseRngHint } from "./utils";
 
 export default function RngPicker(props: {
   disabled: boolean;

@@ -6,7 +6,7 @@ import { FEATURE_CONFIGURATION, type IDRome } from "@/lib/consts";
 import useFeaturizeEndpoint from "@/backend/apis/featurize";
 import IdromePicker from "@/components/idromePicker";
 import Header from "./header";
-import parseRngHint from "./parseRngHint";
+import { parseRngHint } from "./utils";
 import SubmitButton from "@/components/submitButton";
 import BackButton from "@/components/backButton";
 import GenerateMimicActiveJob from "./activeJob";

@@ -1,4 +1,4 @@
-export default function parseRngHint(rngHint: string, timestamp: number) {
+export function parseRngHint(rngHint: string, timestamp: number) {
   const rngHintParsed = Number.parseInt(rngHint);
   const usingTimestampForRng = Number.isNaN(rngHintParsed);
   const maxInt = 2 ** 32;
