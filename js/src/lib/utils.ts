@@ -2,6 +2,8 @@ import type { Mutation } from "@/types/common";
 import type { Featurized } from "@/types/featurize";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { FEATURE_MEANS_FOR_ZSCORE, FEATURE_WEIGHTS, type FEATURE_CONFIGURATION, type IDRome } from "@/lib/consts";
+
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -65,6 +67,27 @@ export function checkAllFeatures(data: Record<string, Featurized> | null) {
     featureVector,
     checkError: null,
   };
+}
+
+/** Convert features to Z-scores against the appropriate IDRome. */
+export default function featuresToIDRomeZscores(
+  featurized: Record<keyof typeof FEATURE_CONFIGURATION, Featurized>,
+  idrome: IDRome,
+) {
+  return Object.fromEntries(
+    Object.entries(featurized).map(([featureID, value]) => [
+      featureID,
+      value.case === "ok"
+        ? {
+            case: "ok",
+            value:
+              (value.value -
+                (FEATURE_MEANS_FOR_ZSCORE[idrome] as any)[featureID]) *
+              (FEATURE_WEIGHTS[idrome] as any)[featureID],
+          }
+        : value,
+    ]),
+  ) as Record<keyof typeof FEATURE_CONFIGURATION, Featurized>;
 }
 /**
  * Paste to clipboard, even in an `http` server.

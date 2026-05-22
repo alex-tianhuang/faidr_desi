@@ -2,16 +2,12 @@ import useFeaturizeEndpoint from "@/backend/apis/featurize";
 import { FeaturesTable } from "@/page/tools/featurize/featuresTable";
 import { Alert } from "@/components/ui/alert";
 import { useMemo, useState } from "react";
-import {
-  FEATURE_CONFIGURATION,
-  FEATURE_MEANS_FOR_ZSCORE,
-  FEATURE_WEIGHTS,
-  type IDRome,
-} from "@/lib/consts";
+import { type IDRome } from "@/lib/consts";
 import type { Featurized } from "@/types/featurize";
 import Loading from "@/components/loading";
 import { Toggle } from "@/components/ui/toggle";
 import { UnexpectedError } from "@/components/errors";
+import featuresToIDRomeZscores from "@/lib/utils";
 
 export default function FeaturizeArea(props: {
   sequence: string;
@@ -35,7 +31,6 @@ export default function FeaturizeArea(props: {
   );
   return (
     <div className="flex flex-col gap-2">
-      <FeaturizeHeader />
       {featurizationError ? (
         <UnexpectedError
           while="computing sequence features of your input sequence"
@@ -57,28 +52,6 @@ export default function FeaturizeArea(props: {
       )}
     </div>
   );
-}
-function FeaturizeHeader() {
-  return <div className="flex flex-col border rounded-md p-4"></div>;
-}
-function featuresToIDRomeZscores(
-  featurized: Record<keyof typeof FEATURE_CONFIGURATION, Featurized>,
-  idrome: IDRome,
-) {
-  return Object.fromEntries(
-    Object.entries(featurized).map(([featureID, value]) => [
-      featureID,
-      value.case === "ok"
-        ? {
-            case: "ok",
-            value:
-              (value.value -
-                (FEATURE_MEANS_FOR_ZSCORE[idrome] as any)[featureID]) *
-              (FEATURE_WEIGHTS[idrome] as any)[featureID],
-          }
-        : value,
-    ]),
-  ) as Record<keyof typeof FEATURE_CONFIGURATION, Featurized>;
 }
 function FeaturizeResultsArea(props: {
   featurized: Record<string, Featurized> | null;
