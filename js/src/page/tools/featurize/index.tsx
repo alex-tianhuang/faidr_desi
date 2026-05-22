@@ -1,5 +1,5 @@
 import useFeaturizeEndpoint from "@/backend/apis/featurize";
-import { FeaturesTable } from "@/components/featuresTable";
+import { FeaturesTable } from "@/page/tools/featurize/featuresTable";
 import { Alert } from "@/components/ui/alert";
 import { useMemo, useState } from "react";
 import {

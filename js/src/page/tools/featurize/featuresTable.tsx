@@ -1,5 +1,5 @@
 import type { ColumnDef } from "@tanstack/react-table";
-import DataTable from "./dataTable";
+import DataTable from "../../../components/dataTable";
 import type { Featurized } from "@/types/featurize";
 import type { AcceptedData } from "@/../node_modules/export-to-csv/output/lib/types";
 
