@@ -2,8 +2,11 @@ import type { Mutation } from "@/types/common";
 import type { Featurized } from "@/types/featurize";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { FEATURE_MEANS_FOR_ZSCORE, FEATURE_WEIGHTS, type FEATURE_CONFIGURATION, type IDRome } from "@/lib/consts";
-
+import {
+  FEATURE_MEANS_FOR_ZSCORE,
+  FEATURE_WEIGHTS,
+  type FEATURE_CONFIGURATION,
+} from "@/lib/consts";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -31,10 +34,10 @@ export async function saveFile(content: string, suggestedName: string) {
     a.click();
     URL.revokeObjectURL(url);
   }
-};
+}
 /** CompareFn for `Array.sort` */
 export function compareStrings(a: string, b: string) {
-  return a > b ? 1 : (a < b ? -1 : 0)
+  return a > b ? 1 : a < b ? -1 : 0;
 }
 /** Format the time elapsed from `Date.now()` differences. */
 export function formatTimeElapsed(ms: number) {
@@ -43,7 +46,7 @@ export function formatTimeElapsed(ms: number) {
   const m = Math.floor((totalSeconds % 3600) / 60);
   const s = totalSeconds % 60;
   return [h, m, s].map((v) => String(v).padStart(2, "0")).join(":");
-};
+}
 
 /** Check that all features are non-error variants. */
 export function checkAllFeatures(data: Record<string, Featurized> | null) {
@@ -69,25 +72,35 @@ export function checkAllFeatures(data: Record<string, Featurized> | null) {
   };
 }
 
-/** Convert features to Z-scores against the appropriate IDRome. */
-export default function featuresToIDRomeZscores(
+/** Convert features to a table of raw values and Z-scores. */
+export default function featuresToTableData(
   featurized: Record<keyof typeof FEATURE_CONFIGURATION, Featurized>,
-  idrome: IDRome,
 ) {
-  return Object.fromEntries(
-    Object.entries(featurized).map(([featureID, value]) => [
-      featureID,
-      value.case === "ok"
-        ? {
-            case: "ok",
-            value:
-              (value.value -
-                (FEATURE_MEANS_FOR_ZSCORE[idrome] as any)[featureID]) *
-              (FEATURE_WEIGHTS[idrome] as any)[featureID],
-          }
-        : value,
-    ]),
-  ) as Record<keyof typeof FEATURE_CONFIGURATION, Featurized>;
+  const data = Object.entries(featurized);
+  return data
+    .map(([featname, value]) => ({
+      ["Feature Name"]: featname,
+      ["Raw Value"]: value.case == "ok" ? value.value : value.value.reason,
+      ["Human Z-Score"]:
+        value.case == "ok"
+          ? (value.value -
+              (FEATURE_MEANS_FOR_ZSCORE["human"] as any)[featname]) *
+            (FEATURE_WEIGHTS["human"] as any)[featname]
+          : value.value.reason,
+      ["Yeast Z-Score"]:
+        value.case == "ok"
+          ? (value.value -
+              (FEATURE_MEANS_FOR_ZSCORE["yeast"] as any)[featname]) *
+            (FEATURE_WEIGHTS["yeast"] as any)[featname]
+          : value.value.reason,
+    }))
+    .toSorted((recA, recB) => {
+      const [scoreA, scoreB] = [recA, recB].map((rec) => {
+        const value = rec["Human Z-Score"];
+        return typeof value === "number" ? Math.abs(value) : -1;
+      });
+      return scoreB - scoreA;
+    });
 }
 /**
  * Paste to clipboard, even in an `http` server.
@@ -105,15 +118,15 @@ export function copyToClipboard(text: string) {
   }
 
   // Fallback for HTTP or older browsers
-  const textarea = document.createElement('textarea');
+  const textarea = document.createElement("textarea");
   textarea.value = text;
-  textarea.style.position = 'fixed';
-  textarea.style.opacity = '0';
+  textarea.style.position = "fixed";
+  textarea.style.opacity = "0";
   document.body.appendChild(textarea);
   textarea.focus();
   textarea.select();
   try {
-    document.execCommand('copy'); // deprecated but widely supported
+    document.execCommand("copy"); // deprecated but widely supported
   } finally {
     document.body.removeChild(textarea);
   }
@@ -121,18 +134,20 @@ export function copyToClipboard(text: string) {
 /**
  * Compute the percent identity of two sequences,
  * returning as a percentage.
- * 
+ *
  * If the two sequences are of different lengths,
  * an error is thrown.
  */
 export function percentIdentity(seqA: string, seqB: string): number {
   if (seqA.length != seqB.length) {
-    throw new Error("[percentIdentity] passed in two sequences of different lengths")
+    throw new Error(
+      "[percentIdentity] passed in two sequences of different lengths",
+    );
   }
   const n = seqA.length;
   let countId = 0;
   for (let i = 0; i < n; i++) {
-    countId += Number(seqA[i] === seqB[i])
+    countId += Number(seqA[i] === seqB[i]);
   }
-  return countId / n * 100;
+  return (countId / n) * 100;
 }

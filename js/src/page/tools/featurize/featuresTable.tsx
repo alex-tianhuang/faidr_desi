@@ -1,38 +1,27 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import DataTable from "@/components/dataTable";
-import type { Featurized } from "@/types/featurize";
 import type { AcceptedData } from "@/../node_modules/export-to-csv/output/lib/types";
-import type { IDRome } from "@/lib/consts";
+import featuresToTableData from "@/lib/utils";
 
 export function FeaturesTable(props: {
-  featurized: Record<string, Featurized>;
-  postProcessing: IDRome | "none";
+  featurized: ReturnType<typeof featuresToTableData>;
 }) {
-  const { featurized, postProcessing } = props;
+  const { featurized } = props;
 
-  const postProcessingDescription =
-    postProcessing !== "none"
-      ? `${postProcessing} IDRome Z-scores`
-      : "raw features";
-  const columns: ColumnDef<Record<string, AcceptedData>>[] = Object.keys(
-    featurized,
-  ).map((featureID) => ({
-    accessorKey: featureID,
+  const columns: ColumnDef<Record<string, AcceptedData>>[] = [
+    "Feature Name",
+    "Raw Value",
+    "Human Z-Score",
+    "Yeast Z-Score",
+  ].map((column) => ({
+    accessorKey: column,
     cell: ({ getValue }) => {
       const value = getValue<number | string>();
       return typeof value === "number" ? value.toPrecision(4) : value;
     },
   }));
-  const tableData = [
-    Object.fromEntries(
-      Object.entries(featurized).map(([featureID, featurized]) => [
-        featureID,
-        featurized.case === "ok" ? featurized.value : featurized.value.reason,
-      ]),
-    ),
-  ];
   return (
-    <div className="flex flex-col gap-2 p-4 border rounded-md border-primary">
+    <div className="flex flex-col gap-2 p-4 border rounded-md border-primary max-h-100 overflow-auto">
       <p className="text-xl font-bold text-center">
         Computing sequence features
       </p>
@@ -41,12 +30,12 @@ export function FeaturesTable(props: {
       </p>
       <DataTable
         columns={columns}
-        data={tableData}
+        data={featurized}
         suggestedFilename="features.csv"
-        downloadButtonText={`Download as CSV (${postProcessingDescription})`}
+        downloadButtonText="Download as CSV"
       ></DataTable>
       <p className="text-center text-muted-foreground">
-        Scroll horizontally in the table above to see more sequence features!
+        Scroll vertically in the table above to see more sequence features!
       </p>
     </div>
   );
