@@ -3,11 +3,14 @@ import { NUM_FEATURES } from "@/lib/consts";
 
 export default function Preamble() {
   return (
-    <div className="flex flex-col gap-2">
-      <p className="text-muted-foreground text-justify">
+    <div className="flex flex-col gap-2 text-muted-foreground text-justify">
+      <p>
         Welcome to FAIDR-Desi, a simple webapp that uses a greedy sequence
-        feature matching algorithm to design intrinsically disordered protein
-        regions (IDRs). This tool is based on{" "}
+        feature matching algorithm to design intrinsically disordered protein{" "}
+        regions (IDRs).
+      </p>
+      <p>
+        This tool is based on{" "}
         <Link
           href="https://www.biorxiv.org/content/10.1101/2023.04.28.538739v1"
           inline={true}
@@ -19,7 +22,7 @@ export default function Preamble() {
         sequence feature-based design as a framework for hypothesis testing IDR
         function.
       </p>
-      <p className="text-muted-foreground text-justify">
+      <p>
         This app uses {NUM_FEATURES} sequence features consisting of short
         linear interaction motifs (SLIMs), aminoacid composition, and residue
         patterning statistics. The association between these sequence features

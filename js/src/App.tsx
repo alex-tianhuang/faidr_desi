@@ -6,6 +6,7 @@ import Preamble from "./page/preamble";
 import Footer from "./page/footer";
 import SequenceInput from "./page/sequenceInput";
 import Tool from "./page/tools";
+import BackgroundReadings from "./page/backgroundReadings";
 
 export default function App() {
   const [sequence, setSequence] = useState<string | null>(null);
@@ -17,6 +18,7 @@ export default function App() {
       <Banner />
       <div className="flex flex-col item-center px-5 pt-2 pb-5 gap-2 min-w-80">
         <Preamble />
+        <BackgroundReadings />
         <SequenceInput
           disabled={freezeInputs || tool !== null}
           sequenceState={[sequence, setSequence]}
