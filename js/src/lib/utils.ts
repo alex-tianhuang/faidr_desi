@@ -73,34 +73,24 @@ export function checkAllFeatures(data: Record<string, Featurized> | null) {
 }
 
 /** Convert features to a table of raw values and Z-scores. */
-export default function featuresToTableData(
+export function featuresToTableData(
   featurized: Record<keyof typeof FEATURE_CONFIGURATION, Featurized>,
 ) {
   const data = Object.entries(featurized);
-  return data
-    .map(([featname, value]) => ({
-      ["Feature Name"]: featname,
-      ["Raw Value"]: value.case == "ok" ? value.value : value.value.reason,
-      ["Human Z-Score"]:
-        value.case == "ok"
-          ? (value.value -
-              (FEATURE_MEANS_FOR_ZSCORE["human"] as any)[featname]) *
-            (FEATURE_WEIGHTS["human"] as any)[featname]
-          : value.value.reason,
-      ["Yeast Z-Score"]:
-        value.case == "ok"
-          ? (value.value -
-              (FEATURE_MEANS_FOR_ZSCORE["yeast"] as any)[featname]) *
-            (FEATURE_WEIGHTS["yeast"] as any)[featname]
-          : value.value.reason,
-    }))
-    .toSorted((recA, recB) => {
-      const [scoreA, scoreB] = [recA, recB].map((rec) => {
-        const value = rec["Human Z-Score"];
-        return typeof value === "number" ? Math.abs(value) : -1;
-      });
-      return scoreB - scoreA;
-    });
+  return data.map(([featname, value]) => ({
+    ["Feature Name"]: featname,
+    ["Raw Value"]: value.case == "ok" ? value.value : value.value.reason,
+    ["Human Z-Score"]:
+      value.case == "ok"
+        ? (value.value - (FEATURE_MEANS_FOR_ZSCORE["human"] as any)[featname]) *
+          (FEATURE_WEIGHTS["human"] as any)[featname]
+        : value.value.reason,
+    ["Yeast Z-Score"]:
+      value.case == "ok"
+        ? (value.value - (FEATURE_MEANS_FOR_ZSCORE["yeast"] as any)[featname]) *
+          (FEATURE_WEIGHTS["yeast"] as any)[featname]
+        : value.value.reason,
+  }));
 }
 /**
  * Paste to clipboard, even in an `http` server.

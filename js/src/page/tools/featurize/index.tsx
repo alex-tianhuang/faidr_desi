@@ -3,7 +3,7 @@ import { FeaturesTable } from "@/page/tools/featurize/featuresTable";
 import { useMemo } from "react";
 import Loading from "@/components/loading";
 import { UnexpectedError } from "@/components/errors";
-import featuresToTableData from "@/lib/utils";
+import { featuresToTableData } from "@/lib/utils";
 
 export default function FeaturizeArea(props: {
   sequence: string;
@@ -12,10 +12,7 @@ export default function FeaturizeArea(props: {
   const { featurizationError, featurized: featurizedRaw } =
     useFeaturizeEndpoint(props);
   const featurized = useMemo(
-    () =>
-      featurizedRaw
-          ? featuresToTableData(featurizedRaw)
-          : null,
+    () => (featurizedRaw ? featuresToTableData(featurizedRaw) : null),
     [featurizedRaw],
   );
   if (featurizationError) {
@@ -35,9 +32,7 @@ export default function FeaturizeArea(props: {
   }
   return (
     <div className="flex flex-col gap-2">
-      <FeaturesTable
-        featurized={featurized}
-      ></FeaturesTable>
+      <FeaturesTable featurized={featurized}></FeaturesTable>
     </div>
   );
 }

@@ -1,8 +1,10 @@
 import {
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
   useReactTable,
   type ColumnDef,
+  type SortingState,
 } from "@tanstack/react-table";
 import { asString, generateCsv } from "export-to-csv";
 import type { AcceptedData } from "@/../node_modules/export-to-csv/output/lib/types";
@@ -16,6 +18,7 @@ import {
   TableRow,
 } from "./ui/table";
 import { saveFile } from "@/lib/utils";
+import React from "react";
 
 export default function DataTable<TData extends Record<string, AcceptedData>, TValue>(props: {
   columns: ColumnDef<TData, TValue>[];
@@ -24,10 +27,16 @@ export default function DataTable<TData extends Record<string, AcceptedData>, TV
   downloadButtonText: string;
 }) {
   const { columns, data, suggestedFilename, downloadButtonText } = props;
+  const [sorting, setSorting] = React.useState<SortingState>([])
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    state: {
+      sorting,
+    },
+    onSortingChange: setSorting
   });
 
   const handleExport = () => {
@@ -41,7 +50,7 @@ export default function DataTable<TData extends Record<string, AcceptedData>, TV
       },
       {} as Record<string, string>,
     );
-    const rows = table.getFilteredRowModel().rows;
+    const rows = table.getSortedRowModel().rows;
     const rowData = rows.map((row) =>
       Object.fromEntries(
         Object.entries(row.original).map(([key, val]) => [
@@ -53,7 +62,17 @@ export default function DataTable<TData extends Record<string, AcceptedData>, TV
     const csv = asString(generateCsv({ useKeysAsHeaders: true })(rowData));
     saveFile(csv, suggestedFilename)
   };
-
+// {table.getHeaderGroups().map((headerGroup) => (
+//             <tr key={headerGroup.id}>
+//               {headerGroup.headers.map((header) => {
+//                 return (
+//                   <th key={header.id} colSpan={header.colSpan}>
+                    
+//                   </th>
+//                 )
+//               })}
+//             </tr>
+//           ))}
   return (
     <div className="flex flex-col overflow-hidden border rounded-md items-end p-4 gap-2 border-input">
       <Button className="w-full" onClick={handleExport}>{downloadButtonText}</Button>
@@ -64,12 +83,34 @@ export default function DataTable<TData extends Record<string, AcceptedData>, TV
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
+                    {header.isPlaceholder ? null : (
+                      <div
+                        className={
+                          header.column.getCanSort()
+                            ? 'cursor-pointer select-none'
+                            : ''
+                        }
+                        onClick={header.column.getToggleSortingHandler()}
+                        title={
+                          header.column.getCanSort()
+                            ? header.column.getNextSortingOrder() === 'asc'
+                              ? 'Sort ascending'
+                              : header.column.getNextSortingOrder() === 'desc'
+                                ? 'Sort descending'
+                                : 'Clear sort'
+                            : undefined
+                        }
+                      >
+                        {flexRender(
                           header.column.columnDef.header,
                           header.getContext(),
                         )}
+                        {{
+                          asc: ' 🔼',
+                          desc: ' 🔽',
+                        }[header.column.getIsSorted() as string] ?? null}
+                      </div>
+                    )}
                   </TableHead>
                 );
               })}

@@ -1,7 +1,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import DataTable from "@/components/dataTable";
 import type { AcceptedData } from "@/../node_modules/export-to-csv/output/lib/types";
-import featuresToTableData from "@/lib/utils";
+import { featuresToTableData } from "@/lib/utils";
 
 export function FeaturesTable(props: {
   featurized: ReturnType<typeof featuresToTableData>;
