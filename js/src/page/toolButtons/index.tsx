@@ -1,15 +1,12 @@
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { GenerateMimicHelp, GenerateKOHelp, FeaturizeHelp } from "./helpPages";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
-import { useState } from "react";
 import { NUM_FEATURES } from "@/lib/consts";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 type ToolType = "mimic" | "ko" | "feats";
 const TOOL_INFO = [
@@ -48,8 +45,8 @@ export default function ToolButtons(props: {
       )}
     >
       <p className="text-center text-md text-muted-foreground">
-        Choose one of the tools to use below, or click the question marks to read
-        more about them.
+        Choose one of the tools to use below, or click the question marks to
+        read more about them.
       </p>
       <div className="gap-2 flex flex-col sm:flex-row flex-wrap">
         {TOOL_INFO.map(({ propKey, label, helpTitle, helpDiv }) => {
@@ -83,7 +80,6 @@ function ToolButton(props: {
 }) {
   const { tool, setTool, disabled, label, isActive, helpTitle, helpDiv } =
     props;
-  const [openHelp, setOpenHelp] = useState(false);
   return (
     <div className="flex-1 flex flex-row">
       <Button
@@ -91,27 +87,19 @@ function ToolButton(props: {
         onClick={() => setTool(isActive ? null : tool)}
         disabled={disabled}
       >
-        {isActive ? (
-          "Try other sequence / try other tool"
-        ) : (
-          label
-        )}
+        {isActive ? "Try other sequence / try other tool" : label}
       </Button>
-      <Button
-        className="rounded-l-none"
-        onClick={() => setOpenHelp(true)}
-        disabled={disabled}
-      >
-        ?
-      </Button>
-      <Sheet open={openHelp} onOpenChange={setOpenHelp}>
-        <SheetContent>
-          <SheetHeader>
-            <SheetTitle>{helpTitle}</SheetTitle>
-            <SheetDescription>{helpDiv}</SheetDescription>
-          </SheetHeader>
-        </SheetContent>
-      </Sheet>
+      <Popover>
+        <PopoverTrigger>
+          <Button className="rounded-l-none" disabled={disabled}>
+            ?
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent>
+          <div className="font-semibold underline text-center">{helpTitle}</div>
+          {helpDiv}
+        </PopoverContent>
+      </Popover>
     </div>
   );
 }
