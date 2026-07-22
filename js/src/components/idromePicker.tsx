@@ -1,7 +1,7 @@
 import type { IDRome } from "@/lib/consts";
 import { Alert } from "./ui/alert";
 import { cn } from "@/lib/utils";
-import { Toggle } from "./ui/toggle";
+import { Switch } from "./ui/switch";
 
 export default function IdromePicker(props: {
   idromeState: [IDRome, (_: IDRome) => void];
@@ -31,39 +31,26 @@ export default function IdromePicker(props: {
       </p>
       <p className="text-muted-foreground">
         Currently you can choose between {forKO && " minimums and"} weights of
-        feature values in a human or a yeast IDRome. Click the buttons below to
+        feature values in a human or a yeast IDRome. Use the switch below to
         change which IDRome is being used.
       </p>
 
-      <div className="flex flex-row flex-wrap gap-2 items-center text-start w-full">
-        {[
-          {
-            key: "human" as const,
-            name: "Human",
-          },
-          {
-            key: "yeast" as const,
-            name: "Yeast",
-          },
-        ].map((option) => (
-          <Toggle
-            className="flex-1 whitespace-normal self-center"
-            onClick={() => setIdrome(option.key)}
-            disabled={disabled}
-            pressed={idrome === option.key}
-            key={option.key}
-          >
-            <span>
-              {option.name} IDRome {forKO && "minimums and"} weights
-            </span>
-          </Toggle>
-        ))}
-      </div>
-      <Alert>
-        <span>
+      <Alert className="flex flex-row">
+        <div className="flex flex-row pr-3 border-r gap-2">
+          Human
+          <Switch
+            checked={idrome === "yeast"}
+            className="data-checked:bg-muted-foreground data-unchecked:bg-muted-foreground"
+            onCheckedChange={(checked) =>
+              setIdrome(checked ? "yeast" : "human")
+            }
+          ></Switch>
+          Yeast
+        </div>
+        <div className="pl-3">
           Using <span className="underline">{idrome}</span> IDRome
           {forKO && " minimums and"} weights for design.
-        </span>
+        </div>
       </Alert>
     </div>
   );
