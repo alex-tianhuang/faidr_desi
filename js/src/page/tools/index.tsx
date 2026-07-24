@@ -48,7 +48,7 @@ export default function Tool(props: {
       <FeaturizeArea
         sequence={sequence}
         featureConfiguration={FEATURE_CONFIGURATION}
-        idromeState={[idrome, setIdrome]}
+        // idromeState={[idrome, setIdrome]}
       ></FeaturizeArea>
     );
   }
