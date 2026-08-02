@@ -81,7 +81,7 @@ export function FeaturesTable(props: {
       <p className="text-center text-muted-foreground">
         View and download a CSV of your sequence features below.
       </p>
-      <div className="flex flex-col overflow-hidden border rounded-md items-end p-4 gap-2 border-input">
+      <div className="flex flex-col overflow-hidden border rounded-md p-4 gap-2 border-input">
         <Button className="w-full" onClick={handleExport}>
           {"Download as CSV"}
         </Button>

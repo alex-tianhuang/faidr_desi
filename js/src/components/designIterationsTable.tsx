@@ -82,7 +82,7 @@ export function DesignIterationsTable(props: {
       </summary>
       {iterations.length > 0 ? (
         <div className="mt-2">
-          <div className="flex flex-col overflow-hidden border rounded-md items-end p-4 gap-2 border-input">
+          <div className="flex flex-col overflow-hidden border rounded-md p-4 gap-2 border-input">
             <Button className="w-full" onClick={handleExport}>
               {"Download as CSV"}
             </Button>
