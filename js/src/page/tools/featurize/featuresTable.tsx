@@ -51,25 +51,8 @@ export function FeaturesTable(props: {
     onSortingChange: setSorting,
   });
   const handleExport = () => {
-    const headers = table.getVisibleFlatColumns().reduce(
-      (acc, col) => {
-        const header = col.columnDef.header;
-        if (typeof header === "string") {
-          acc[col.id] = header;
-        }
-        return acc;
-      },
-      {} as Record<string, string>,
-    );
     const rows = table.getSortedRowModel().rows;
-    const rowData = rows.map((row) =>
-      Object.fromEntries(
-        Object.entries(row.original).map(([key, val]) => [
-          headers[key] ?? key,
-          val,
-        ]),
-      ),
-    );
+    const rowData = rows.map((row) => row.original);
     const csv = asString(generateCsv({ useKeysAsHeaders: true })(rowData));
     saveFile(csv, "features.csv");
   };
