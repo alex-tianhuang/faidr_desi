@@ -66,7 +66,7 @@ export function FeaturesTable(props: {
       </p>
       <div className="flex flex-col overflow-hidden border rounded-md p-4 gap-2 border-input">
         <Button className="w-full" onClick={handleExport}>
-          {"Download as CSV"}
+          {"Download features table as CSV"}
         </Button>
         <Table>
           <TableHeader>

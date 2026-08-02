@@ -84,7 +84,7 @@ export function DesignIterationsTable(props: {
         <div className="mt-2">
           <div className="flex flex-col overflow-hidden border rounded-md p-4 gap-2 border-input">
             <Button className="w-full" onClick={handleExport}>
-              {"Download as CSV"}
+              {"Download design iterations as CSV"}
             </Button>
             <Table>
               <TableHeader>
