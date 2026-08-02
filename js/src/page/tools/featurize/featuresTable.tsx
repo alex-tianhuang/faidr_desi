@@ -76,7 +76,7 @@ export function FeaturesTable(props: {
   return (
     <div className="flex flex-col gap-2 p-4 border rounded-md border-primary max-h-100 overflow-auto">
       <p className="text-xl font-bold text-center">
-        Computing sequence features
+        Computed sequence features
       </p>
       <p className="text-center text-muted-foreground">
         View and download a CSV of your sequence features below.
