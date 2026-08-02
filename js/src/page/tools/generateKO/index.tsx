@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import useFeaturizeEndpoint from "@/backend/apis/featurize";
 import { type IDRome } from "@/lib/consts";
 import {
@@ -29,7 +29,7 @@ export default function GenerateKOArea(props: {
     featureWeights,
     KOFeatureTargets,
     freezeInputsState: [freezeInputs, setFreezeInputs],
-    idromeState,
+    idromeState: [idrome, setIDRome],
   } = props;
   const { featurizationError, featurized } = useFeaturizeEndpoint({
     sequence,
@@ -75,15 +75,6 @@ export default function GenerateKOArea(props: {
 
   const hasActiveJob = freezeInputs;
   const setActiveJob = setFreezeInputs;
-  // if numFeaturesKO === 0 then there should be no request
-  //
-  // on dev this occassionally freezes my component when
-  // I go off the page for a little bit for some reason
-  useEffect(() => {
-    if (numFeaturesKO === 0 && hasActiveJob) {
-      setActiveJob(false);
-    }
-  }, [numFeaturesKO]);
   if (featurizationError) {
     return (
       <UnexpectedError
@@ -114,7 +105,7 @@ export default function GenerateKOArea(props: {
       <IdromePicker
         disabled={freezeInputs}
         forKO={true}
-        idromeState={idromeState}
+        idromeState={[idrome, setIDRome]}
       ></IdromePicker>
       <FeatureKOPicker
         featureTargets={featureTargets}
@@ -144,9 +135,12 @@ export default function GenerateKOArea(props: {
         <GenerateKOActiveJob
           sequence={sequence}
           featureConfiguration={featureConfiguration}
+          initialFeatureVector={featureVector}
+          KOFeatureTargets={KOFeatureTargets}
           featureWeights={featureWeights}
           featureTargets={featureTargets}
           reqTimestamp={reqTimestamp}
+          idrome={idrome}
         ></GenerateKOActiveJob>
       )}
     </div>
