@@ -6,7 +6,7 @@ import Preamble from "./page/preamble";
 import Footer from "./page/footer";
 import SequenceInput from "./page/sequenceInput";
 import Tool from "./page/tools";
-import BackgroundReadings from "./page/backgroundReadings";
+import BackgroundConcepts from "./page/background";
 
 export default function App() {
   const [sequence, setSequence] = useState<string | null>(null);
@@ -21,7 +21,7 @@ export default function App() {
           <Preamble />
         </section>
         <section id="background_concepts">
-          <BackgroundReadings />
+          <BackgroundConcepts />
         </section>
         <section id="tool">
           <div className="flex flex-col gap-2 w-full">

@@ -1,4 +1,7 @@
-export default function BackgroundReadings() {
+import { NUM_FEATURES } from "@/lib/consts";
+import BackgroundSeqFeats from "./backgroundSeqFeats";
+
+export default function BackgroundConcepts() {
   return (
     <div className="border rounded-md border-muted p-3 gap-2 flex flex-col text-muted-foreground">
       <p className="flex-1 text-md font-bold text-foreground underline">
@@ -20,7 +23,7 @@ export default function BackgroundReadings() {
       </div>
       <div className="border rounded-md border-muted p-2 gap-2 flex flex-col">
         <details>
-          <summary>What are sequence features?</summary>
+          <summary>What are sequence features, generally?</summary>
           <div className="gap-2 flex flex-col">
             Sequence features are simple patterns you can see in a sequence.
             Whereas the conserved elements of folded peptides are commonly
@@ -178,6 +181,12 @@ export default function BackgroundReadings() {
               </ul>
             </details>
           </div>
+        </details>
+      </div>
+      <div className="border rounded-md border-muted p-2 gap-2 flex flex-col">
+        <details>
+          <summary>What are these {NUM_FEATURES} sequence features, specifically?</summary>
+          <BackgroundSeqFeats/>
         </details>
       </div>
       <div className="border rounded-md border-muted p-2 gap-2 flex flex-col">
