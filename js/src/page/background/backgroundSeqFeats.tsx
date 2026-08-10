@@ -1,5 +1,5 @@
-import fileUrl from "@/assets/feature_metadata.xlsx?url";
-import * as xlsx from "xlsx";
+import fileUrl from "@/assets/feature_metadata.csv?url";
+import * as papa from "papaparse";
 import React, { useEffect } from "react";
 import Loading from "@/components/loading";
 import { UnexpectedError } from "@/components/errors";
@@ -20,21 +20,22 @@ export default function BackgroundSeqFeats() {
     setError(null);
     setSearch("");
     fetch(fileUrl)
-      .then((resp) => resp.arrayBuffer())
+      .then((resp) => resp.text())
       .then((blob) => {
-        const workbook = xlsx.read(blob, { type: "array" });
-        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-        const json = xlsx.utils.sheet_to_json(worksheet);
-        const r = z.array(FeatureMetadataRowSchema).safeParse(json);
-        if (!r.success) {
-          const message = z.prettifyError(r.error);
+        const r1 = papa.parse(blob, {header: true})
+        if (r1.errors.length > 0) {
+          console.debug("parsing for some rows of feature metadata failed", r1.errors)
+        }
+        const r2 = z.array(FeatureMetadataRowSchema).safeParse(r1.data);
+        if (!r2.success) {
+          const message = z.prettifyError(r2.error);
           console.debug(
             "Unexpected file format for feature metadata:",
             message,
           );
           throw new Error("unexpected file format for feature metadata");
         }
-        setData(r.data);
+        setData(r2.data);
       })
       .catch((err) => setError(err));
   }, []);
@@ -71,7 +72,7 @@ export default function BackgroundSeqFeats() {
     <div className="gap-2 flex flex-col p-2">
       <div className="text-center">
         Read about specific features below, or download all the associated data
-        as a metadata spreadsheet (XLSX).
+        as a metadata spreadsheet (CSV).
       </div>
       <div className="flex flex-row gap-2">
         <Input
@@ -80,8 +81,8 @@ export default function BackgroundSeqFeats() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <a href={fileUrl} download="Feature_Metadata.xlsx">
-          <Button className="rounded-xl">Download Metadata (XLSX)</Button>
+        <a href={fileUrl} download="Feature_Metadata.csv">
+          <Button className="rounded-xl">Download Metadata (CSV)</Button>
         </a>
       </div>
       {filteredData.length > 0 ? (
