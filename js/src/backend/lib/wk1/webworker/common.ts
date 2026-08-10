@@ -7,7 +7,7 @@ import {
   type RecvMessage as GenericRecvMessage,
   type SynMessage as GenericSynMessage,
 } from "../..";
-import z from "zod";
+import * as z from "zod/mini";
 
 /**
  * A base interface for the backend that can send messages and

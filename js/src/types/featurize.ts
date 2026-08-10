@@ -1,4 +1,4 @@
-import z from "zod";
+import * as z from "zod/mini";
 export const StandardError = z.object({
   reason: z.string(),
 });

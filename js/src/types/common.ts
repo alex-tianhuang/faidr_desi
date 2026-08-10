@@ -1,4 +1,4 @@
-import z from "zod"
+import * as z from "zod/mini";
 export const Mutation = z.object({
   from: z.string(),
   pos: z.number(),
@@ -13,7 +13,7 @@ export const DesignProgress = z.object({
       featureDistance: z.number(),
     }),
   ),
-  currentMutation: Mutation.optional(),
+  currentMutation: z.optional(Mutation),
 });
 export type DesignProgress = z.infer<typeof DesignProgress>;
 

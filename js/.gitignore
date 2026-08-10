@@ -32,3 +32,6 @@ src/backend/rust
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# Rollup plugin visualizer
+stats.html

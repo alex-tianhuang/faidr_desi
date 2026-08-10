@@ -38,7 +38,7 @@
  *            `ConnPool` implementors
  * ```
  */
-import z from "zod";
+import * as z from "zod/mini";
 import type { Wk1Request, Wk1Response, Wk1ResponseNoConnID } from "../messagetypes";
 import type { Conn, RecvMessage } from "../..";
 
@@ -198,5 +198,5 @@ const Wk1ResponseSchema = z.discriminatedUnion("case", [
   z.object({ case: z.literal("ack/hup"), connID: z.string() }),
   z.object({ case: z.literal("yield"), connID: z.string(), data: z.unknown() }),
   z.object({ case: z.literal("close"), connID: z.string(), data: z.unknown() }),
-  z.object({ case: z.literal("error"), connID: z.string().nullable(), reason: z.string() })
+  z.object({ case: z.literal("error"), connID: z.nullable(z.string()), reason: z.string() })
 ]);
