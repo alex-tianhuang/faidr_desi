@@ -5,7 +5,7 @@ import {
   Initialized,
 } from "@/types/generateKO";
 import { mutationToString } from "@/lib/utils";
-import z from "zod";
+import * as z from "zod/mini";
 import { DesignProgress, type DesignStatus } from "@/types/common";
 
 export default function useGenerateKOEndpoint(args: {

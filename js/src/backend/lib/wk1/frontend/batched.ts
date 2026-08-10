@@ -1,7 +1,7 @@
 /**
  * Module defining {@link Wk1BatchedPool}.
  */
-import z from "zod";
+import * as z from "zod/mini";
 import { communicate, type Conn, type ConnPool, type SynMessage } from "../..";
 import type { Wk1BLKPool } from "./blocking";
 import { Wk1Conn } from "./common";

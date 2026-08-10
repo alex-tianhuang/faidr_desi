@@ -2,7 +2,7 @@ import { useBackend, type RecvMessage } from "@/backend";
 import { useState } from "react";
 import { InitializationError, Initialized } from "@/types/generateMimic";
 import { mutationToString } from "@/lib/utils";
-import z from "zod";
+import * as z from "zod/mini";
 import { DesignProgress, type DesignStatus } from "@/types/common";
 
 export default function useGenerateMimicEndpoint(args: {
