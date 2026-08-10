@@ -9,7 +9,7 @@ export default defineConfig({
   plugins: [visualizer(), react(), tailwindcss()],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": path.resolve(import.meta.dirname, "./src"),
     },
   },
   base: "/idr/faidr-desi"
