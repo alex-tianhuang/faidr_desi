@@ -12,5 +12,5 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  base: "/idr/faidr-desi"
+  base: "/faidr_desi"
 })
