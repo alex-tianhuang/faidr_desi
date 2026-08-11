@@ -8,11 +8,13 @@ import { z } from "zod/mini";
 import FeatureMetadataCard from "./featureMetadataCard";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export default function FeatureMetadataSection(props: {
   setFeatureMetadataEl: (_: HTMLDetailsElement) => void;
 }) {
-  const {setFeatureMetadataEl} = props;
+  const { setFeatureMetadataEl } = props;
+  const [expanded, setExpanded] = React.useState(false);
   const [data, setData] = React.useState<FeatureMetadataRowSchema[] | null>(
     null,
   );
@@ -48,17 +50,15 @@ export default function FeatureMetadataSection(props: {
   if (error) {
     const reason = error instanceof Error ? error.message : `${error}`;
     return (
-      <div className="gap-2 flex flex-col">
-        <UnexpectedError
-          while="loading feature metadata"
-          error={reason}
-        ></UnexpectedError>
-      </div>
+      <UnexpectedError
+        while="loading feature metadata"
+        error={reason}
+      ></UnexpectedError>
     );
   }
   if (!data) {
     return (
-      <div className="gap-2 flex flex-col">
+      <div className="gap-2 flex flex-col p-2.5 border rounded-md">
         <Loading>Feature metadata is loading...</Loading>
       </div>
     );
@@ -75,11 +75,19 @@ export default function FeatureMetadataSection(props: {
           return false;
         });
   return (
-    <div className="gap-2 flex flex-col p-2.5 border rounded-md">
+    <div
+      className={cn(
+        "gap-2 flex flex-col p-2.5 border rounded-md",
+        expanded && "border-primary",
+      )}
+    >
       <p className="flex-1 text-md font-bold text-foreground underline">
-        About these features
+        About These Features
       </p>
-      <details ref={setFeatureMetadataEl}>
+      <details
+        ref={setFeatureMetadataEl}
+        onToggle={() => setExpanded(!expanded)}
+      >
         <summary className="text-muted-foreground text-sm">Read more</summary>
         <div className="flex flex-col gap-2 text-muted-foreground">
           <div className="text-center">
