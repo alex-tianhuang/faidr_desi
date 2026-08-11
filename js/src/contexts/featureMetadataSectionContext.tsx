@@ -19,7 +19,6 @@ export function FeatureMetadataSectionProvider(props: {
 export function useFeatureMetadataScroller() {
   const el = React.useContext(FeatureMetadataSectionContext);
   return React.useCallback(() => {
-    console.log(el)
     if (!el) return;
     if (!el.open) {
       el.open = true;
