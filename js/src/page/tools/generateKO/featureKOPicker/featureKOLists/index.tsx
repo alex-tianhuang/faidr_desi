@@ -5,6 +5,7 @@ import type { FeatureCardData } from "@/types/generateKO";
 import FeatureCardList from "./featureCardList";
 import { listActions } from "./utils";
 import MoveCardsButton from "./moveCardsButton";
+import { Button } from "@/components/ui/button";
 
 /** Adapted from https://github.com/shadcn-ui/ui/issues/2114#issuecomment-2308012873 */
 export default function FeatureKOLists(props: {
@@ -96,14 +97,15 @@ export default function FeatureKOLists(props: {
         </div>
         <div className="w-[calc(50%-8px)] flex flex-col">
           <div className="flex items-center justify-between">
-            <MoveCardsButton
-              tooltipText="Click me to move selected features back left!"
+            <Button
               disabled={disabled || disabledRight}
-              onClick={moveCardsToDefaultList}
               className="rounded-none border-r-0"
+              onClick={moveCardsToDefaultList}
+              size="icon"
             >
               <ChevronsLeft />
-            </MoveCardsButton>
+            </Button>
+
             <Input
               placeholder="Search"
               className="rounded-none focus-visible:ring-0 focus-visible:border-blue-500"
