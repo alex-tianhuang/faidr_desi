@@ -15,13 +15,12 @@ export default function App() {
   const [tool, setTool] = React.useState<"mimic" | "ko" | "feats" | null>(null);
   const [idrome, setIdrome] = React.useState<IDRome>("human");
   const [freezeInputs, setFreezeInputs] = React.useState<boolean>(false);
-  const [featureMetadataEl, setFeatureMetadataEl] = React.useState<HTMLDetailsElement | null>(null);
+  const [featureMetadataEl, setFeatureMetadataEl] =
+    React.useState<HTMLDetailsElement | null>(null);
   return (
     <div className="flex flex-col h-screen w-screen">
       <Banner />
-      <FeatureMetadataSectionProvider
-        featureMetadataEl={featureMetadataEl}
-      >
+      <FeatureMetadataSectionProvider featureMetadataEl={featureMetadataEl}>
         <div className="flex flex-col px-5 pt-2 pb-5 gap-2 min-w-80">
           <section id="preamble">
             <Preamble />
@@ -48,7 +47,9 @@ export default function App() {
             </div>
           </section>
           <section id="feature_metadata">
-            <FeatureMetadataSection setFeatureMetadataEl={setFeatureMetadataEl} />
+            <FeatureMetadataSection
+              setFeatureMetadataEl={setFeatureMetadataEl}
+            />
           </section>
         </div>
       </FeatureMetadataSectionProvider>
