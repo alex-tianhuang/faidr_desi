@@ -1,10 +1,6 @@
-import type React from "react";
 import RedirectToFeatureMetadata from "./redirectToFeatureMetadata";
 
-export default function BackgroundConcepts(props: {
-  featureMetadataRef: React.RefObject<HTMLDetailsElement | null>;
-}) {
-  const { featureMetadataRef } = props;
+export default function BackgroundConcepts() {
   return (
     <div className="border rounded-md border-muted p-3 gap-2 flex flex-col text-muted-foreground">
       <p className="flex-1 text-md font-bold text-foreground underline">
@@ -187,7 +183,7 @@ export default function BackgroundConcepts(props: {
         </details>
       </div>
       <div className="border rounded-md border-muted p-2 gap-2 flex flex-col">
-        <RedirectToFeatureMetadata featureMetadataRef={featureMetadataRef} />
+        <RedirectToFeatureMetadata />
       </div>
       <div className="border rounded-md border-muted p-2 gap-2 flex flex-col">
         <details>

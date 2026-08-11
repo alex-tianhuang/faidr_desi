@@ -10,9 +10,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 export default function FeatureMetadataSection(props: {
-  featureMetadataRef: React.RefObject<HTMLDetailsElement | null>
+  setFeatureMetadataEl: (_: HTMLDetailsElement) => void;
 }) {
-  const {featureMetadataRef} = props;
+  const {setFeatureMetadataEl} = props;
   const [data, setData] = React.useState<FeatureMetadataRowSchema[] | null>(
     null,
   );
@@ -79,7 +79,7 @@ export default function FeatureMetadataSection(props: {
       <p className="flex-1 text-md font-bold text-foreground underline">
         About these features
       </p>
-      <details ref={featureMetadataRef}>
+      <details ref={setFeatureMetadataEl}>
         <summary className="text-muted-foreground text-sm">Read more</summary>
         <div className="flex flex-col gap-2 text-muted-foreground">
           <div className="text-center">

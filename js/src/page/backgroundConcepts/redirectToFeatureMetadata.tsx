@@ -1,22 +1,11 @@
+import { useFeatureMetadataScroller } from "@/contexts/featureMetadataSectionContext";
 import { NUM_FEATURES } from "@/lib/consts";
 import React from "react";
 
-export default function RedirectToFeatureMetadata(props: {
-  featureMetadataRef: React.RefObject<HTMLDetailsElement | null>;
-}) {
-  const { featureMetadataRef } = props;
+export default function RedirectToFeatureMetadata() {
+  const scrollToFeatureMetadata = useFeatureMetadataScroller()
   const detailsRef = React.useRef<HTMLDetailsElement>(null);
-  const scrollToFeatureMetadata = React.useCallback(() => {
-    const el = featureMetadataRef.current;
-    if (!el) return;
-    if (!el.open) {
-      el.open = true;
-    }
-    el.scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-    });
-  }, [featureMetadataRef.current]);
+  
   React.useEffect(() => {
     const el = detailsRef.current;
     if (!el) return;
