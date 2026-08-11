@@ -116,7 +116,7 @@ export default function FeatureMetadataSection(props: {
           ) : (
             <div className="gap-2 p-2.5 rounded-md border border-input max-h-100 bg-card">
               No features match the search term:{" "}
-              <span className="underline">{search}</span>
+              <span className="underline whitespace-pre">{search}</span>
             </div>
           )}
         </div>
