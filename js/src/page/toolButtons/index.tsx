@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { GenerateMimicHelp, GenerateKOHelp, FeaturizeHelp } from "./helpPages";
 import { NUM_FEATURES } from "@/lib/consts";
 import {
@@ -90,10 +90,14 @@ function ToolButton(props: {
         {isActive ? "Try other sequence / try other tool" : label}
       </Button>
       <Popover>
-        <PopoverTrigger>
-          <Button className="rounded-l-none" disabled={disabled}>
-            ?
-          </Button>
+        <PopoverTrigger
+          className={cn(
+            buttonVariants({ variant: "default" }),
+            "rounded-l-none",
+          )}
+          disabled={disabled}
+        >
+          ?
         </PopoverTrigger>
         <PopoverContent>
           <div className="font-semibold underline text-center">{helpTitle}</div>
