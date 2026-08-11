@@ -1,4 +1,4 @@
-import type { FeatureMetadataRowSchema } from "@/types/backgroundSeqFeats";
+import type { FeatureMetadataRowSchema } from "@/types/featureMetadata";
 
 export default function FeatureMetadataCard(props: {
   data: FeatureMetadataRowSchema;

@@ -1,7 +1,10 @@
-import { NUM_FEATURES } from "@/lib/consts";
-import BackgroundSeqFeats from "./backgroundSeqFeats";
+import type React from "react";
+import RedirectToFeatureMetadata from "./redirectToFeatureMetadata";
 
-export default function BackgroundConcepts() {
+export default function BackgroundConcepts(props: {
+  featureMetadataRef: React.RefObject<HTMLDetailsElement | null>;
+}) {
+  const { featureMetadataRef } = props;
   return (
     <div className="border rounded-md border-muted p-3 gap-2 flex flex-col text-muted-foreground">
       <p className="flex-1 text-md font-bold text-foreground underline">
@@ -184,14 +187,13 @@ export default function BackgroundConcepts() {
         </details>
       </div>
       <div className="border rounded-md border-muted p-2 gap-2 flex flex-col">
-        <details>
-          <summary>What are these {NUM_FEATURES} sequence features, specifically?</summary>
-          <BackgroundSeqFeats/>
-        </details>
+        <RedirectToFeatureMetadata featureMetadataRef={featureMetadataRef} />
       </div>
       <div className="border rounded-md border-muted p-2 gap-2 flex flex-col">
         <details>
-          <summary>Why do we think sequence features important for IDRs?</summary>
+          <summary>
+            Why do we think sequence features important for IDRs?
+          </summary>
           Our lab showed that sequence features are
           <ul>
             <li>

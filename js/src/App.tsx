@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React from "react";
 import ToolButtons from "./page/toolButtons";
 import { type IDRome } from "./lib/consts";
 import Banner from "./page/banner";
@@ -6,13 +6,15 @@ import Preamble from "./page/preamble";
 import Footer from "./page/footer";
 import SequenceInput from "./page/sequenceInput";
 import Tool from "./page/tools";
-import BackgroundConcepts from "./page/background";
+import BackgroundConcepts from "./page/backgroundConcepts";
+import FeatureMetadataSection from "./page/featureMetadata";
 
 export default function App() {
-  const [sequence, setSequence] = useState<string | null>(null);
-  const [tool, setTool] = useState<"mimic" | "ko" | "feats" | null>(null);
-  const [idrome, setIdrome] = useState<IDRome>("human");
-  const [freezeInputs, setFreezeInputs] = useState<boolean>(false);
+  const [sequence, setSequence] = React.useState<string | null>(null);
+  const [tool, setTool] = React.useState<"mimic" | "ko" | "feats" | null>(null);
+  const [idrome, setIdrome] = React.useState<IDRome>("human");
+  const [freezeInputs, setFreezeInputs] = React.useState<boolean>(false);
+  const featureMetadataRef = React.useRef<HTMLDetailsElement>(null);
   return (
     <div className="flex flex-col h-screen w-screen">
       <Banner />
@@ -21,7 +23,7 @@ export default function App() {
           <Preamble />
         </section>
         <section id="background_concepts">
-          <BackgroundConcepts />
+          <BackgroundConcepts featureMetadataRef={featureMetadataRef} />
         </section>
         <section id="tool">
           <div className="flex flex-col gap-2 w-full">
@@ -40,6 +42,9 @@ export default function App() {
               idromeState={[idrome, setIdrome]}
             ></Tool>
           </div>
+        </section>
+        <section id="feature_metadata">
+          <FeatureMetadataSection featureMetadataRef={featureMetadataRef}/>
         </section>
       </div>
       <Footer />
