@@ -81,7 +81,7 @@ function ToolButton(props: {
   const { tool, setTool, disabled, label, isActive, helpTitle, helpDiv } =
     props;
   return (
-    <div className="flex-1 flex flex-row">
+    <div className="px-2.5 pb-1 flex-1 flex flex-row">
       <Button
         className="flex-1 rounded-r-none"
         onClick={() => setTool(isActive ? null : tool)}
