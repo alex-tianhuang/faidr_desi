@@ -4,6 +4,7 @@ import Loading from "@/components/loading";
 import type { IDRome } from "@/lib/consts";
 import DesignedSequenceFeaturesTable from "./designedSequenceFeaturesTable";
 import { checkAllFeatures } from "@/lib/utils";
+import { useFeatureMetadataScroller } from "@/contexts/featureMetadataSectionContext";
 
 export default function DesignedSequenceFeatures(props: {
   designedSequence: string;
@@ -27,6 +28,7 @@ export default function DesignedSequenceFeatures(props: {
   });
   const { featureVector: designFeatureVector, checkError } =
     checkAllFeatures(featurized);
+  const scrollToFeatureMetadata = useFeatureMetadataScroller();
   if (!designFeatureVector) {
     return (
       <div className="flex flex-col gap-2 p-4 border border-input rounded-md">
@@ -66,6 +68,17 @@ export default function DesignedSequenceFeatures(props: {
         featureTargets={featureTargets}
         idrome={idrome}
       ></DesignedSequenceFeaturesTable>
+      <div className="flex flex-col items-center">
+        <p className="text-center text-muted-foreground">
+          Scroll vertically in the table above to see all the sequence features.
+        </p>
+        <div
+          className="px-2 h-fit rounded-sm w-fit text-sm text-muted-foreground hover:underline hover:-translate-y-px"
+          onClick={scrollToFeatureMetadata}
+        >
+          What are these features?
+        </div>
+      </div>
     </div>
   );
 }
