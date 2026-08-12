@@ -52,10 +52,18 @@ export default function SequenceInput(props: {
   return (
     <div
       className={cn(
-        "flex flex-col gap-2 p-2 rounded-lg border",
+        "flex flex-col gap-2 pt-3 px-2 pb-2 rounded-lg border",
         disabled ? "border-input" : "border-primary",
       )}
     >
+      <p
+        className={cn(
+          "text-xl text-center font-bold text-foreground",
+          disabled && "opacity-50",
+        )}
+      >
+        Get started!
+      </p>
       <p
         className={cn(
           "text-center text-md text-muted-foreground",
