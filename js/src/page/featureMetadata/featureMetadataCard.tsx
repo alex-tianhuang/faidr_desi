@@ -5,7 +5,7 @@ export default function FeatureMetadataCard(props: {
 }) {
   const { data } = props;
   return (
-    <div className="flex flex-col rounded-md border border-input gap-2 px-2 pt-2 pb-4.5 max-w-full bg-card shadow-sm hover:-translate-y-px h-full">
+    <div className="flex flex-col rounded-md border border-input gap-2 px-2 pt-2 pb-4.5 max-w-full bg-card shadow-sm h-full">
       <div className="flex flex-row gap-2 max-w-full overflow-scroll items-center pb-1">
         <div className="border rounded-sm bg-accent text-muted-foreground px-2 shadow-sm">
           {data["Feature Code"]}
