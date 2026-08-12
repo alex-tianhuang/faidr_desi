@@ -22,7 +22,7 @@ export default function FeatureMetadataCard(props: {
       </div>
       {data["Long Description of Computation"] && (
         <details>
-          <summary className="text-sm">Expanded definition</summary>
+          <summary className="text-sm hover:text-foreground">Expanded definition</summary>
           <div className="whitespace-pre-line text-sm mt-2 border rounded-sm p-2 bg-accent">
             {data["Long Description of Computation"]}
           </div>
@@ -30,7 +30,7 @@ export default function FeatureMetadataCard(props: {
       )}
       {data["Additional Info"] && (
         <details>
-          <summary className="text-sm">Additional Information</summary>
+          <summary className="text-sm hover:text-foreground">Additional Information</summary>
           <div className="whitespace-pre-line text-sm mt-2 border rounded-sm p-2 bg-accent">
             {data["Additional Info"]}
           </div>

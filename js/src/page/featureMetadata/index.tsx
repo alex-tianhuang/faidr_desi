@@ -88,7 +88,7 @@ export default function FeatureMetadataSection(props: {
         ref={setFeatureMetadataEl}
         onToggle={() => setExpanded(!expanded)}
       >
-        <summary className="text-muted-foreground text-sm">Read more</summary>
+        <summary className="text-muted-foreground text-sm hover:text-foreground">Read more</summary>
         <div className="flex flex-col gap-2 text-muted-foreground">
           <div className="text-center">
             Search for specific features below, or download all the associated
