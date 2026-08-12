@@ -24,7 +24,7 @@ dist-ssr
 *.sw?
 
 # wasm artifacts dir
-src/backend/rust
+# src/backend/rust
 
 # Playwright
 /test-results/
