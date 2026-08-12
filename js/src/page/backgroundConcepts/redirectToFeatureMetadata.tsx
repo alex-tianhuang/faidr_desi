@@ -6,12 +6,13 @@ export default function RedirectToFeatureMetadata() {
   return (
     <details>
       <summary className="text-sm hover:text-foreground">
-        What are these {NUM_FEATURES} sequence features, specifically?
+        What are <span className="italic">these</span> {NUM_FEATURES} sequence
+        features, specifically?
       </summary>
       <div className="px-2.5 pt-2">
         <a onClick={scrollToFeatureMetadata} className="hover:underline">
-          Click here to browse additional information about our features at the bottom
-          of this page.
+          Click here to browse additional information about our features at the
+          bottom of this page.
         </a>
       </div>
     </details>
