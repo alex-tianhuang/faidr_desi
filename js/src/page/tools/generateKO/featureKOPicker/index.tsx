@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import type { FeatureCardData } from "@/types/generateKO";
 import Preamble from "./preamble";
 import FeatureKOLists from "./featureKOLists";
+import { useFeatureMetadataScroller } from "@/contexts/featureMetadataSectionContext";
 
 export default function FeatureKOPicker(props: {
   disabled: boolean;
@@ -20,6 +21,7 @@ export default function FeatureKOPicker(props: {
     defaultListState: [defaultList, setDefaultList],
     KOListState: [KOList, setKOList],
   } = props;
+  const scrollToFeatureMetadata = useFeatureMetadataScroller();
   const numFeaturesKO = KOList.length;
   return (
     <div
@@ -36,6 +38,12 @@ export default function FeatureKOPicker(props: {
         featureVector={featureVector}
         KOFeatureTargets={KOFeatureTargets}
       ></FeatureKOLists>
+      <span
+        className="text-sm text-muted-foreground hover:underline hover:-translate-y-px"
+        onClick={scrollToFeatureMetadata}
+      >
+        What are these feature names?
+      </span>
       <Alert>
         {numFeaturesKO > 0
           ? `Setting ${numFeaturesKO} feature${numFeaturesKO > 1 ? "s" : ""} to IDRome minimum`
