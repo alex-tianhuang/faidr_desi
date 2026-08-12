@@ -1,3 +1,5 @@
-Source code for the IDR design software hosted at the [Alan Moses lab website](http://www.moseslab.csb.utoronto.ca/idr/faidr-desi/).
+Repository for an IDR design UI hosted on github [here](https://moses-lab.github.io/faidr_desi/).
 
-Rust source code has the IDR design code, TS has the UI code.
+Rust source code has the IDR design code, TS (in `./js` folder) has the UI code.
+
+For building using github actions, prebuilt wasm files from the Rust project live in `./js/src/backend/rust`.
