@@ -56,11 +56,8 @@ export function FeaturizeHelp() {
       >
         eLife (2021)
       </Link>
-      <Link
-        href="https://www.biorxiv.org/content/10.1101/2024.03.15.585291v1"
-        inline={false}
-      >
-        BioRxiv (2024)
+      <Link href="https://doi.org/10.1073/pnas.2604562123" inline={false}>
+        PNAS (2026)
       </Link>
     </div>
   );

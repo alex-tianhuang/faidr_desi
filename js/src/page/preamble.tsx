@@ -32,15 +32,15 @@ export default function Preamble() {
           inline={true}
           className="text-md"
         >
-          Zarin et al., 2021. (eLife)
+          Zarin <span className="italic">et al.</span>, 2021. (eLife)
         </Link>{" "}
         and{" "}
         <Link
-          href="https://www.biorxiv.org/content/10.1101/2024.03.15.585291v1"
           inline={true}
           className="text-md"
+          href="https://doi.org/10.1073/pnas.2604562123"
         >
-          Pritisanac et al., 2024. (BioRxiv)
+          Pritišanac <span className="italic">et al.</span>, 2026. (PNAS)
         </Link>
         .
       </p>
