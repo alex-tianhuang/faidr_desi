@@ -2,7 +2,7 @@ import ThemeToggle from "./themeToggle";
 
 export default function Banner() {
   return (
-    <div className="flex flex-col sticky w-full top-0 px-5 pt-3 pb-2 shadow border-b bg-background gap-2 z-50">
+    <div className="flex flex-col sticky w-full top-0 px-5 pt-3 pb-2 shadow border-b bg-background gap-2 z-50 border-foreground">
       <div className="text-center font-extrabold text-3xl underline">
         FAIDR-Desi
         <div className="absolute top-2.5 right-4">
