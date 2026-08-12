@@ -1,30 +1,19 @@
 import { useFeatureMetadataScroller } from "@/contexts/featureMetadataSectionContext";
 import { NUM_FEATURES } from "@/lib/consts";
-import React from "react";
 
 export default function RedirectToFeatureMetadata() {
-  const scrollToFeatureMetadata = useFeatureMetadataScroller()
-  const detailsRef = React.useRef<HTMLDetailsElement>(null);
-  
-  React.useEffect(() => {
-    const el = detailsRef.current;
-    if (!el) return;
-    const handleToggle = () => {
-      if (el.open) {
-        scrollToFeatureMetadata();
-      }
-    };
-    el.addEventListener("toggle", handleToggle);
-    return () => el.removeEventListener("toggle", handleToggle);
-  }, [scrollToFeatureMetadata]);
+  const scrollToFeatureMetadata = useFeatureMetadataScroller();
   return (
-    <details ref={detailsRef}>
-      <summary>
+    <details>
+      <summary className="text-sm hover:text-foreground">
         What are these {NUM_FEATURES} sequence features, specifically?
       </summary>
-      <a onClick={scrollToFeatureMetadata}>
-        See the section at the bottom of this page.
-      </a>
+      <div className="px-2.5 pt-2">
+        <a onClick={scrollToFeatureMetadata} className="hover:underline">
+          Click here to browse additional information about our features at the bottom
+          of this page.
+        </a>
+      </div>
     </details>
   );
 }
