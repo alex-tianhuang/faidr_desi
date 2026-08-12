@@ -441,7 +441,8 @@ export default function BackgroundConcepts() {
           <div className="gap-2 flex flex-col px-2.5 pt-2">
             <p>
               By starting with a random seed sequence and iteratively making
-              point mutations which fit a target feature vector, we can generate
+              point mutations which fit a target feature vector (by minimizing a{" "}
+              <span className="italic">feature distance</span>), we can generate
               sequences that fit a given sequence feature profile. This allows
               us to define two variants of sequences:
             </p>

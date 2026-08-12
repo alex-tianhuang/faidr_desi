@@ -21,13 +21,15 @@ export default function App() {
     <div className="flex flex-col h-screen w-screen">
       <Banner />
       <FeatureMetadataSectionProvider featureMetadataEl={featureMetadataEl}>
-        <div className="flex flex-col px-5 pt-2 pb-5 gap-2 min-w-80">
+        <div className="flex flex-col px-5 pt-2 pb-3 gap-2 min-w-80 border-b border-dashed">
           <section id="preamble">
             <Preamble />
           </section>
           <section id="background_concepts">
             <BackgroundConcepts />
           </section>
+        </div>
+        <div className="flex flex-col px-5 py-3 gap-2 min-w-80 border-b border-dashed">
           <section id="tool">
             <div className="flex flex-col gap-2 w-full">
               <SequenceInput
@@ -46,6 +48,8 @@ export default function App() {
               ></Tool>
             </div>
           </section>
+        </div>
+        <div className="px-5 pt-3 pb-5 min-w-80">
           <section id="feature_metadata">
             <FeatureMetadataSection
               setFeatureMetadataEl={setFeatureMetadataEl}

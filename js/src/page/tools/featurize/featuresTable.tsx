@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/table";
 import { saveFile } from "@/lib/utils";
 import React from "react";
+import { useFeatureMetadataScroller } from "@/contexts/featureMetadataSectionContext";
 
 const COLUMNS: ColumnDef<Record<string, AcceptedData>>[] = [
   "Feature Name",
@@ -38,7 +39,7 @@ export function FeaturesTable(props: {
   featurized: ReturnType<typeof featuresToTableData>;
 }) {
   const { featurized } = props;
-
+  const scrollToFeatureMetadata = useFeatureMetadataScroller();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const table = useReactTable({
     data: featurized,
@@ -64,6 +65,7 @@ export function FeaturesTable(props: {
       <p className="text-center text-muted-foreground">
         View and download a CSV of your sequence features below.
       </p>
+
       <div className="flex flex-col overflow-hidden border rounded-md p-4 gap-2 border-input">
         <Button className="w-full" onClick={handleExport}>
           {"Download features table as CSV"}
@@ -139,9 +141,17 @@ export function FeaturesTable(props: {
           </TableBody>
         </Table>
       </div>
-      <p className="text-center text-muted-foreground">
-        Scroll vertically in the table above to see more sequence features!
-      </p>
+      <div className="flex flex-col items-center">
+        <p className="text-center text-muted-foreground">
+          Scroll vertically in the table above to see more sequence features!
+        </p>
+        <div
+          className="px-2 h-fit rounded-sm w-fit text-sm text-muted-foreground hover:underline hover:-translate-y-px"
+          onClick={scrollToFeatureMetadata}
+        >
+          What are these features?
+        </div>
+      </div>
     </div>
   );
 }

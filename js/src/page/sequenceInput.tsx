@@ -52,10 +52,19 @@ export default function SequenceInput(props: {
   return (
     <div
       className={cn(
-        "flex flex-col gap-2 p-2 rounded-lg border",
+        "flex flex-col gap-2 pt-3 px-2 rounded-lg border",
         disabled ? "border-input" : "border-primary",
+        sequence !== null ? "pb-5" : "pb-2",
       )}
     >
+      <p
+        className={cn(
+          "text-xl text-center font-bold text-foreground",
+          disabled && "opacity-50",
+        )}
+      >
+        Get started!
+      </p>
       <p
         className={cn(
           "text-center text-md text-muted-foreground",
@@ -95,18 +104,22 @@ export default function SequenceInput(props: {
           Try an example
         </Button>
       </div>
-      {error && (
-        <NormalError
-          title="Uh oh! We can't parse your input as a sequence"
-          message={error}
-        ></NormalError>
-      )}
-      {sequence !== null && (
-        <Alert variant="default" className="overflow-scroll">
-          <AlertTitle>Successfully parsed sequence</AlertTitle>
-          <AlertDescription className="break-all">{sequence}</AlertDescription>
-        </Alert>
-      )}
+      <div className="px-2.5">
+        {error && (
+          <NormalError
+            title="Uh oh! We can't parse your input as a sequence"
+            message={error}
+          ></NormalError>
+        )}
+        {sequence !== null && (
+          <Alert variant="default" className="overflow-scroll">
+            <AlertTitle>Successfully parsed sequence</AlertTitle>
+            <AlertDescription className="break-all">
+              {sequence}
+            </AlertDescription>
+          </Alert>
+        )}
+      </div>
     </div>
   );
 }

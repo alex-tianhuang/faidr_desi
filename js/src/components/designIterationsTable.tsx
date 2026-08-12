@@ -81,12 +81,12 @@ export function DesignIterationsTable(props: {
           : "Iterations will appear here"}
       </summary>
       {iterations.length > 0 ? (
-        <div className="mt-2">
-          <div className="flex flex-col overflow-hidden border rounded-md p-4 gap-2 border-input">
+        <div className="mt-2 flex flex-col gap-2">
+          <div className="flex flex-col overflow-hidden border rounded-md p-4 gap-2 border-input max-h-100">
             <Button className="w-full" onClick={handleExport}>
               {"Download design iterations as CSV"}
             </Button>
-            <Table>
+            <Table className="max-h-100 overflow-auto">
               <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>
@@ -123,6 +123,9 @@ export function DesignIterationsTable(props: {
                 ))}
               </TableBody>
             </Table>
+          </div>
+          <div className="text-base text-center text-muted-foreground">
+            Scroll vertically in the table above to see all the iterations!
           </div>
         </div>
       ) : (
