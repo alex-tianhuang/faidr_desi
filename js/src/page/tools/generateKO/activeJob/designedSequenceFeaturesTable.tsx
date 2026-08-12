@@ -87,7 +87,7 @@ export default function DesignedSequenceFeaturesTable(props: {
     saveFile(csv, "ko_features.csv");
   };
   return (
-    <div className="flex flex-col overflow-hidden gap-2 max-h-100">
+    <div className="flex flex-col overflow-hidden gap-2 max-h-100 border p-4 rounded-md">
       <Button className="w-full" onClick={handleExport}>
         {"Download feature comparison table as CSV"}
       </Button>
