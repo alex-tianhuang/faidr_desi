@@ -95,18 +95,22 @@ export default function SequenceInput(props: {
           Try an example
         </Button>
       </div>
-      {error && (
-        <NormalError
-          title="Uh oh! We can't parse your input as a sequence"
-          message={error}
-        ></NormalError>
-      )}
-      {sequence !== null && (
-        <Alert variant="default" className="overflow-scroll">
-          <AlertTitle>Successfully parsed sequence</AlertTitle>
-          <AlertDescription className="break-all">{sequence}</AlertDescription>
-        </Alert>
-      )}
+      <div className="px-2.5">
+        {error && (
+          <NormalError
+            title="Uh oh! We can't parse your input as a sequence"
+            message={error}
+          ></NormalError>
+        )}
+        {sequence !== null && (
+          <Alert variant="default" className="overflow-scroll">
+            <AlertTitle>Successfully parsed sequence</AlertTitle>
+            <AlertDescription className="break-all">
+              {sequence}
+            </AlertDescription>
+          </Alert>
+        )}
+      </div>
     </div>
   );
 }
