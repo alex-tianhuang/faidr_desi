@@ -21,16 +21,20 @@ export default function App() {
     <div className="flex flex-col h-screen w-screen">
       <Banner />
       <FeatureMetadataSectionProvider featureMetadataEl={featureMetadataEl}>
-        <div className="flex flex-col px-5 pt-2 pb-3 gap-2 min-w-80 border-b border-dashed">
-          <section id="preamble">
+        <section id="welcome">
+          <div className="flex flex-col px-5 pt-2 pb-3 gap-2 min-w-80 border-b border-foreground shadow-sm">
+            <div className="-mx-5 -mt-2 px-2 border-r border-b rounded-br-md w-fit font-semibold bg-card font-serif border-foreground">
+              Welcome
+            </div>
             <Preamble />
-          </section>
-          <section id="background_concepts">
             <BackgroundConcepts />
-          </section>
-        </div>
-        <div className="flex flex-col px-5 py-3 gap-2 min-w-80 border-b border-dashed">
-          <section id="tool">
+          </div>
+        </section>
+        <section id="tools">
+          <div className="flex flex-col px-5 py-3 gap-2 min-w-80 border-b border-foreground shadow-sm">
+            <div className="-mx-5 -mt-3 px-2 border-r border-b rounded-br-md w-fit font-semibold bg-card font-serif border-foreground">
+              Tools
+            </div>
             <div className="flex flex-col gap-2 w-full">
               <SequenceInput
                 disabled={freezeInputs || tool !== null}
@@ -47,15 +51,18 @@ export default function App() {
                 idromeState={[idrome, setIdrome]}
               ></Tool>
             </div>
-          </section>
-        </div>
-        <div className="px-5 pt-3 pb-5 min-w-80">
-          <section id="feature_metadata">
+          </div>
+        </section>
+        <section id="about_these_features">
+          <div className="flex flex-col px-5 pt-3 pb-5 min-w-80 gap-2">
+            <div className="-mx-5 -mt-3 px-2 border-r border-b rounded-br-md w-fit font-semibold bg-card font-serif border-foreground">
+              About These Features
+            </div>
             <FeatureMetadataSection
               setFeatureMetadataEl={setFeatureMetadataEl}
             />
-          </section>
-        </div>
+          </div>
+        </section>
       </FeatureMetadataSectionProvider>
       <Footer />
     </div>
