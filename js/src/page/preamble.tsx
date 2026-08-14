@@ -1,7 +1,9 @@
 import Link from "@/components/link";
+import { useFeatureMetadataScroller } from "@/contexts/featureMetadataSectionContext";
 import { NUM_FEATURES } from "@/lib/consts";
 
 export default function Preamble() {
+  const scrollToFeatureMetadata = useFeatureMetadataScroller();
   return (
     <div className="flex flex-col gap-2 text-muted-foreground text-justify">
       <p>
@@ -18,15 +20,20 @@ export default function Preamble() {
         >
           this 2023 preprint
         </Link>{" "}
-        by the Julie Forman-Kay and Alan Moses group, who have been using
-        sequence feature-based design as a framework for hypothesis testing IDR
-        function.
+        from the groups of Julie Forman-Kay and Alan Moses, who are using
+        sequence feature-based design as a framework for testing the hypotheses
+        of the importance of features for IDR function.
       </p>
       <p>
         This app uses {NUM_FEATURES} sequence features consisting of short
-        linear interaction motifs (SLIMs), amino acid composition, and residue
-        patterning statistics. The association between these sequence features
-        and IDR function has been described in these papers:{" "}
+        linear interaction motifs (SLiMs), amino acid composition, and residue
+        patterning statistics.{" "}
+        <span className="font-semibold hover:underline" onClick={scrollToFeatureMetadata}>
+          Click here to see what features are used in this app with some
+          additional information about them
+        </span>
+        . The association between these sequence features and IDR function has
+        been described in these papers:{" "}
         <Link
           href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7932695/"
           inline={true}
