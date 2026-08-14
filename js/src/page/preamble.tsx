@@ -24,7 +24,7 @@ export default function Preamble() {
       </p>
       <p>
         This app uses {NUM_FEATURES} sequence features consisting of short
-        linear interaction motifs (SLIMs), aminoacid composition, and residue
+        linear interaction motifs (SLIMs), amino acid composition, and residue
         patterning statistics. The association between these sequence features
         and IDR function has been described in these papers:{" "}
         <Link

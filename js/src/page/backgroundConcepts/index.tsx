@@ -90,7 +90,7 @@ export default function BackgroundConcepts() {
               </summary>
               <div className="px-2.5 pt-2">
                 Composition describes the percentage of a sequence comprised of
-                a particular kind of aminoacid, or combinations of them. Among
+                a particular kind of amino acid, or combinations of them. Among
                 other functions, the composition profile of an IDR is known to
                 be strongly determinant of its ability to form phase-separated
                 condensates and encode chemical specificity of those condensates

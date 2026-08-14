@@ -55,7 +55,7 @@ const TOOLTIP_CONTENTS = {
   Composition: (
     <span>
       "Composition" features describe the percentage of a sequence comprised of
-      a particular kind of aminoacid, or combinations of them.
+      a particular kind of amino acid, or combinations of them.
     </span>
   ),
   ["Residue Clustering"]: (
