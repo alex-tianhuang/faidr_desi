@@ -141,7 +141,7 @@ export default function BackgroundConcepts() {
                       >
                         Frey and Görlich, 2007. (Cell)
                       </Link>
-                      ;
+                      ;{" "}
                       <Link
                         inline
                         className="text-md text-muted-foreground"
@@ -182,9 +182,8 @@ export default function BackgroundConcepts() {
                         (PNAS)
                       </Link>
                       ]. Multiple studies have shown that charged residue
-                      composition and clustering (see{" "}
-                      <span className="underline">patterning</span> section
-                      below) are important for IDR hydrodynamic properties and
+                      composition and clustering (see patterning section below)
+                      are important for IDR hydrodynamic properties and
                       electrostatically-driven phase behaviour [{" "}
                       <Link
                         inline
@@ -194,7 +193,7 @@ export default function BackgroundConcepts() {
                         Cohan <span className="italic">et al.</span>, 2022.
                         (JMB)
                       </Link>
-                      ;
+                      ;{" "}
                       <Link
                         inline
                         className="text-md text-muted-foreground"
@@ -203,7 +202,7 @@ export default function BackgroundConcepts() {
                         Nott <span className="italic">et al.</span>, 2015.
                         (Molecular Cell)
                       </Link>
-                      ;
+                      ;{" "}
                       <Link
                         inline
                         className="text-md text-muted-foreground"
@@ -281,8 +280,8 @@ export default function BackgroundConcepts() {
                         LIG_CtBP_PxDLS_1
                       </div>
                       <p>
-                        is defined as the number of non-overlapping occurrences of
-                        the regex pattern
+                        is defined as the number of non-overlapping occurrences
+                        of the regex pattern
                         "(P[LVIPME][DENS][LM][VASTRG])|(G[LVIPME][DENS][LM][VASTRG]((K)|(.[KR])))".
                       </p>
                     </div>
@@ -348,7 +347,7 @@ export default function BackgroundConcepts() {
                         Cohan <span className="italic">et al.</span>, 2022.
                         (JMB)
                       </Link>
-                      ;
+                      ;{" "}
                       <Link
                         inline
                         className="text-md text-muted-foreground"
@@ -357,7 +356,7 @@ export default function BackgroundConcepts() {
                         Nott <span className="italic">et al.</span>, 2015.
                         (Molecular Cell)
                       </Link>
-                      ;
+                      ;{" "}
                       <Link
                         inline
                         className="text-md text-muted-foreground"
