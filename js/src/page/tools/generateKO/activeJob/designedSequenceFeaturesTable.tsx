@@ -60,20 +60,24 @@ export default function DesignedSequenceFeaturesTable(props: {
     {
       accessorKey: "Feature Name",
     },
-    ...["Initial Value", "Design Value", "Design Target"].map((prefix) => ({
-      accessorKey: `${prefix} (${zscoreKind})`,
-      cell: ({
-        getValue,
-      }: CellContext<Record<string, AcceptedData>, unknown>) =>
-        getValue<number>().toPrecision(3),
-    })),
-    ...["Initial Value", "Design Value", "Design Target"].map((prefix) => ({
-      accessorKey: `${prefix} (Raw Value)`,
-      cell: ({
-        getValue,
-      }: CellContext<Record<string, AcceptedData>, unknown>) =>
-        getValue<number>().toPrecision(3),
-    })),
+    ...["Initial Value", "Output Design Value", "Design Target"].map(
+      (prefix) => ({
+        accessorKey: `${prefix} (${zscoreKind})`,
+        cell: ({
+          getValue,
+        }: CellContext<Record<string, AcceptedData>, unknown>) =>
+          getValue<number>().toPrecision(3),
+      }),
+    ),
+    ...["Initial Value", "Output Design Value", "Design Target"].map(
+      (prefix) => ({
+        accessorKey: `${prefix} (Raw Value)`,
+        cell: ({
+          getValue,
+        }: CellContext<Record<string, AcceptedData>, unknown>) =>
+          getValue<number>().toPrecision(3),
+      }),
+    ),
   ];
   const table = useReactTable({
     data: tableData,
@@ -118,7 +122,7 @@ export default function DesignedSequenceFeaturesTable(props: {
                               {
                                 [
                                   "Initial Value",
-                                  "Design Value",
+                                  "Output Design Value",
                                   "Design Target",
                                 ][i]
                               }
@@ -137,7 +141,7 @@ export default function DesignedSequenceFeaturesTable(props: {
                               {
                                 [
                                   "Initial Value",
-                                  "Design Value",
+                                  "Output Design Value",
                                   "Design Target",
                                 ][i]
                               }
@@ -199,20 +203,20 @@ function VectorsToTableData(props: {
         [`Initial Value (${zscoreKind})`]:
           (initialFeatureVector[featureName] - featureMeans[featureName]) *
           featureWeights[featureName],
-        [`Design Value (${zscoreKind})`]:
+        [`Output Design Value (${zscoreKind})`]:
           (designFeatureVector[featureName] - featureMeans[featureName]) *
           featureWeights[featureName],
         [`Design Target (${zscoreKind})`]:
           (featureTargets[featureName] - featureMeans[featureName]) *
           featureWeights[featureName],
         ["Initial Value (Raw Value)"]: initialFeatureVector[featureName],
-        ["Design Value (Raw Value)"]: designFeatureVector[featureName],
+        ["Output Design Value (Raw Value)"]: designFeatureVector[featureName],
         ["Design Target (Raw Value)"]: featureTargets[featureName],
       }));
       return rows.sort((a, b) => {
         const [aK, bK] = [a, b].map((row) =>
           Math.abs(
-            (row[`Design Value (${zscoreKind})`] as number) -
+            (row[`Output Design Value (${zscoreKind})`] as number) -
               (row[`Design Target (${zscoreKind})`] as number),
           ),
         );
