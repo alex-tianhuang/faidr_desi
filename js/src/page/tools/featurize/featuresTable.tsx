@@ -1,4 +1,4 @@
-import { featuresToTableData } from "@/lib/utils";
+import { cn, featuresToTableData } from "@/lib/utils";
 import {
   flexRender,
   getCoreRowModel,
@@ -21,6 +21,12 @@ import {
 import { saveFile } from "@/lib/utils";
 import React from "react";
 import { useFeatureMetadataScroller } from "@/contexts/featureMetadataSectionContext";
+import { ChevronsDown, ChevronsUp } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const COLUMNS: ColumnDef<Record<string, AcceptedData>>[] = [
   "Feature Name",
@@ -75,34 +81,69 @@ export function FeaturesTable(props: {
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
+                  const sortCase = header.column.getIsSorted();
                   return (
                     <TableHead key={header.id}>
                       {header.isPlaceholder ? null : (
-                        <div
-                          className={
-                            header.column.getCanSort()
-                              ? "cursor-pointer select-none"
-                              : ""
-                          }
-                          onClick={header.column.getToggleSortingHandler()}
-                          title={
-                            header.column.getCanSort()
-                              ? header.column.getNextSortingOrder() === "asc"
-                                ? "Sort ascending"
-                                : header.column.getNextSortingOrder() === "desc"
-                                  ? "Sort descending"
-                                  : "Clear sort"
-                              : undefined
-                          }
-                        >
+                        <div className="flex flex-row gap-2 items-center">
                           {flexRender(
                             header.column.columnDef.header,
                             header.getContext(),
                           )}
-                          {{
-                            asc: " 🔼",
-                            desc: " 🔽",
-                          }[header.column.getIsSorted() as string] ?? null}
+                          {header.column.getCanSort() && (
+                            <>
+                              <Tooltip>
+                                <TooltipTrigger disabled={sortCase === "asc"}>
+                                  <ChevronsUp
+                                    className={cn(
+                                      "size-5 cursor-pointer select-none",
+                                      sortCase !== "asc" && "opacity-50",
+                                    )}
+                                    onClick={() =>
+                                      table.setSorting(
+                                        sortCase === "asc"
+                                          ? []
+                                          : [
+                                              {
+                                                id: header.column.id,
+                                                desc: false,
+                                              },
+                                            ],
+                                      )
+                                    }
+                                  />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  Click to sort column in ascending order
+                                </TooltipContent>
+                              </Tooltip>
+                              <Tooltip>
+                                <TooltipTrigger disabled={sortCase === "desc"}>
+                                  <ChevronsDown
+                                    className={cn(
+                                      "size-5 cursor-pointer select-none",
+                                      sortCase !== "desc" && "opacity-50",
+                                    )}
+                                    onClick={() =>
+                                      table.setSorting(
+                                        sortCase === "desc"
+                                          ? []
+                                          : [
+                                              {
+                                                id: header.column.id,
+                                                desc: true,
+                                              },
+                                            ],
+                                      )
+                                    }
+                                  />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  Click to sort column in descending order
+                                </TooltipContent>
+                              </Tooltip>
+                            </>
+                          )}
                         </div>
                       )}
                     </TableHead>
@@ -143,6 +184,12 @@ export function FeaturesTable(props: {
       </div>
       <div className="flex flex-col items-center">
         <p className="text-center text-muted-foreground">
+          <span>
+            Click the <ChevronsUp className="size-5 inline" /> and{" "}
+            <ChevronsDown className="size-5 inline" /> buttons by the column
+            headers to sort the table.
+          </span>
+          <br />
           Scroll vertically in the table above to see more sequence features.
         </p>
         <div
