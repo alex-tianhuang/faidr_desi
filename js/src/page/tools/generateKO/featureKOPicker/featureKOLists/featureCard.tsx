@@ -44,7 +44,7 @@ export default function FeatureCard(props: {
           </span>
         </Button>
       </TooltipTrigger>
-      <TooltipContent>Click me to select me for knockout!</TooltipContent>
+      <TooltipContent>Click me to select me for knockout.</TooltipContent>
     </Tooltip>
   );
 }

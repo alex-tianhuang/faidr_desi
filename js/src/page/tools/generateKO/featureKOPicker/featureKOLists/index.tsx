@@ -73,7 +73,7 @@ export default function FeatureKOLists(props: {
             />
             <MoveCardsButton
               override={overrideLeftChevronTooltip}
-              tooltipText="Click me to move selected features right!"
+              tooltipText="Click me to move selected features right."
               disabled={disabled || disabledLeft}
               onClick={() => {
                 setOverrideLeftChevronTooltip(false);

@@ -52,7 +52,7 @@ export default function FeatureKOPicker(props: {
       {numFeaturesKO > 0 && (
         <div className="text-muted-foreground">
           Once you have selected your features to knockout, click the button
-          below to get your designed knockout sequence!
+          below to get your designed knockout sequence.
         </div>
       )}
     </div>

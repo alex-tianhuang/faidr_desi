@@ -143,7 +143,7 @@ export function FeaturesTable(props: {
       </div>
       <div className="flex flex-col items-center">
         <p className="text-center text-muted-foreground">
-          Scroll vertically in the table above to see more sequence features!
+          Scroll vertically in the table above to see more sequence features.
         </p>
         <div
           className="px-2 h-fit rounded-sm w-fit text-sm text-muted-foreground hover:underline hover:-translate-y-px"

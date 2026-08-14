@@ -125,7 +125,7 @@ export function DesignIterationsTable(props: {
             </Table>
           </div>
           <div className="text-base text-center text-muted-foreground">
-            Scroll vertically in the table above to see all the iterations!
+            Scroll vertically in the table above to see all the iterations.
           </div>
         </div>
       ) : (
