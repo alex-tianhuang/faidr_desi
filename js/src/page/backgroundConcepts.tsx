@@ -1,7 +1,8 @@
 import Link from "@/components/link";
-import RedirectToFeatureMetadata from "./redirectToFeatureMetadata";
+import { useFeatureMetadataScroller } from "@/contexts/featureMetadataSectionContext";
 
 export default function BackgroundConcepts() {
+  const scrollToFeatureMetadata = useFeatureMetadataScroller();
   return (
     <div className="border rounded-md border-muted px-3 pb-3 pt-2 gap-2 flex flex-col text-muted-foreground">
       <p className="flex-1 text-md font-bold text-foreground underline">
@@ -47,7 +48,7 @@ export default function BackgroundConcepts() {
       <div className="border rounded-md border-muted p-2 gap-2 flex flex-col bg-card">
         <details>
           <summary className="text-sm hover:text-foreground">
-            What are sequence features, generally?
+            What are sequence features?
           </summary>
           <div className="gap-2 flex flex-col py-2 px-2.5">
             <span>
@@ -81,7 +82,15 @@ export default function BackgroundConcepts() {
               >
                 Riley <span className="italic">et al.</span>, 2023. (PLOS)
               </Link>
-              ]. Some categories of sequence features that have been studied are
+              ].{" "}
+              <span
+                className="font-semibold hover:underline"
+                onClick={scrollToFeatureMetadata}
+              >
+                Click here to see what features are used in this app with some
+                additional information about them
+              </span>
+              . Some categories of sequence features that have been studied are
               described below:
             </span>
             <details className="rounded-md p-2 gap-2 bg-accent shadow-sm">
@@ -411,13 +420,10 @@ export default function BackgroundConcepts() {
         </details>
       </div>
       <div className="border rounded-md border-muted p-2 gap-2 flex flex-col bg-card">
-        <RedirectToFeatureMetadata />
-      </div>
-      <div className="border rounded-md border-muted p-2 gap-2 flex flex-col bg-card">
         <details>
           <summary className="text-sm hover:text-foreground">
-            What is the evidence that <span className="italic">these</span>{" "}
-            sequence features are important for IDRs?
+            What is the evidence that the sequence features used here are
+            important for IDRs?
           </summary>
           <div className="pt-2 px-2.5">
             These sequence features are:
