@@ -15,26 +15,30 @@ export default function BackgroundConcepts() {
           <div className="mt-2 px-2.5">
             <span className="underline">I</span>ntrinsically{" "}
             <span className="underline">D</span>isordered protein{" "}
-            <span className="underline">R</span>egions (IDRs) are proteins or
-            regions of proteins without stable tertiary structure. They are
-            involved in critical biological processes such as protein phase
-            separation, subcellular localization targeting, and transcriptional
-            regulation [
+            <span className="underline">R</span>egions (IDRs) are regions of
+            proteins without stable tertiary structure. (Intrinsically
+            disordered proteins, IDPs, are full-length proteins without stable
+            tertiary structure, and are often included in the broad definition
+            of IDRs.). IDRs are involved in subcellular localization targeting
+            (to membrane-bound and non-membrane-associated organelles), and in
+            regulating critical biological processes such as transcription,
+            translation, and signaling [
             <Link
               inline
-              href="https://doi.org/10.1021/cr400525m"
+              href="https://doi.org/10.1038/s41580-023-00673-0"
               className="text-md text-muted-foreground"
             >
-              Van Der Lee <span className="italic">et al.</span>, 2014. (ACS)
+              Holehouse and Kragelund, 2023. (Nature)
             </Link>
-            ]. IDR variants have been implicated in disease mechanisms for
-            neurodegenerative diseases and cancers [
+            ]. Genetic variants in IDRs have been implicated in numerous
+            diseases, including neurodevelopmental and neurodegenerative
+            diseases and cancers [
             <Link
               inline
               className="text-md text-muted-foreground"
-              href="https://doi.org/10.1038/s41392-021-00678-1"
+              href="https://doi.org/10.1016/j.cell.2020.11.050"
             >
-              Wang <span className="italic">et al.</span>, 2021. (Nature)
+              Tsang <span className="italic">et al.</span>, 2020. (Cell)
             </Link>
             ].
           </div>
@@ -47,10 +51,10 @@ export default function BackgroundConcepts() {
           </summary>
           <div className="gap-2 flex flex-col py-2 px-2.5">
             <span>
-              Sequence features are simple patterns you can see in a sequence.
-              Whereas the conserved elements of folded peptides are commonly
-              extractable via multiple sequence alignments (using algorithms
-              such as{" "}
+              Sequence features are simple properties that can be calculated for
+              a sequence. Whereas the conserved elements of folded peptides are
+              commonly extractable via multiple sequence alignments (using
+              algorithms such as{" "}
               <Link
                 inline
                 className="text-md text-muted-foreground"
@@ -85,10 +89,10 @@ export default function BackgroundConcepts() {
                 What is sequence composition?
               </summary>
               <div className="px-2.5 pt-2">
-                Composition describes the percentage of a sequence that is one
-                kind of aminoacid, or combinations of them. Among other
-                functions, the composition profile of an IDR is known to be
-                strongly determinant of its ability to form phase separated
+                Composition describes the percentage of a sequence comprised of
+                a particular kind of aminoacid, or combinations of them. Among
+                other functions, the composition profile of an IDR is known to
+                be strongly determinant of its ability to form phase-separated
                 condensates and encode chemical specificity of those condensates
                 [
                 <Link
@@ -106,15 +110,14 @@ export default function BackgroundConcepts() {
                         AA_F
                       </div>{" "}
                       <p>
-                        is defined as the percentage of sequence made of
+                        is defined as the percentage of a sequence comprised of
                         phenylalanine.
                       </p>
                     </div>
                     <p>
-                      Phenylalanine, being a large hydrophobic aminoacid, is
-                      known to form non-specific hydrophobic interactions which
-                      are important for pi-pi and pi-cation mediated phase
-                      separation [
+                      Phenylalanine is a large aromatic amino acid amenable to
+                      pi-pi and pi-cation interactions, including those involved
+                      in phase separation [
                       <Link
                         inline
                         className="text-md text-muted-foreground"
@@ -125,18 +128,27 @@ export default function BackgroundConcepts() {
                       </Link>
                       ]. For example, FG-Nucleoporins, which have IDRs that form
                       a condensed phase at the nuclear pore, are enriched in
-                      phenylalanine and glycine. It has been shown that this
-                      phenylalanine-enriched condensed phase enables the nuclear
-                      pore to have specificity for cargo that can form
-                      hydrophobic interactions with the phenylalanines in the
-                      FG-Nucleoporins [
+                      phenylalanine and glycine. It has been shown that
+                      FG-repeats underlie this condensed phase which acts as the
+                      permeability barrier of the pore. This enables the nuclear
+                      pore to partition nuclear transport receptors via
+                      hydrophobic and pi interactions, facilitating the
+                      transport of cargo [
                       <Link
                         inline
                         className="text-md text-muted-foreground"
-                        href="https://doi.org/10.1039/d3cp03746k"
+                        href="https://doi.org/10.1016/j.cell.2007.06.024"
                       >
-                        Patel <span className="italic">et al.</span>, 2023.
-                        (RSC)
+                        Frey and Görlich, 2007. (Cell)
+                      </Link>
+                      ;
+                      <Link
+                        inline
+                        className="text-md text-muted-foreground"
+                        href="https://doi.org/10.1016/s0092-8674(00)00014-3"
+                      >
+                        Bayliss <span className="italic">et al.</span>, 2000.
+                        (Cell)
                       </Link>
                       ].
                     </p>
@@ -158,9 +170,9 @@ export default function BackgroundConcepts() {
                     </div>
                     <p>
                       Charged residues, which drive electrostatic interactions,
-                      are important in various biological systems. For example,
+                      are important for many biological systems. For example,
                       MAPK signalling dynamics in yeast have been shown to be
-                      dependent on the net charge of and IDR in Ste50 [
+                      dependent on the net charge of an IDR in Ste50 [
                       <Link
                         inline
                         className="text-md text-muted-foreground"
@@ -171,9 +183,18 @@ export default function BackgroundConcepts() {
                       </Link>
                       ]. Multiple studies have shown that charged residue
                       composition and clustering (see{" "}
-                      <span className="underline">Spacing/Patterning</span>{" "}
-                      section below) are important for IDR shape, size, and
-                      electrostatically-driven phase behaviour [
+                      <span className="underline">patterning</span> section
+                      below) are important for IDR hydrodynamic properties and
+                      electrostatically-driven phase behaviour [{" "}
+                      <Link
+                        inline
+                        className="text-md text-muted-foreground"
+                        href="https://doi.org/10.1016/j.jmb.2021.167373"
+                      >
+                        Cohan <span className="italic">et al.</span>, 2022.
+                        (JMB)
+                      </Link>
+                      ;
                       <Link
                         inline
                         className="text-md text-muted-foreground"
@@ -182,14 +203,13 @@ export default function BackgroundConcepts() {
                         Nott <span className="italic">et al.</span>, 2015.
                         (Molecular Cell)
                       </Link>
-                      ;{" "}
+                      ;
                       <Link
                         inline
                         className="text-md text-muted-foreground"
-                        href="https://doi.org/10.1016/j.jmb.2021.167373"
+                        href="https://doi.org/10.1073/pnas.1304749110"
                       >
-                        Cohan <span className="italic">et al.</span>, 2022.
-                        (JMB)
+                        Das and Pappu, 2013. (PNAS)
                       </Link>
                       ].
                     </p>
@@ -199,7 +219,7 @@ export default function BackgroundConcepts() {
             </details>
             <details className="rounded-md p-2 gap-2 bg-accent shadow-sm">
               <summary className="text-sm hover:text-foreground">
-                What are motifs, or SLiMs?
+                What are sequence motifs, or SLiMs?
               </summary>
               <div className="pt-2 px-2.5">
                 <span className="underline">S</span>hort{" "}
@@ -207,8 +227,9 @@ export default function BackgroundConcepts() {
                 <span className="underline">i</span>nteraction{" "}
                 <span className="underline">M</span>otifs, also referred to as
                 motifs, are short conserved segments that are about 3-15
-                residues long. These segments generally encode highly specific
-                binding or post-translational modification sites [
+                residues long. These segments generally encode recognition
+                elements for specific binding domains or enzymes that put on
+                post-translational modifications [
                 <Link
                   inline
                   className="text-md text-muted-foreground"
@@ -217,8 +238,8 @@ export default function BackgroundConcepts() {
                   Davey <span className="italic">et al.</span>, 2015. (Springer
                   Nature)
                 </Link>
-                ]. Our collection of motifs are a curated subset of motifs found
-                at the{" "}
+                ]. The collection of motifs used here are a curated subset of
+                motifs found at the{" "}
                 <Link
                   inline
                   className="text-md text-muted-foreground"
@@ -234,14 +255,14 @@ export default function BackgroundConcepts() {
                         MOD_CK1_1
                       </div>
                       <p>
-                        is defined as the number non-overlapping occurrences of
-                        the regex pattern "S..([ST])".
+                        is defined as the number of non-overlapping occurrences
+                        of the regex pattern "S..([ST])".
                       </p>
                     </div>
                     <p>
-                      The above regex pattern can be more simply described as
-                      any serine/threonine preceded by a serine 3 sites before.
-                      As described in the{" "}
+                      The above regex pattern can be more simply described as a
+                      serine or threonine preceded by a serine 3 position
+                      before. As described in the{" "}
                       <Link
                         inline
                         className="text-md text-muted-foreground"
@@ -260,8 +281,8 @@ export default function BackgroundConcepts() {
                         LIG_CtBP_PxDLS_1
                       </div>
                       <p>
-                        defined as the number non-overlapping occurrences of the
-                        regex pattern
+                        is defined as the number of non-overlapping occurrences of
+                        the regex pattern
                         "(P[LVIPME][DENS][LM][VASTRG])|(G[LVIPME][DENS][LM][VASTRG]((K)|(.[KR])))".
                       </p>
                     </div>
@@ -294,13 +315,14 @@ export default function BackgroundConcepts() {
             </details>
             <details className="rounded-md bg-accent p-2 gap-2 shadow-sm">
               <summary className="text-sm hover:text-foreground">
-                What is residue spacing/patterning?
+                What is residue patterning?
               </summary>
               <div className="pt-2 px-2.5">
-                Spacing or patterning describes the degree that like residues
-                cluster together in a sequence. The presence of large clusters
-                of like residues is known to be important for long-range
-                attractive interactions. A couple illustrative examples are:
+                Patterning (also known as blockiness) describes the degree that
+                like residues cluster together in a sequence. The presence of
+                large clusters of like residues is known to be important for
+                long-range attractive interactions. A couple of illustrative
+                examples are:
                 <ul className="pl-5 py-2 gap-2 flex flex-col">
                   <li>
                     <div className="flex flex-row gap-2">
@@ -315,18 +337,9 @@ export default function BackgroundConcepts() {
                       </p>
                     </div>
                     <p>
-                      The presence of charged blocks are known to be important
-                      for the size and shape of IDPs due to the formation of
-                      long-range intrachain charge-charge contacts [
-                      <Link
-                        inline
-                        className="text-md text-muted-foreground"
-                        href="https://doi.org/10.1016/j.molcel.2015.01.013"
-                      >
-                        Nott <span className="italic">et al.</span>, 2015.
-                        (Molecular Cell)
-                      </Link>
-                      ;{" "}
+                      The presence of charged blocks is known to be important
+                      for the hydrodynamic properties of IDPs due to
+                      electrostatic interactions [{" "}
                       <Link
                         inline
                         className="text-md text-muted-foreground"
@@ -335,7 +348,24 @@ export default function BackgroundConcepts() {
                         Cohan <span className="italic">et al.</span>, 2022.
                         (JMB)
                       </Link>
-                      ]. Charge patterning of an IDR can also tune interaction
+                      ;
+                      <Link
+                        inline
+                        className="text-md text-muted-foreground"
+                        href="https://doi.org/10.1016/j.molcel.2015.01.013"
+                      >
+                        Nott <span className="italic">et al.</span>, 2015.
+                        (Molecular Cell)
+                      </Link>
+                      ;
+                      <Link
+                        inline
+                        className="text-md text-muted-foreground"
+                        href="https://doi.org/10.1073/pnas.1304749110"
+                      >
+                        Das and Pappu, 2013. (PNAS)
+                      </Link>
+                      ]. Charge patterning was found to tune interaction
                       specificity in MED1's IDR [
                       <Link
                         inline
@@ -355,16 +385,15 @@ export default function BackgroundConcepts() {
                       </div>
                       <p>
                         is a measure of "aromatic patterning", or the degree to
-                        which the aromatic residues are closer to each other in
-                        the sequence than expected.
+                        which the aromatic residues are clustered closer to each
+                        other in the sequence than expected.
                       </p>
                     </div>
                     <p>
-                      Aromatic clusters have been shown to promote aggregation
-                      in a model PLD system. In HNRNPA1's LCD, aromatic clusters
-                      are depleted more than expected by chance, and
-                      rearrangement of aromatic residues in the LCD into
-                      clusters induced aggregation [
+                      Aromatic clusters have been shown to promote aggregation.
+                      In an IDR of HNRNPA1, aromatic clusters are depleted more
+                      than expected by chance, and rearrangement of aromatic
+                      residues into clusters induced aggregation [
                       <Link
                         inline
                         className="text-md text-muted-foreground"
@@ -388,14 +417,14 @@ export default function BackgroundConcepts() {
       <div className="border rounded-md border-muted p-2 gap-2 flex flex-col bg-card">
         <details>
           <summary className="text-sm hover:text-foreground">
-            Why do we think <span className="italic">these</span> sequence
-            features are important for IDRs?
+            What is the evidence that <span className="italic">these</span>{" "}
+            sequence features are important for IDRs?
           </summary>
           <div className="pt-2 px-2.5">
-            Our lab showed that these sequence features are:
+            These sequence features are:
             <ol className="list-decimal list-inside">
               <li>
-                Conserved across IDR evolution despite low primary sequence
+                Conserved across IDR evolution despite low positional sequence
                 conservation [
                 <Link
                   inline
@@ -436,37 +465,37 @@ export default function BackgroundConcepts() {
       <div className="border rounded-md border-muted p-2 bg-card">
         <details>
           <summary className="text-sm hover:text-foreground">
-            How do we use sequence features for design?
+            How can sequence features be used for design?
           </summary>
           <div className="gap-2 flex flex-col px-2.5 pt-2">
             <p>
               By starting with a random seed sequence and iteratively making
               point mutations which fit a target feature vector (by minimizing a{" "}
-              <span className="italic">feature distance</span>), we can generate
-              sequences that fit a given sequence feature profile. This allows
-              us to define two variants of sequences:
+              <span className="italic">feature distance</span>), sequences that
+              fit a given sequence feature profile can be generated. Two
+              variants of designed sequences are particularly valuable:
             </p>
             <ul className="flex flex-col gap-2">
               <li className="bg-accent shadow-sm rounded-md p-2">
                 <span className="italic">Feature mimics</span> - synthetic
-                sequences with a feature vector close to an reference
-                (wild-type, extant) sequence. These synthetic sequences should
-                be expected to behave similarly as the reference sequence if
-                features are sufficient to determine IDR function.
+                sequences with a feature vector close to a reference (wild-type,
+                extant) sequence. These synthetic sequences are expected to
+                behave similarly to the reference sequence if features are
+                sufficient to determine IDR function.
               </li>
               <li className="bg-accent shadow-sm rounded-md p-2">
                 <span className="italic">Feature knockouts</span> - sequence
                 variants of reference sequences whose feature vector perturbs a
                 subset of features while keeping the remaining features close to
-                their original (reference) value. These synthetic sequences
-                should be expected to behave differently if the features
-                perturbed are necessary for the function of the sequence.
+                their original (reference) value. These synthetic sequences are
+                expected to behave differently if the features perturbed are
+                necessary for the function of the sequence.
               </li>
             </ul>
             <p>
-              Our lab has created synthetic feature mimics of mitochondrial
-              targeting signals and heat-shock dependent phase separating IDRs
-              that replicate the function of the original IDR [
+              Synthetic feature mimics of mitochondrial targeting signals and
+              heat-shock dependent phase-separating IDRs that replicate the
+              function of the original IDR have been generated [
               <Link
                 inline
                 className="text-md text-muted-foreground"
@@ -474,10 +503,10 @@ export default function BackgroundConcepts() {
               >
                 Strome <span className="italic">et al.</span>, 2023 (BioRxiv)
               </Link>
-              ]. In a soon to be posted manuscript accompanying this software,
-              we also created net charge knockouts of mitochondrial targeting
-              signals which demonstrated that net charge is necessary for phase
-              separation.
+              ]. Net charge knockouts of mitochondrial targeting signals which
+              demonstrating that net charge is necessary for phase separation
+              have also been created (soon-to-be-posted manuscript accompanying
+              this software).
             </p>
           </div>
         </details>
