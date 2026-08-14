@@ -1,4 +1,5 @@
 import type { FeatureMetadataRowSchema } from "@/types/featureMetadata";
+import FeatureCategoryButton from "./featureCategoryButton";
 
 export default function FeatureMetadataCard(props: {
   data: FeatureMetadataRowSchema;
@@ -10,9 +11,9 @@ export default function FeatureMetadataCard(props: {
         <div className="border rounded-sm bg-accent text-muted-foreground px-2 shadow-sm">
           {data["Feature Code"]}
         </div>
-        <div className="h-fit text-xs border rounded-sm bg-background text-muted-foreground shadow-xs text-nowrap px-2 py-1">
-          {data["Category"]}
-        </div>
+        <FeatureCategoryButton
+          category={data["Category"]}
+        ></FeatureCategoryButton>
       </div>
       <div className="text-lg font-semibold underline text-card-foreground px-2.5 overflow-auto">
         {data["Feature Name"]}
@@ -22,7 +23,9 @@ export default function FeatureMetadataCard(props: {
       </div>
       {data["Long Description of Computation"] && (
         <details>
-          <summary className="text-sm hover:text-foreground">Expanded definition</summary>
+          <summary className="text-sm hover:text-foreground">
+            Expanded definition
+          </summary>
           <div className="whitespace-pre-line text-sm mt-2 border rounded-sm p-2 bg-accent">
             {data["Long Description of Computation"]}
           </div>
@@ -30,7 +33,9 @@ export default function FeatureMetadataCard(props: {
       )}
       {data["Additional Info"] && (
         <details>
-          <summary className="text-sm hover:text-foreground">Additional Information</summary>
+          <summary className="text-sm hover:text-foreground">
+            Additional Information
+          </summary>
           <div className="whitespace-pre-line text-sm mt-2 border rounded-sm p-2 bg-accent">
             {data["Additional Info"]}
           </div>
