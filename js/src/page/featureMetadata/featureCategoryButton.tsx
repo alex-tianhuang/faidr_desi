@@ -13,7 +13,7 @@ const TOOLTIP_CONTENTS = {
       of sequence motifs from the{" "}
       <Link
         inline
-        className="text-md text-background"
+        className="font-bold text-md text-background"
         href="https://doi.org/10.1093/nar/gkt1047"
       >
         ELM
@@ -21,7 +21,7 @@ const TOOLTIP_CONTENTS = {
       (or other{" "}
       <Link
         inline
-        className="text-md text-background"
+        className="font-bold text-md text-background"
         href="https://en.wikipedia.org/wiki/Regular_expression"
       >
         regex
@@ -36,7 +36,7 @@ const TOOLTIP_CONTENTS = {
       that are a part of) occurrences of sequence motifs from the{" "}
       <Link
         inline
-        className="text-md text-background"
+        className="font-bold text-md text-background"
         href="https://doi.org/10.1093/nar/gkt1047"
       >
         ELM
@@ -44,7 +44,7 @@ const TOOLTIP_CONTENTS = {
       (or other{" "}
       <Link
         inline
-        className="text-md text-background"
+        className="font-bold text-md text-background"
         href="https://en.wikipedia.org/wiki/Regular_expression"
       >
         regex
