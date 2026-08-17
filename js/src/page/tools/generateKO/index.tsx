@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import useFeaturizeEndpoint from "@/backend/apis/featurize";
 import { type IDRome } from "@/lib/consts";
-import { checkAllFeatures, cn, compareStrings } from "@/lib/utils";
+import { checkAllFeatures, compareStrings } from "@/lib/utils";
 import { NormalError, UnexpectedError } from "@/components/errors";
 import Loading from "@/components/loading";
 import IdromePicker from "@/components/idromePicker";
