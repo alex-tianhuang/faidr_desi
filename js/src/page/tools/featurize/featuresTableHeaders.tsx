@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { flexRender, type Header, type Table } from "@tanstack/react-table";
 import { ChevronsDown, ChevronsUp } from "lucide-react";
 import type { AcceptedData } from "@/../node_modules/export-to-csv/output/lib/types";
+import { useFeatureMetadataScroller } from "@/contexts/featureMetadataSectionContext";
 
 export default function FeaturesTableHeader(props: {
   table: Table<Record<string, AcceptedData>>;
@@ -20,10 +21,44 @@ export default function FeaturesTableHeader(props: {
 }) {
   const { header, table } = props;
   const sortCase = header.column.getIsSorted();
+  const scrollToFeatureMetadata = useFeatureMetadataScroller();
   return (
     <div className="flex flex-col items-start pb-2">
       {flexRender(header.column.columnDef.header, header.getContext())}
       <div className="flex flex-row gap-2 items-center">
+        {header.id === "Feature Name" && (
+          <Popover>
+            <PopoverTrigger
+              className={cn(
+                buttonVariants({
+                  variant: "default",
+                  size: "icon-xs",
+                }),
+                "text-xs",
+              )}
+            >
+              ?
+            </PopoverTrigger>
+            <PopoverContent>
+              <div className="flex flex-col gap-2 bg-accent shadow-sm p-2 rounded-md">
+                <p className="text-center font-semibold underline">
+                  What are these features?
+                </p>
+                <p>
+                  You can read more about the features are used in this app at
+                  the bottom of this page, or by{" "}
+                  <span
+                    className="font-semibold hover:underline"
+                    onClick={scrollToFeatureMetadata}
+                  >
+                    clicking here
+                  </span>
+                  .
+                </p>
+              </div>
+            </PopoverContent>
+          </Popover>
+        )}
         {header.id.endsWith("Z-Score") && (
           <Popover>
             <PopoverTrigger

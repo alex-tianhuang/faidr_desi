@@ -133,12 +133,6 @@ export function FeaturesTable(props: {
         </div>
       </div>
       <div className="flex flex-col gap-2 items-start">
-        <div
-          className="self-center px-2 h-fit rounded-sm w-fit text-sm text-muted-foreground hover:underline hover:-translate-y-px"
-          onClick={scrollToFeatureMetadata}
-        >
-          What are these features?
-        </div>
         <p className="text-justify text-muted-foreground">
           Scroll vertically in the table above to see more sequence features. On
           small screens, you may need to scroll horizontally to see sequence
