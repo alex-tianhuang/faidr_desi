@@ -16,7 +16,6 @@ import { asString, generateCsv } from "export-to-csv";
 import { saveFile } from "@/lib/utils";
 import React from "react";
 import {
-  Table,
   TableBody,
   TableCell,
   TableHead,
