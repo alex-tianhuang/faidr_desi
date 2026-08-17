@@ -35,7 +35,9 @@ const COLUMNS: ColumnDef<DesignIteration>[] = [
   {
     accessorKey: "sequence",
     header: "Sequence",
-    cell: ({ getValue }) => getValue<string>(),
+    cell: ({ getValue }) => (
+      <span className="font-mono">{getValue<string>()}</span>
+    ),
   },
 ];
 
