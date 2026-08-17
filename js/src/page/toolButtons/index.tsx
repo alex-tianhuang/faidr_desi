@@ -100,8 +100,12 @@ function ToolButton(props: {
           ?
         </PopoverTrigger>
         <PopoverContent>
-          <div className="font-semibold underline text-center">{helpTitle}</div>
-          {helpDiv}
+          <div className="flex flex-col gap-2 bg-accent rounded-md shadow-sm pt-2 px-2">
+            <div className="font-semibold underline text-center">
+              {helpTitle}
+            </div>
+            {helpDiv}
+          </div>
         </PopoverContent>
       </Popover>
     </div>
