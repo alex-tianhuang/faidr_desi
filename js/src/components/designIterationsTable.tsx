@@ -35,9 +35,7 @@ const COLUMNS: ColumnDef<DesignIteration>[] = [
   {
     accessorKey: "sequence",
     header: "Sequence",
-    cell: ({ getValue }) => (
-      <span className="block max-w-50 truncate">{getValue<string>()}</span>
-    ),
+    cell: ({ getValue }) => getValue<string>(),
   },
 ];
 
