@@ -14,9 +14,15 @@ export default function GenerateKOActiveJob(props: {
   featureWeights: Record<string, number>;
   featureTargets: Record<string, number>;
   reqTimestamp: number;
-  idrome: IDRome
+  idrome: IDRome;
 }) {
-  const { initialFeatureVector, featureConfiguration, KOFeatureTargets, featureTargets, idrome } = props;
+  const {
+    initialFeatureVector,
+    featureConfiguration,
+    KOFeatureTargets,
+    featureTargets,
+    idrome,
+  } = props;
   const { initError, progressData, progressError, startTimestamp } =
     useGenerateKOEndpoint(props);
   const designedSequence =
@@ -44,7 +50,7 @@ export default function GenerateKOActiveJob(props: {
     );
   }
   return (
-    <div className="flex flex-col gap-2 p-4 border rounded-md border-primary">
+    <>
       {designedSequence ? (
         <>
           <DesignedSequence
@@ -70,6 +76,6 @@ export default function GenerateKOActiveJob(props: {
       <DesignIterationsTable
         iterations={progressData.iterations}
       ></DesignIterationsTable>
-    </div>
+    </>
   );
 }

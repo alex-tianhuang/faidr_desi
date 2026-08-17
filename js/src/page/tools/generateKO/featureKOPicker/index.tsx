@@ -8,11 +8,9 @@ import { useFeatureMetadataScroller } from "@/contexts/featureMetadataSectionCon
 export default function FeatureKOPicker(props: {
   disabled: boolean;
   featureVector: Record<string, number>;
-  featureTargets: Record<string, number>;
   KOFeatureTargets: Record<string, number>;
   defaultListState: [FeatureCardData[], (_: FeatureCardData[]) => void];
   KOListState: [FeatureCardData[], (_: FeatureCardData[]) => void];
-  setReqTimestamp: (_: number) => void;
 }) {
   const {
     disabled,
@@ -49,12 +47,6 @@ export default function FeatureKOPicker(props: {
           ? `Setting ${numFeaturesKO} feature${numFeaturesKO > 1 ? "s" : ""} to IDRome minimum`
           : "Please choose at least one feature to knockout (set to IDRome minimum)"}
       </Alert>
-      {numFeaturesKO > 0 && (
-        <div className="text-muted-foreground">
-          Once you have selected your features to knockout, click the button
-          below to get your designed knockout sequence.
-        </div>
-      )}
     </div>
   );
 }
