@@ -484,9 +484,9 @@ export default function BackgroundConcepts() {
             <ul className="flex flex-col gap-2">
               <li className="bg-accent shadow-sm rounded-md p-2">
                 <span className="italic">Feature mimics</span> - synthetic
-                sequences with a feature vector close to a reference (wild-type,
+                sequences with a feature vector close to a target (wild-type,
                 extant) sequence. These synthetic sequences are expected to
-                behave similarly to the reference sequence if features are
+                behave similarly to the target sequence if features are
                 sufficient to determine IDR function.
               </li>
               <li className="bg-accent shadow-sm rounded-md p-2">
