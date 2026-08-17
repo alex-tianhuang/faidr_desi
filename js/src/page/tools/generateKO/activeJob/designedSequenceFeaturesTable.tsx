@@ -92,8 +92,8 @@ export default function DesignedSequenceFeaturesTable(props: {
   };
   return (
     <div className="flex flex-col overflow-hidden gap-2 max-h-100 border p-4 rounded-md">
-      <Button className="w-full" onClick={handleExport}>
-        {"Download feature comparison table as CSV"}
+      <Button className="w-full h-auto py-1.5" onClick={handleExport}>
+        <span className="min-w-0 text-wrap">Download feature comparison table as CSV</span>
       </Button>
       <Table>
         <TableHeader>
