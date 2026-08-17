@@ -19,7 +19,6 @@ import {
 } from "@/components/ui/table";
 import { saveFile } from "@/lib/utils";
 import React from "react";
-import { useFeatureMetadataScroller } from "@/contexts/featureMetadataSectionContext";
 import { ChevronsDown, ChevronsUp } from "lucide-react";
 import FeaturesTableHeader from "./featuresTableHeaders";
 
@@ -40,7 +39,6 @@ export function FeaturesTable(props: {
   featurized: ReturnType<typeof featuresToTableData>;
 }) {
   const { featurized } = props;
-  const scrollToFeatureMetadata = useFeatureMetadataScroller();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const table = useReactTable({
     data: featurized,
