@@ -55,7 +55,7 @@ export default function ToolButtons(props: {
               key={propKey}
               tool={propKey}
               setTool={setTool}
-              disabled={activeTool !== null}
+              disabled={disabled || activeTool !== null}
               label={label}
               helpTitle={helpTitle}
               helpDiv={helpDiv}
@@ -65,7 +65,11 @@ export default function ToolButtons(props: {
       </div>
       {activeTool && (
         <div className="px-2.5 pb-1">
-          <Button className="w-full" onClick={() => setTool(null)} disabled={disabled}>
+          <Button
+            className="w-full"
+            onClick={() => setTool(null)}
+            disabled={disabled}
+          >
             Try another sequence or another tool (go back)
           </Button>
         </div>
