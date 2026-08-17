@@ -1,4 +1,4 @@
-import { cn, featuresToTableData } from "@/lib/utils";
+import { featuresToTableData } from "@/lib/utils";
 import {
   flexRender,
   getCoreRowModel,
@@ -9,7 +9,7 @@ import {
 } from "@tanstack/react-table";
 import { asString, generateCsv } from "export-to-csv";
 import type { AcceptedData } from "@/../node_modules/export-to-csv/output/lib/types";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -22,16 +22,7 @@ import { saveFile } from "@/lib/utils";
 import React from "react";
 import { useFeatureMetadataScroller } from "@/contexts/featureMetadataSectionContext";
 import { ChevronsDown, ChevronsUp } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import FeaturesTableHeader from "./featuresTableHeaders";
 
 const COLUMNS: ColumnDef<Record<string, AcceptedData>>[] = [
   "Feature Name",
@@ -85,127 +76,16 @@ export function FeaturesTable(props: {
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  const sortCase = header.column.getIsSorted();
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder ? null : (
-                        <div className="flex flex-row gap-2 items-center">
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                          {header.id.endsWith("Z-Score") && (
-                            <Popover>
-                              <PopoverTrigger
-                                className={cn(
-                                  buttonVariants({
-                                    variant: "default",
-                                    size: "icon-sm",
-                                  }),
-                                  "ml-2",
-                                )}
-                              >
-                                ?
-                              </PopoverTrigger>
-                              <PopoverContent>
-                                <div className="gap-2 flex flex-col bg-accent shadow-sm rounded-md p-2">
-                                  <p className="font-semibold underline text-center">
-                                    What are "feature z-scores"?
-                                  </p>
-                                  <p>
-                                    <span className="italic">
-                                      Feature Z-Scores
-                                    </span>{" "}
-                                    - the raw feature value, minus the mean of
-                                    the feature's value over a reference IDRome,
-                                    divided by the standard deviation of the
-                                    feature's value over a reference IDRome.
-                                  </p>
-                                  <p>
-                                    This column uses the{" "}
-                                    {header.column.id === "Human Z-Score"
-                                      ? "human"
-                                      : "yeast"}{" "}
-                                    IDRome's means and standard deviations.
-                                  </p>
-                                </div>
-                              </PopoverContent>
-                            </Popover>
-                          )}
-                          {header.column.getCanSort() && (
-                            <>
-                              <Tooltip>
-                                <TooltipTrigger disabled={sortCase === "asc"}>
-                                  <div
-                                    className={buttonVariants({
-                                      variant: "default",
-                                      size: "icon-sm",
-                                    })}
-                                    onClick={() =>
-                                      table.setSorting(
-                                        sortCase === "asc"
-                                          ? []
-                                          : [
-                                              {
-                                                id: header.column.id,
-                                                desc: false,
-                                              },
-                                            ],
-                                      )
-                                    }
-                                  >
-                                    <ChevronsUp
-                                      className={cn(
-                                        "size-5 cursor-pointer select-none",
-                                        sortCase !== "asc" && "opacity-50",
-                                      )}
-                                    />
-                                  </div>
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                  Click to sort column in ascending order
-                                </TooltipContent>
-                              </Tooltip>
-                              <Tooltip>
-                                <TooltipTrigger disabled={sortCase === "desc"}>
-                                  <div
-                                    className={buttonVariants({
-                                      variant: "default",
-                                      size: "icon-sm",
-                                    })}
-                                    onClick={() =>
-                                      table.setSorting(
-                                        sortCase === "desc"
-                                          ? []
-                                          : [
-                                              {
-                                                id: header.column.id,
-                                                desc: true,
-                                              },
-                                            ],
-                                      )
-                                    }
-                                  >
-                                    <ChevronsDown
-                                      className={cn(
-                                        "size-5 cursor-pointer select-none",
-                                        sortCase !== "desc" && "opacity-50",
-                                      )}
-                                    />
-                                  </div>
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                  Click to sort column in descending order
-                                </TooltipContent>
-                              </Tooltip>
-                            </>
-                          )}
-                        </div>
-                      )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder ? null : (
+                      <FeaturesTableHeader
+                        header={header}
+                        table={table}
+                      ></FeaturesTableHeader>
+                    )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
@@ -239,22 +119,23 @@ export function FeaturesTable(props: {
           </TableBody>
         </Table>
       </div>
-      <div className="flex flex-col items-center">
-        <p className="text-center text-muted-foreground">
-          <span>
-            Click the <ChevronsUp className="size-5 inline" /> and{" "}
-            <ChevronsDown className="size-5 inline" /> buttons by the column
-            headers to sort the table.
-          </span>
-          <br />
-          Scroll vertically in the table above to see more sequence features.
-        </p>
+      <div className="flex flex-col gap-2">
         <div
-          className="px-2 h-fit rounded-sm w-fit text-sm text-muted-foreground hover:underline hover:-translate-y-px"
+          className="self-center px-2 h-fit rounded-sm w-fit text-sm text-muted-foreground hover:underline hover:-translate-y-px"
           onClick={scrollToFeatureMetadata}
         >
           What are these features?
         </div>
+        <p className="text-justify text-muted-foreground">
+          Scroll vertically in the table above to see more sequence features,
+          and scroll horizontally to see sequence features as different
+          z-scores.
+        </p>
+        <p className="text-justify text-muted-foreground">
+          Click the <ChevronsUp className="size-5 inline" /> and{" "}
+          <ChevronsDown className="size-5 inline" /> buttons by the column
+          headers to sort the table.
+        </p>
       </div>
     </div>
   );
