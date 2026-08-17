@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import RngPicker from "@/page/tools/generateMimic/rngPicker";
-import { checkAllFeatures, cn } from "@/lib/utils";
+import { checkAllFeatures } from "@/lib/utils";
 import { NormalError, UnexpectedError } from "@/components/errors";
 import { FEATURE_CONFIGURATION, type IDRome } from "@/lib/consts";
 import useFeaturizeEndpoint from "@/backend/apis/featurize";
@@ -68,12 +68,7 @@ export default function GenerateMimic(props: {
         rngHintState={[rngHint, setRngHint]}
         rngSeed={rngSeed}
       ></RngPicker>
-      <div
-        className={cn(
-          "flex flex-col gap-2 p-4 border rounded-md",
-          freezeInputs ? "border-input opacity-50" : "border-primary",
-        )}
-      >
+      <div className="flex flex-col gap-2 p-4 border rounded-md border-primary">
         <p className="font-bold underline">Submit your design job</p>
         <p className="text-muted-foreground">
           Once you have selected your IDRome and input sequence, click the
@@ -88,20 +83,20 @@ export default function GenerateMimic(props: {
         >
           Click to design
         </Button>
-      </div>
-      {hasActiveJob ? (
-        <div className="flex flex-col gap-2 p-4 border rounded-md border-primary">
+        {hasActiveJob && (
           <Button onClick={() => setActiveJob(false)}>
             Change your design job (go back)
           </Button>
-          <GenerateMimicActiveJob
-            sequence={sequence}
-            featureConfiguration={featureConfiguration}
-            featureWeights={featureWeights}
-            rng={rng}
-            reqTimestamp={reqTimestamp}
-          ></GenerateMimicActiveJob>
-        </div>
+        )}
+      </div>
+      {hasActiveJob ? (
+        <GenerateMimicActiveJob
+          sequence={sequence}
+          featureConfiguration={featureConfiguration}
+          featureWeights={featureWeights}
+          rng={rng}
+          reqTimestamp={reqTimestamp}
+        ></GenerateMimicActiveJob>
       ) : (
         <div className="p-4 border rounded-md border-input text-muted-foreground">
           Click the button above and design results will be displayed here.
