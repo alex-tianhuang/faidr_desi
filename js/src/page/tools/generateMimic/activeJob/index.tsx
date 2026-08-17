@@ -30,7 +30,7 @@ export default function GenerateMimicActiveJob(props: {
     null;
 
   return (
-    <div className="flex flex-col gap-2 p-4 border rounded-md border-primary">
+    <>
       {designedSequence ? (
         <DesignedSequence
           inputSequence={props.sequence}
@@ -49,6 +49,6 @@ export default function GenerateMimicActiveJob(props: {
       <DesignIterationsTable
         iterations={progressData.iterations}
       ></DesignIterationsTable>
-    </div>
+    </>
   );
 }
