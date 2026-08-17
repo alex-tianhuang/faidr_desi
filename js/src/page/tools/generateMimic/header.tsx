@@ -7,8 +7,9 @@ export default function Header() {
         Designing a "feature mimic"
       </p>
       <p className="text-justify text-muted-foreground">
-        {`Use this program to design a sequence that matches ${NUM_FEATURES} sequence features of your inputted sequence. `}
-        In other words, it "mimics" the features of your input sequence.
+        Use this program to design a sequence that matches {NUM_FEATURES}{" "}
+        sequence features of your inputted sequence. In other words, it "mimics"
+        the features of your input sequence.
       </p>
     </div>
   );
