@@ -25,7 +25,7 @@ export default function FeatureKOPicker(props: {
     <div
       className={cn(
         "flex flex-col gap-2 p-4 border rounded-md",
-        disabled ? "border-input" : "border-primary",
+        disabled ? "border-input opacity-50" : "border-primary",
       )}
     >
       <Preamble />

@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import useFeaturizeEndpoint from "@/backend/apis/featurize";
 import { type IDRome } from "@/lib/consts";
-import { checkAllFeatures, compareStrings } from "@/lib/utils";
+import { checkAllFeatures, cn, compareStrings } from "@/lib/utils";
 import { NormalError, UnexpectedError } from "@/components/errors";
 import Loading from "@/components/loading";
 import IdromePicker from "@/components/idromePicker";
@@ -110,7 +110,14 @@ export default function GenerateKOArea(props: {
         defaultListState={[defaultList, setDefaultList]}
         disabled={freezeInputs}
       ></FeatureKOPicker>
-      <div className="flex flex-col gap-2 p-4 border rounded-md border-primary">
+      <div
+        className={cn(
+          "flex flex-col gap-2 p-4 border rounded-md",
+          numFeaturesKO === 0 || freezeInputs
+            ? "border-input opacity-50"
+            : "border-primary",
+        )}
+      >
         <p className="font-bold underline">Submit your design job</p>
         <p className="text-muted-foreground">
           Once you have selected your IDRome, input sequence, and features to
