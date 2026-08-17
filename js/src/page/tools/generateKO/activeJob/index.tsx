@@ -14,9 +14,15 @@ export default function GenerateKOActiveJob(props: {
   featureWeights: Record<string, number>;
   featureTargets: Record<string, number>;
   reqTimestamp: number;
-  idrome: IDRome
+  idrome: IDRome;
 }) {
-  const { initialFeatureVector, featureConfiguration, KOFeatureTargets, featureTargets, idrome } = props;
+  const {
+    initialFeatureVector,
+    featureConfiguration,
+    KOFeatureTargets,
+    featureTargets,
+    idrome,
+  } = props;
   const { initError, progressData, progressError, startTimestamp } =
     useGenerateKOEndpoint(props);
   const designedSequence =

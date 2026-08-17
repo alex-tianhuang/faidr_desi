@@ -1,19 +1,15 @@
 import { useMemo, useState } from "react";
 import useFeaturizeEndpoint from "@/backend/apis/featurize";
 import { type IDRome } from "@/lib/consts";
-import {
-  checkAllFeatures,
-  compareStrings,
-} from "@/lib/utils";
+import { checkAllFeatures, compareStrings } from "@/lib/utils";
 import { NormalError, UnexpectedError } from "@/components/errors";
 import Loading from "@/components/loading";
 import IdromePicker from "@/components/idromePicker";
 import Header from "./header";
-import BackButton from "@/components/backButton";
-import SubmitButton from "@/components/submitButton";
 import GenerateKOActiveJob from "./activeJob";
 import type { FeatureCardData } from "@/types/generateKO";
 import FeatureKOPicker from "./featureKOPicker";
+import { Button } from "@/components/ui/button";
 
 export default function GenerateKOArea(props: {
   sequence: string;
@@ -108,30 +104,35 @@ export default function GenerateKOArea(props: {
         idromeState={[idrome, setIDRome]}
       ></IdromePicker>
       <FeatureKOPicker
-        featureTargets={featureTargets}
         featureVector={featureVector}
         KOFeatureTargets={KOFeatureTargets}
-        setReqTimestamp={setReqTimestamp}
         KOListState={[KOList, setKOList]}
         defaultListState={[defaultList, setDefaultList]}
         disabled={freezeInputs}
       ></FeatureKOPicker>
+      <div className="flex flex-col gap-2 p-4 border rounded-md border-primary">
+        <p className="font-bold underline">Submit your design job</p>
+        <p className="text-muted-foreground">
+          Once you have selected your IDRome, input sequence, and features to
+          knockout, click the button below to get your designed knockout
+          sequence.
+        </p>
+        <Button
+          onClick={() => {
+            setActiveJob(true);
+            setReqTimestamp(Date.now());
+          }}
+          disabled={numFeaturesKO === 0 || freezeInputs}
+        >
+          Click to design
+        </Button>
+        {hasActiveJob && (
+          <Button onClick={() => setActiveJob(false)}>
+            Change your design job (go back)
+          </Button>
+        )}
+      </div>
       {hasActiveJob ? (
-        <BackButton setActiveJob={setActiveJob}></BackButton>
-      ) : (
-        <SubmitButton
-          setActiveJob={setActiveJob}
-          setReqTimestamp={setReqTimestamp}
-          buttonText="Click to design"
-          footerText={
-            numFeaturesKO > 0
-              ? "Click the button above and design results will be displayed here."
-              : "Design results will be displayed here once you choose some features to knockout."
-          }
-          disabled={numFeaturesKO === 0}
-        ></SubmitButton>
-      )}
-      {hasActiveJob && (
         <GenerateKOActiveJob
           sequence={sequence}
           featureConfiguration={featureConfiguration}
@@ -142,6 +143,12 @@ export default function GenerateKOArea(props: {
           reqTimestamp={reqTimestamp}
           idrome={idrome}
         ></GenerateKOActiveJob>
+      ) : (
+        <div className="p-4 border rounded-md border-input text-muted-foreground">
+          {numFeaturesKO > 0
+            ? "Click the button above and design results will be displayed here."
+            : "Design results will be displayed here once you choose some features to knockout."}
+        </div>
       )}
     </div>
   );

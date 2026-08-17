@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   FEATURE_MEANS_FOR_ZSCORE,
   FEATURE_WEIGHTS,
@@ -13,16 +13,21 @@ import {
 } from "@tanstack/react-table";
 import type { AcceptedData } from "@/../node_modules/export-to-csv/output/lib/types";
 import { asString, generateCsv } from "export-to-csv";
-import { saveFile } from "@/lib/utils";
+import { cn, saveFile } from "@/lib/utils";
 import React from "react";
 import {
-  Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { useFeatureMetadataScroller } from "@/contexts/featureMetadataSectionContext";
 
 export default function DesignedSequenceFeaturesTable(props: {
   initialFeatureVector: Record<string, number>;
@@ -60,26 +65,31 @@ export default function DesignedSequenceFeaturesTable(props: {
     {
       accessorKey: "Feature Name",
     },
-    ...["Initial Value", "Design Value", "Design Target"].map((prefix) => ({
-      accessorKey: `${prefix} (${zscoreKind})`,
-      cell: ({
-        getValue,
-      }: CellContext<Record<string, AcceptedData>, unknown>) =>
-        getValue<number>().toPrecision(3),
-    })),
-    ...["Initial Value", "Design Value", "Design Target"].map((prefix) => ({
-      accessorKey: `${prefix} (Raw Value)`,
-      cell: ({
-        getValue,
-      }: CellContext<Record<string, AcceptedData>, unknown>) =>
-        getValue<number>().toPrecision(3),
-    })),
+    ...["Initial Value", "Output Design Value", "Design Target"].map(
+      (prefix) => ({
+        accessorKey: `${prefix} (${zscoreKind})`,
+        cell: ({
+          getValue,
+        }: CellContext<Record<string, AcceptedData>, unknown>) =>
+          getValue<number>().toPrecision(3),
+      }),
+    ),
+    ...["Initial Value", "Output Design Value", "Design Target"].map(
+      (prefix) => ({
+        accessorKey: `${prefix} (Raw Value)`,
+        cell: ({
+          getValue,
+        }: CellContext<Record<string, AcceptedData>, unknown>) =>
+          getValue<number>().toPrecision(3),
+      }),
+    ),
   ];
   const table = useReactTable({
     data: tableData,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
+  const scrollToFeatureMetadata = useFeatureMetadataScroller();
   const handleExport = () => {
     const rows = table.getCoreRowModel().rows;
     const rowData = rows.map((row) => row.original);
@@ -87,87 +97,142 @@ export default function DesignedSequenceFeaturesTable(props: {
     saveFile(csv, "ko_features.csv");
   };
   return (
-    <div className="flex flex-col overflow-hidden gap-2 max-h-100 border p-4 rounded-md">
-      <Button className="w-full" onClick={handleExport}>
-        {"Download feature comparison table as CSV"}
+    <div className="flex flex-col gap-2 border p-4 rounded-md">
+      <Button className="w-full h-auto py-1.5" onClick={handleExport}>
+        <span className="min-w-0 text-wrap">
+          Download feature comparison table as CSV
+        </span>
       </Button>
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => {
-            const headerFeatureName = headerGroup.headers[0];
-            const headerZscores = headerGroup.headers.slice(1, 4);
-            const headerRawValues = headerGroup.headers.slice(4, 7);
-            return (
-              <TableRow key={headerGroup.id}>
-                {[
-                  <TableHead key="Feature Name">
-                    {headerFeatureName.isPlaceholder
-                      ? null
-                      : flexRender(
-                          headerFeatureName.column.columnDef.header,
-                          headerFeatureName.getContext(),
-                        )}
-                  </TableHead>,
-                ].concat(
-                  [...headerZscores.entries()].map(([i, header]) => (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            <>
-                              {
-                                [
-                                  "Initial Value",
-                                  "Design Value",
-                                  "Design Target",
-                                ][i]
-                              }
-                              <br />({zscoreKind})
-                            </>,
-                            header.getContext(),
+      <div
+        data-slot="table-container"
+        className="relative w-full max-h-96 overflow-auto"
+      >
+        {/* 
+          Ideally one would use ReactTable's <Table/> to keep with the capitalization.
+          Unfortunately this wraps the table in an overflow-scroll element which is
+          not max-h-96, which means the <th/> elements won't stay at the top of the table.
+          Drats!
+          */}
+        <table data-slot="table" className="w-full caption-bottom text-sm">
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => {
+              const headerFeatureName = headerGroup.headers[0];
+              const headerZscores = headerGroup.headers.slice(1, 4);
+              const headerRawValues = headerGroup.headers.slice(4, 7);
+              return (
+                <TableRow key={headerGroup.id}>
+                  {[
+                    <TableHead
+                      className="sticky top-0 bg-background shadow-sm"
+                      key="Feature Name"
+                    >
+                      {headerFeatureName.isPlaceholder ? null : (
+                        <div className="flex flex-row gap-2 items-center">
+                          {flexRender(
+                            headerFeatureName.column.columnDef.header,
+                            headerFeatureName.getContext(),
                           )}
-                    </TableHead>
-                  )),
-                  [...headerRawValues.entries()].map(([i, header]) => (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            <>
-                              {
-                                [
-                                  "Initial Value",
-                                  "Design Value",
-                                  "Design Target",
-                                ][i]
-                              }
-                              <br />
-                              (Raw Value)
-                            </>,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  )),
-                )}
+                          <Popover>
+                            <PopoverTrigger
+                              className={cn(
+                                buttonVariants({
+                                  variant: "default",
+                                  size: "icon-xs",
+                                }),
+                                "text-xs",
+                              )}
+                            >
+                              ?
+                            </PopoverTrigger>
+                            <PopoverContent>
+                              <div className="flex flex-col gap-2 bg-accent shadow-sm p-2 rounded-md">
+                                <p className="text-center font-semibold underline">
+                                  What are these features?
+                                </p>
+                                <p>
+                                  You can read more about the features are used
+                                  in this app at the bottom of this page, or by{" "}
+                                  <span
+                                    className="font-semibold hover:underline"
+                                    onClick={scrollToFeatureMetadata}
+                                  >
+                                    clicking here
+                                  </span>
+                                  .
+                                </p>
+                              </div>
+                            </PopoverContent>
+                          </Popover>
+                        </div>
+                      )}
+                    </TableHead>,
+                  ].concat(
+                    [...headerZscores.entries()].map(([i, header]) => (
+                      <TableHead
+                        className="sticky top-0 bg-background shadow-sm"
+                        key={header.id}
+                      >
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              <>
+                                {
+                                  [
+                                    "Initial Value",
+                                    "Output Design Value",
+                                    "Design Target",
+                                  ][i]
+                                }
+                                <br />({zscoreKind})
+                              </>,
+                              header.getContext(),
+                            )}
+                      </TableHead>
+                    )),
+                    [...headerRawValues.entries()].map(([i, header]) => (
+                      <TableHead
+                        className="sticky top-0 bg-background shadow-sm"
+                        key={header.id}
+                      >
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              <>
+                                {
+                                  [
+                                    "Initial Value",
+                                    "Output Design Value",
+                                    "Design Target",
+                                  ][i]
+                                }
+                                <br />
+                                (Raw Value)
+                              </>,
+                              header.getContext(),
+                            )}
+                      </TableHead>
+                    )),
+                  )}
+                </TableRow>
+              );
+            })}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.map((row) => (
+              <TableRow
+                key={row.id}
+                data-state={row.getIsSelected() && "selected"}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
               </TableRow>
-            );
-          })}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows.map((row) => (
-            <TableRow
-              key={row.id}
-              data-state={row.getIsSelected() && "selected"}
-            >
-              {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+            ))}
+          </TableBody>
+        </table>
+      </div>
     </div>
   );
 }
@@ -199,20 +264,20 @@ function VectorsToTableData(props: {
         [`Initial Value (${zscoreKind})`]:
           (initialFeatureVector[featureName] - featureMeans[featureName]) *
           featureWeights[featureName],
-        [`Design Value (${zscoreKind})`]:
+        [`Output Design Value (${zscoreKind})`]:
           (designFeatureVector[featureName] - featureMeans[featureName]) *
           featureWeights[featureName],
         [`Design Target (${zscoreKind})`]:
           (featureTargets[featureName] - featureMeans[featureName]) *
           featureWeights[featureName],
         ["Initial Value (Raw Value)"]: initialFeatureVector[featureName],
-        ["Design Value (Raw Value)"]: designFeatureVector[featureName],
+        ["Output Design Value (Raw Value)"]: designFeatureVector[featureName],
         ["Design Target (Raw Value)"]: featureTargets[featureName],
       }));
       return rows.sort((a, b) => {
         const [aK, bK] = [a, b].map((row) =>
           Math.abs(
-            (row[`Design Value (${zscoreKind})`] as number) -
+            (row[`Output Design Value (${zscoreKind})`] as number) -
               (row[`Design Target (${zscoreKind})`] as number),
           ),
         );

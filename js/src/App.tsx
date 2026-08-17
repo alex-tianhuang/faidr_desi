@@ -18,7 +18,7 @@ export default function App() {
   const [featureMetadataEl, setFeatureMetadataEl] =
     React.useState<HTMLDetailsElement | null>(null);
   return (
-    <div className="flex flex-col h-screen w-screen">
+    <div className="flex flex-col w-screen">
       <Banner />
       <FeatureMetadataSectionProvider featureMetadataEl={featureMetadataEl}>
         <section id="welcome">

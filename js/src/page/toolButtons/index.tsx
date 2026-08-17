@@ -24,7 +24,7 @@ const TOOL_INFO = [
   },
   {
     propKey: "feats",
-    label: `Get ${NUM_FEATURES} sequence features`,
+    label: `Compute ${NUM_FEATURES} sequence features`,
     helpTitle: "Computing features",
     helpDiv: <FeaturizeHelp />,
   },
@@ -50,22 +50,30 @@ export default function ToolButtons(props: {
       </p>
       <div className="gap-2 flex flex-col sm:flex-row flex-wrap">
         {TOOL_INFO.map(({ propKey, label, helpTitle, helpDiv }) => {
-          const isActive = activeTool === propKey;
-          const isInactive = activeTool !== null && !isActive;
           return (
             <ToolButton
               key={propKey}
               tool={propKey}
               setTool={setTool}
-              disabled={disabled || isInactive}
+              disabled={disabled || activeTool !== null}
               label={label}
-              isActive={propKey === activeTool}
               helpTitle={helpTitle}
               helpDiv={helpDiv}
             ></ToolButton>
           );
         })}
       </div>
+      {activeTool && (
+        <div className="px-2.5 pb-1">
+          <Button
+            className="w-full"
+            onClick={() => setTool(null)}
+            disabled={disabled}
+          >
+            Try another sequence or another tool (go back)
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
@@ -74,20 +82,18 @@ function ToolButton(props: {
   setTool: (_: ToolType | null) => void;
   disabled: boolean;
   label: string;
-  isActive: boolean;
   helpTitle: string;
   helpDiv: React.ReactNode;
 }) {
-  const { tool, setTool, disabled, label, isActive, helpTitle, helpDiv } =
-    props;
+  const { tool, setTool, disabled, label, helpTitle, helpDiv } = props;
   return (
-    <div className="flex-1 flex flex-row">
+    <div className="px-2.5 flex-1 flex flex-row">
       <Button
         className="flex-1 rounded-r-none"
-        onClick={() => setTool(isActive ? null : tool)}
+        onClick={() => setTool(tool)}
         disabled={disabled}
       >
-        {isActive ? "Try other sequence / try other tool" : label}
+        {label}
       </Button>
       <Popover>
         <PopoverTrigger
@@ -100,8 +106,12 @@ function ToolButton(props: {
           ?
         </PopoverTrigger>
         <PopoverContent>
-          <div className="font-semibold underline text-center">{helpTitle}</div>
-          {helpDiv}
+          <div className="flex flex-col gap-2 bg-accent rounded-md shadow-sm pt-2 px-2">
+            <div className="font-semibold underline text-center">
+              {helpTitle}
+            </div>
+            {helpDiv}
+          </div>
         </PopoverContent>
       </Popover>
     </div>

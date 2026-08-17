@@ -11,7 +11,6 @@ import { asString, generateCsv } from "export-to-csv";
 import type { AcceptedData } from "@/../node_modules/export-to-csv/output/lib/types";
 import { Button } from "@/components/ui/button";
 import {
-  Table,
   TableBody,
   TableCell,
   TableHead,
@@ -20,7 +19,8 @@ import {
 } from "@/components/ui/table";
 import { saveFile } from "@/lib/utils";
 import React from "react";
-import { useFeatureMetadataScroller } from "@/contexts/featureMetadataSectionContext";
+import { ChevronsDown, ChevronsUp } from "lucide-react";
+import FeaturesTableHeader from "./featuresTableHeaders";
 
 const COLUMNS: ColumnDef<Record<string, AcceptedData>>[] = [
   "Feature Name",
@@ -39,7 +39,6 @@ export function FeaturesTable(props: {
   featurized: ReturnType<typeof featuresToTableData>;
 }) {
   const { featurized } = props;
-  const scrollToFeatureMetadata = useFeatureMetadataScroller();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const table = useReactTable({
     data: featurized,
@@ -58,7 +57,7 @@ export function FeaturesTable(props: {
     saveFile(csv, "features.csv");
   };
   return (
-    <div className="flex flex-col gap-2 p-4 border rounded-md border-primary max-h-100 overflow-auto">
+    <div className="flex flex-col gap-2 p-4 border rounded-md border-primary">
       <p className="text-xl font-bold text-center">
         Computed sequence features
       </p>
@@ -66,91 +65,82 @@ export function FeaturesTable(props: {
         View and download a CSV of your sequence features below.
       </p>
 
-      <div className="flex flex-col overflow-hidden border rounded-md p-4 gap-2 border-input">
+      <div className="flex flex-col border rounded-md p-4 gap-2 border-input">
         <Button className="w-full" onClick={handleExport}>
           {"Download features table as CSV"}
         </Button>
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
+        <div
+          data-slot="table-container"
+          className="relative w-full max-h-96 overflow-auto"
+        >
+          {/* 
+          Ideally one would use ReactTable's <Table/> to keep with the capitalization.
+          Unfortunately this wraps the table in an overflow-scroll element which is
+          not max-h-96, which means the <th/> elements won't stay at the top of the table.
+          Drats!
+          */}
+          <table data-slot="table" className="w-full caption-bottom text-sm">
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <TableHead
+                      className="sticky top-0 bg-background shadow-sm"
+                      key={header.id}
+                    >
                       {header.isPlaceholder ? null : (
-                        <div
-                          className={
-                            header.column.getCanSort()
-                              ? "cursor-pointer select-none"
-                              : ""
-                          }
-                          onClick={header.column.getToggleSortingHandler()}
-                          title={
-                            header.column.getCanSort()
-                              ? header.column.getNextSortingOrder() === "asc"
-                                ? "Sort ascending"
-                                : header.column.getNextSortingOrder() === "desc"
-                                  ? "Sort descending"
-                                  : "Clear sort"
-                              : undefined
-                          }
-                        >
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                          {{
-                            asc: " 🔼",
-                            desc: " 🔽",
-                          }[header.column.getIsSorted() as string] ?? null}
-                        </div>
+                        <FeaturesTableHeader
+                          header={header}
+                          table={table}
+                        ></FeaturesTableHeader>
                       )}
                     </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
                   ))}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={COLUMNS.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-      <div className="flex flex-col items-center">
-        <p className="text-center text-muted-foreground">
-          Scroll vertically in the table above to see more sequence features!
-        </p>
-        <div
-          className="px-2 h-fit rounded-sm w-fit text-sm text-muted-foreground hover:underline hover:-translate-y-px"
-          onClick={scrollToFeatureMetadata}
-        >
-          What are these features?
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={COLUMNS.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </table>
         </div>
+      </div>
+      <div className="flex flex-col gap-2 items-start">
+        <p className="text-justify text-muted-foreground">
+          Scroll vertically in the table above to see more sequence features. On
+          small screens, you may need to scroll horizontally to see sequence
+          features as different z-scores.
+        </p>
+        <p className="text-justify text-muted-foreground">
+          Click the <ChevronsUp className="size-5 inline" /> and{" "}
+          <ChevronsDown className="size-5 inline" /> buttons by the column
+          headers to sort the table.
+        </p>
       </div>
     </div>
   );

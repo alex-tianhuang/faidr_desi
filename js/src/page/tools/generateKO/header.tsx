@@ -8,9 +8,10 @@ export default function Header() {
           Designing a "feature knockout"
         </p>
         <p className="text-justify text-muted-foreground">
-          {`Use this program to design a sequence that preserves ${NUM_FEATURES} sequence features of your inputted sequence, `}
-          but set some sequence features that you want to ablate to the IDRome
-          minimum. In other words, it "knocks out" those features.
+          Use this program to design a sequence that preserves most of the{" "}
+          {NUM_FEATURES} sequence features of your input sequence, but sets
+          specific sequence features that you want to ablate to the IDRome
+          minimum.
         </p>
       </div>
     </>

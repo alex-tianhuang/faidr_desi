@@ -7,9 +7,8 @@ import useFeaturizeEndpoint from "@/backend/apis/featurize";
 import IdromePicker from "@/components/idromePicker";
 import Header from "./header";
 import { parseRngHint } from "./utils";
-import SubmitButton from "@/components/submitButton";
-import BackButton from "@/components/backButton";
 import GenerateMimicActiveJob from "./activeJob";
+import { Button } from "@/components/ui/button";
 
 export default function GenerateMimic(props: {
   sequence: string;
@@ -69,17 +68,28 @@ export default function GenerateMimic(props: {
         rngHintState={[rngHint, setRngHint]}
         rngSeed={rngSeed}
       ></RngPicker>
+      <div className="flex flex-col gap-2 p-4 border rounded-md border-primary">
+        <p className="font-bold underline">Submit your design job</p>
+        <p className="text-muted-foreground">
+          Once you have selected your IDRome and input sequence, click the
+          button below to get your designed feature mimic sequence.
+        </p>
+        <Button
+          onClick={() => {
+            setActiveJob(true);
+            setReqTimestamp(Date.now());
+          }}
+          disabled={freezeInputs}
+        >
+          Click to design
+        </Button>
+        {hasActiveJob && (
+          <Button onClick={() => setActiveJob(false)}>
+            Change your design job (go back)
+          </Button>
+        )}
+      </div>
       {hasActiveJob ? (
-        <BackButton setActiveJob={setActiveJob}></BackButton>
-      ) : (
-        <SubmitButton
-          setActiveJob={setActiveJob}
-          setReqTimestamp={setReqTimestamp}
-          buttonText="Click to design"
-          footerText="Click the button above and design results will be displayed here."
-        ></SubmitButton>
-      )}
-      {hasActiveJob && (
         <GenerateMimicActiveJob
           sequence={sequence}
           featureConfiguration={featureConfiguration}
@@ -87,6 +97,10 @@ export default function GenerateMimic(props: {
           rng={rng}
           reqTimestamp={reqTimestamp}
         ></GenerateMimicActiveJob>
+      ) : (
+        <div className="p-4 border rounded-md border-input text-muted-foreground">
+          Click the button above and design results will be displayed here.
+        </div>
       )}
     </div>
   );

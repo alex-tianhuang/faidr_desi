@@ -25,9 +25,10 @@ export default function IdromePicker(props: {
       </p>
       <p className="text-muted-foreground">
         During design, features are scaled down by the standard deviations of a
-        user-chosen IDRome. This way features that are percentages (such as
-        percent glycine) that range from 0-1 and features that are counts (such
-        as motifs) can be treated equally.
+        user-chosen IDRome (the collection of all IDRs and IDPs within a given
+        proteome). This way features that are percentages (such as percent
+        glycine) that range from 0-1 and features that are counts (such as
+        motifs) can be treated equally.
       </p>
       <p className="text-muted-foreground">
         Currently you can choose between {forKO && " minimums and"} weights of

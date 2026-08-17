@@ -10,7 +10,7 @@ export default function DesignedSequence(props: {
   const { inputSequence, designedSequence, progressData } = props;
   return (
     <div className="flex flex-col border border-input rounded-md p-4 gap-2">
-      <span className="text-md font-bold underline">Designed Sequence</span>
+      <span className="text-md font-bold underline">Designed sequence</span>
       <MonoSequenceDisplay sequence={designedSequence}></MonoSequenceDisplay>
       <div className="flex flex-row items-center gap-2">
         <span className="text-sm text-muted-foreground">
