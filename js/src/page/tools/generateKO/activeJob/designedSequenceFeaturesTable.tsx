@@ -91,87 +91,109 @@ export default function DesignedSequenceFeaturesTable(props: {
     saveFile(csv, "ko_features.csv");
   };
   return (
-    <div className="flex flex-col overflow-hidden gap-2 max-h-100 border p-4 rounded-md">
+    <div className="flex flex-col gap-2 border p-4 rounded-md">
       <Button className="w-full h-auto py-1.5" onClick={handleExport}>
-        <span className="min-w-0 text-wrap">Download feature comparison table as CSV</span>
+        <span className="min-w-0 text-wrap">
+          Download feature comparison table as CSV
+        </span>
       </Button>
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => {
-            const headerFeatureName = headerGroup.headers[0];
-            const headerZscores = headerGroup.headers.slice(1, 4);
-            const headerRawValues = headerGroup.headers.slice(4, 7);
-            return (
-              <TableRow key={headerGroup.id}>
-                {[
-                  <TableHead key="Feature Name">
-                    {headerFeatureName.isPlaceholder
-                      ? null
-                      : flexRender(
-                          headerFeatureName.column.columnDef.header,
-                          headerFeatureName.getContext(),
-                        )}
-                  </TableHead>,
-                ].concat(
-                  [...headerZscores.entries()].map(([i, header]) => (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
+      <div
+        data-slot="table-container"
+        className="relative w-full max-h-96 overflow-auto"
+      >
+        {/* 
+          Ideally one would use ReactTable's <Table/> to keep with the capitalization.
+          Unfortunately this wraps the table in an overflow-scroll element which is
+          not max-h-96, which means the <th/> elements won't stay at the top of the table.
+          Drats!
+          */}
+        <table data-slot="table" className="w-full caption-bottom text-sm">
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => {
+              const headerFeatureName = headerGroup.headers[0];
+              const headerZscores = headerGroup.headers.slice(1, 4);
+              const headerRawValues = headerGroup.headers.slice(4, 7);
+              return (
+                <TableRow key={headerGroup.id}>
+                  {[
+                    <TableHead
+                      className="sticky top-0 bg-background shadow-sm"
+                      key="Feature Name"
+                    >
+                      {headerFeatureName.isPlaceholder
                         ? null
                         : flexRender(
-                            <>
-                              {
-                                [
-                                  "Initial Value",
-                                  "Output Design Value",
-                                  "Design Target",
-                                ][i]
-                              }
-                              <br />({zscoreKind})
-                            </>,
-                            header.getContext(),
+                            headerFeatureName.column.columnDef.header,
+                            headerFeatureName.getContext(),
                           )}
-                    </TableHead>
-                  )),
-                  [...headerRawValues.entries()].map(([i, header]) => (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            <>
-                              {
-                                [
-                                  "Initial Value",
-                                  "Output Design Value",
-                                  "Design Target",
-                                ][i]
-                              }
-                              <br />
-                              (Raw Value)
-                            </>,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  )),
-                )}
+                    </TableHead>,
+                  ].concat(
+                    [...headerZscores.entries()].map(([i, header]) => (
+                      <TableHead
+                        className="sticky top-0 bg-background shadow-sm"
+                        key={header.id}
+                      >
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              <>
+                                {
+                                  [
+                                    "Initial Value",
+                                    "Output Design Value",
+                                    "Design Target",
+                                  ][i]
+                                }
+                                <br />({zscoreKind})
+                              </>,
+                              header.getContext(),
+                            )}
+                      </TableHead>
+                    )),
+                    [...headerRawValues.entries()].map(([i, header]) => (
+                      <TableHead
+                        className="sticky top-0 bg-background shadow-sm"
+                        key={header.id}
+                      >
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              <>
+                                {
+                                  [
+                                    "Initial Value",
+                                    "Output Design Value",
+                                    "Design Target",
+                                  ][i]
+                                }
+                                <br />
+                                (Raw Value)
+                              </>,
+                              header.getContext(),
+                            )}
+                      </TableHead>
+                    )),
+                  )}
+                </TableRow>
+              );
+            })}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.map((row) => (
+              <TableRow
+                key={row.id}
+                data-state={row.getIsSelected() && "selected"}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
               </TableRow>
-            );
-          })}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows.map((row) => (
-            <TableRow
-              key={row.id}
-              data-state={row.getIsSelected() && "selected"}
-            >
-              {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+            ))}
+          </TableBody>
+        </table>
+      </div>
     </div>
   );
 }

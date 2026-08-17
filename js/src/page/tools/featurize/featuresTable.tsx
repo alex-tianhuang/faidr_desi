@@ -1,4 +1,4 @@
-import { featuresToTableData } from "@/lib/utils";
+import { cn, featuresToTableData } from "@/lib/utils";
 import {
   flexRender,
   getCoreRowModel,
@@ -60,7 +60,7 @@ export function FeaturesTable(props: {
     saveFile(csv, "features.csv");
   };
   return (
-    <div className="flex flex-col gap-2 p-4 border rounded-md border-primary max-h-100 overflow-auto">
+    <div className="flex flex-col gap-2 p-4 border rounded-md border-primary">
       <p className="text-xl font-bold text-center">
         Computed sequence features
       </p>
@@ -68,56 +68,70 @@ export function FeaturesTable(props: {
         View and download a CSV of your sequence features below.
       </p>
 
-      <div className="flex flex-col overflow-hidden border rounded-md p-4 gap-2 border-input">
+      <div className="flex flex-col border rounded-md p-4 gap-2 border-input">
         <Button className="w-full" onClick={handleExport}>
           {"Download features table as CSV"}
         </Button>
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder ? null : (
-                      <FeaturesTableHeader
-                        header={header}
-                        table={table}
-                      ></FeaturesTableHeader>
-                    )}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
+        <div
+          data-slot="table-container"
+          className="relative w-full max-h-96 overflow-auto"
+        >
+          {/* 
+          Ideally one would use ReactTable's <Table/> to keep with the capitalization.
+          Unfortunately this wraps the table in an overflow-scroll element which is
+          not max-h-96, which means the <th/> elements won't stay at the top of the table.
+          Drats!
+          */}
+          <table data-slot="table" className="w-full caption-bottom text-sm">
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <TableHead
+                      className="sticky top-0 bg-background shadow-sm"
+                      key={header.id}
+                    >
+                      {header.isPlaceholder ? null : (
+                        <FeaturesTableHeader
+                          header={header}
+                          table={table}
+                        ></FeaturesTableHeader>
                       )}
-                    </TableCell>
+                    </TableHead>
                   ))}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={COLUMNS.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={COLUMNS.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </table>
+        </div>
       </div>
       <div className="flex flex-col gap-2">
         <div
