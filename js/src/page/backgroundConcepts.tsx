@@ -1,5 +1,6 @@
 import Link from "@/components/link";
 import { useFeatureMetadataScroller } from "@/contexts/featureMetadataSectionContext";
+import { NUM_FEATURES } from "@/lib/consts";
 
 export default function BackgroundConcepts() {
   const scrollToFeatureMetadata = useFeatureMetadataScroller();
@@ -475,10 +476,10 @@ export default function BackgroundConcepts() {
           <div className="gap-2 flex flex-col px-2.5 pt-2">
             <p>
               By starting with a random seed sequence and iteratively making
-              point mutations which fit a target feature vector (by minimizing a{" "}
-              <span className="italic">feature distance</span>), sequences that
-              fit a given sequence feature profile can be generated. Two
-              variants of designed sequences are particularly valuable:
+              point mutations which minimize a "feature distance" (see glossary)
+              to given a target feature vector, sequences that fit a given
+              sequence feature profile can be generated. Two variants of
+              designed sequences are particularly valuable:
             </p>
             <ul className="flex flex-col gap-2">
               <li className="bg-accent shadow-sm rounded-md p-2">
@@ -518,21 +519,34 @@ export default function BackgroundConcepts() {
       </div>
       <div className="border rounded-md border-muted p-2 bg-card">
         <details>
-          <summary className="text-sm hover:text-foreground">
-            What is an IDRome?
-          </summary>
+          <summary className="text-sm hover:text-foreground">Glossary</summary>
           <div className="gap-2 flex flex-col px-2.5 pt-2">
-            <p>
-              An IDRome is the complete set of all intrinsically disordered
-              proteins and intrinsically disordered regions within a given
-              proteome, such as for the human proteome.
-            </p>
-            <p>
-              We use IDRomes to standardize the mean and standard deviation of
-              sequence features, so that features with different natural ranges
-              (e.g. percentages, which are 0-1, and motif counts, which are any
-              positive number) can be compared on the same scale.
-            </p>
+            <div className="gap-2 flex flex-col bg-accent shadow-sm rounded-md p-2">
+              <p>
+                <span className="italic">IDRome</span> - the complete set of all
+                intrinsically disordered proteins and intrinsically disordered
+                regions within a given proteome, such as for the human proteome.
+              </p>
+              <p>
+                We use IDRomes to standardize the mean and standard deviation of
+                sequence features to z-scores. This way, features with different
+                natural ranges (e.g. composition, which are fractions between
+                0-1, versus motif counts, which are any positive integer) can be
+                compared on the same scale.
+              </p>
+            </div>
+            <div className="gap-2 flex flex-col bg-accent shadow-sm rounded-md p-2">
+              <p>
+                <span className="italic">Feature Distance</span> - the euclidean
+                distance between two vectors of feature z-scores (feature
+                vectors) in {NUM_FEATURES} dimensions.
+              </p>
+              <p>
+                Our design approach for feature fitting greedily minimizes the
+                feature distance between the designed IDR's feature vector and a
+                target feature vector.
+              </p>
+            </div>
           </div>
         </details>
       </div>
