@@ -516,6 +516,26 @@ export default function BackgroundConcepts() {
           </div>
         </details>
       </div>
+      <div className="border rounded-md border-muted p-2 bg-card">
+        <details>
+          <summary className="text-sm hover:text-foreground">
+            What is an IDRome?
+          </summary>
+          <div className="gap-2 flex flex-col px-2.5 pt-2">
+            <p>
+              An IDRome is the complete set of all intrinsically disordered
+              proteins and intrinsically disordered regions within a given
+              proteome, such as for the human proteome.
+            </p>
+            <p>
+              We use IDRomes to standardize the mean and standard deviation of
+              sequence features, so that features with different natural ranges
+              (e.g. percentages, which are 0-1, and motif counts, which are any
+              positive number) can be compared on the same scale.
+            </p>
+          </div>
+        </details>
+      </div>
     </div>
   );
 }
