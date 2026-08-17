@@ -6,7 +6,7 @@ import {
   type ColumnDef,
 } from "@tanstack/react-table";
 import { asString, generateCsv } from "export-to-csv";
-import { Button } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
 import {
   Table,
   TableBody,
@@ -15,7 +15,9 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
-import { saveFile } from "@/lib/utils";
+import { cn, saveFile } from "@/lib/utils";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { NUM_FEATURES } from "@/lib/consts";
 
 const COLUMNS: ColumnDef<DesignIteration>[] = [
   {
@@ -99,6 +101,43 @@ export function DesignIterationsTable(props: {
                                 header.column.columnDef.header,
                                 header.getContext(),
                               )}
+                          {header.column.columnDef.header ===
+                            "Feature Distance" && (
+                            <Popover>
+                              <PopoverTrigger
+                                className={cn(
+                                  buttonVariants({
+                                    variant: "default",
+                                    size: "icon-sm",
+                                  }),
+                                  "ml-2",
+                                )}
+                              >
+                                ?
+                              </PopoverTrigger>
+                              <PopoverContent>
+                                <div className="gap-2 flex flex-col bg-accent shadow-sm rounded-md p-2">
+                                  <p className="font-semibold underline text-center">
+                                    What is the "feature distance"?
+                                  </p>
+                                  <p>
+                                    <span className="italic">
+                                      Feature Distance
+                                    </span>{" "}
+                                    - the euclidean distance between two vectors
+                                    of feature z-scores (feature vectors) in{" "}
+                                    {NUM_FEATURES} dimensions.
+                                  </p>
+                                  <p>
+                                    Our design approach for feature fitting
+                                    greedily minimizes the feature distance
+                                    between the designed IDR's feature vector
+                                    and a target feature vector.
+                                  </p>
+                                </div>
+                              </PopoverContent>
+                            </Popover>
+                          )}
                         </TableHead>
                       );
                     })}
