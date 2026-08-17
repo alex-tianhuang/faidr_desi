@@ -78,7 +78,6 @@ function ToolButton(props: {
   setTool: (_: ToolType | null) => void;
   disabled: boolean;
   label: string;
-  // isActive: boolean;
   helpTitle: string;
   helpDiv: React.ReactNode;
 }) {
