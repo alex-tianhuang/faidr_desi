@@ -27,6 +27,11 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 const COLUMNS: ColumnDef<Record<string, AcceptedData>>[] = [
   "Feature Name",
@@ -89,6 +94,44 @@ export function FeaturesTable(props: {
                           {flexRender(
                             header.column.columnDef.header,
                             header.getContext(),
+                          )}
+                          {header.id.endsWith("Z-Score") && (
+                            <Popover>
+                              <PopoverTrigger
+                                className={cn(
+                                  buttonVariants({
+                                    variant: "default",
+                                    size: "icon-sm",
+                                  }),
+                                  "ml-2",
+                                )}
+                              >
+                                ?
+                              </PopoverTrigger>
+                              <PopoverContent>
+                                <div className="gap-2 flex flex-col bg-accent shadow-sm rounded-md p-2">
+                                  <p className="font-semibold underline text-center">
+                                    What are "feature z-scores"?
+                                  </p>
+                                  <p>
+                                    <span className="italic">
+                                      Feature Z-Scores
+                                    </span>{" "}
+                                    - the raw feature value, minus the mean of
+                                    the feature's value over a reference IDRome,
+                                    divided by the standard deviation of the
+                                    feature's value over a reference IDRome.
+                                  </p>
+                                  <p>
+                                    This column uses the{" "}
+                                    {header.column.id === "Human Z-Score"
+                                      ? "human"
+                                      : "yeast"}{" "}
+                                    IDRome's means and standard deviations.
+                                  </p>
+                                </div>
+                              </PopoverContent>
+                            </Popover>
                           )}
                           {header.column.getCanSort() && (
                             <>
