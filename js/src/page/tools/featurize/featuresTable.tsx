@@ -9,7 +9,7 @@ import {
 } from "@tanstack/react-table";
 import { asString, generateCsv } from "export-to-csv";
 import type { AcceptedData } from "@/../node_modules/export-to-csv/output/lib/types";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -94,11 +94,11 @@ export function FeaturesTable(props: {
                             <>
                               <Tooltip>
                                 <TooltipTrigger disabled={sortCase === "asc"}>
-                                  <ChevronsUp
-                                    className={cn(
-                                      "size-5 cursor-pointer select-none",
-                                      sortCase !== "asc" && "opacity-50",
-                                    )}
+                                  <div
+                                    className={buttonVariants({
+                                      variant: "default",
+                                      size: "icon-sm",
+                                    })}
                                     onClick={() =>
                                       table.setSorting(
                                         sortCase === "asc"
@@ -111,7 +111,14 @@ export function FeaturesTable(props: {
                                             ],
                                       )
                                     }
-                                  />
+                                  >
+                                    <ChevronsUp
+                                      className={cn(
+                                        "size-5 cursor-pointer select-none",
+                                        sortCase !== "asc" && "opacity-50",
+                                      )}
+                                    />
+                                  </div>
                                 </TooltipTrigger>
                                 <TooltipContent>
                                   Click to sort column in ascending order
@@ -119,11 +126,11 @@ export function FeaturesTable(props: {
                               </Tooltip>
                               <Tooltip>
                                 <TooltipTrigger disabled={sortCase === "desc"}>
-                                  <ChevronsDown
-                                    className={cn(
-                                      "size-5 cursor-pointer select-none",
-                                      sortCase !== "desc" && "opacity-50",
-                                    )}
+                                  <div
+                                    className={buttonVariants({
+                                      variant: "default",
+                                      size: "icon-sm",
+                                    })}
                                     onClick={() =>
                                       table.setSorting(
                                         sortCase === "desc"
@@ -136,7 +143,14 @@ export function FeaturesTable(props: {
                                             ],
                                       )
                                     }
-                                  />
+                                  >
+                                    <ChevronsDown
+                                      className={cn(
+                                        "size-5 cursor-pointer select-none",
+                                        sortCase !== "desc" && "opacity-50",
+                                      )}
+                                    />
+                                  </div>
                                 </TooltipTrigger>
                                 <TooltipContent>
                                   Click to sort column in descending order
