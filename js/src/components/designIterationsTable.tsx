@@ -82,7 +82,12 @@ export function DesignIterationsTable(props: {
           : "Iterations will appear here"}
       </summary>
       {iterations.length > 0 ? (
-        <div className="mt-2 flex flex-col gap-2">
+        <div className="flex flex-col gap-2 border rounded-md p-4 mt-2">
+          <p className="text-md font-bold underline">Design iterations</p>
+          <p className="text-center text-muted-foreground">
+            See the point mutations made by the greedy feature optimizer at each
+            step.
+          </p>
           <div className="flex flex-col border rounded-md p-4 gap-2 border-input">
             <Button className="w-full" onClick={handleExport}>
               {"Download design iterations as CSV"}
@@ -179,9 +184,13 @@ export function DesignIterationsTable(props: {
               </table>
             </div>
           </div>
-          <div className="text-base text-center text-muted-foreground">
+          <p className="text-muted-foreground">
             Scroll vertically in the table above to see all the iterations.
-          </div>
+          </p>
+          <p className="text-muted-foreground">
+            On small screens, you may need to scroll horizontally to see the
+            mutations and sequence at each iteration.
+          </p>
         </div>
       ) : (
         <div className="mt-2 p-4 text-center border border-input rounded-md">
