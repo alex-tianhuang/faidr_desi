@@ -68,24 +68,15 @@ export default function DesignedSequenceFeatures(props: {
         featureTargets={featureTargets}
         idrome={idrome}
       ></DesignedSequenceFeaturesTable>
-      <div className="flex flex-col gap-2 items-start">
-        <div
-          className="self-center px-2 h-fit rounded-sm w-fit text-sm text-muted-foreground hover:underline hover:-translate-y-px"
-          onClick={scrollToFeatureMetadata}
-        >
-          What are these features?
-        </div>
-        <div className="flex flex-col gap-2 text-justify text-muted-foreground">
-          <p>
-            Scroll vertically in the table above to see all the sequence
-            features.
-          </p>
-          <p>
-            On small screens, you may need to horizontally in the table above to
-            see the initial, target, and actual feature values of your designed
-            sequence as z-scores and raw values.
-          </p>
-        </div>
+      <div className="flex flex-col gap-2 text-justify text-muted-foreground">
+        <p>
+          Scroll vertically in the table above to see all the sequence features.
+        </p>
+        <p>
+          On small screens, you may need to horizontally in the table above to
+          see the initial, target, and actual feature values of your designed
+          sequence as z-scores and raw values.
+        </p>
       </div>
     </div>
   );
