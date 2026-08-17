@@ -24,7 +24,7 @@ const TOOL_INFO = [
   },
   {
     propKey: "feats",
-    label: `Get ${NUM_FEATURES} sequence features`,
+    label: `Compute ${NUM_FEATURES} sequence features`,
     helpTitle: "Computing features",
     helpDiv: <FeaturizeHelp />,
   },
