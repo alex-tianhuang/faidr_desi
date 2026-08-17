@@ -118,7 +118,7 @@ export function DesignIterationsTable(props: {
                               <PopoverContent>
                                 <div className="gap-2 flex flex-col bg-accent shadow-sm rounded-md p-2">
                                   <p className="font-semibold underline text-center">
-                                    What is the "feature distance"?
+                                    What is "feature distance"?
                                   </p>
                                   <p>
                                     <span className="italic">
