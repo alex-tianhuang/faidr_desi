@@ -78,10 +78,10 @@ export default function FeaturesTableHeader(props: {
                   What are "feature z-scores"?
                 </p>
                 <p>
-                  <span className="italic">Feature Z-Scores</span> - the raw
-                  feature value, minus the mean of the feature's value over a
-                  reference IDRome, divided by the standard deviation of the
-                  feature's value over a reference IDRome.
+                  Feature z-scores are the raw feature value, minus the mean of
+                  the feature's value over a reference IDRome, divided by the
+                  standard deviation of the feature's value over a reference
+                  IDRome.
                 </p>
                 <p>
                   This column uses the{" "}
