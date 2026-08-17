@@ -81,9 +81,9 @@ export default function DesignedSequenceFeatures(props: {
             features.
           </p>
           <p>
-            Scroll horizontally in the table above to see the initial, target,
-            and actual feature values of your designed sequence as z-scores and
-            raw values.
+            On small screens, you may need to horizontally in the table above to
+            see the initial, target, and actual feature values of your designed
+            sequence as z-scores and raw values.
           </p>
         </div>
       </div>

@@ -140,9 +140,9 @@ export function FeaturesTable(props: {
           What are these features?
         </div>
         <p className="text-justify text-muted-foreground">
-          Scroll vertically in the table above to see more sequence features,
-          and scroll horizontally to see sequence features as different
-          z-scores.
+          Scroll vertically in the table above to see more sequence features. On
+          small screens, you may need to scroll horizontally to see sequence
+          features as different z-scores.
         </p>
         <p className="text-justify text-muted-foreground">
           Click the <ChevronsUp className="size-5 inline" /> and{" "}
