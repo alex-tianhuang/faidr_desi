@@ -48,7 +48,7 @@ export default function DesignedSequenceFeatures(props: {
   return (
     <div className="flex flex-col border border-input rounded-md p-4 gap-2">
       <span className="text-md font-bold underline">
-        Validating Features to Knock Out
+        Validating features to knock out
       </span>
       <p className="text-muted-foreground">
         Since features are correlated and the feature knock out algorithm is a
