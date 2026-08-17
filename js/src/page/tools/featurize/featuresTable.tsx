@@ -1,4 +1,4 @@
-import { cn, featuresToTableData } from "@/lib/utils";
+import { featuresToTableData } from "@/lib/utils";
 import {
   flexRender,
   getCoreRowModel,
@@ -11,7 +11,6 @@ import { asString, generateCsv } from "export-to-csv";
 import type { AcceptedData } from "@/../node_modules/export-to-csv/output/lib/types";
 import { Button } from "@/components/ui/button";
 import {
-  Table,
   TableBody,
   TableCell,
   TableHead,
@@ -133,7 +132,7 @@ export function FeaturesTable(props: {
           </table>
         </div>
       </div>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 items-start">
         <div
           className="self-center px-2 h-fit rounded-sm w-fit text-sm text-muted-foreground hover:underline hover:-translate-y-px"
           onClick={scrollToFeatureMetadata}
