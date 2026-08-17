@@ -71,6 +71,10 @@ export default function DesignedSequenceFeatures(props: {
       <div className="flex flex-col items-center">
         <p className="text-center text-muted-foreground">
           Scroll vertically in the table above to see all the sequence features.
+          <br />
+          Scroll horizontally in the table above to see the numbers for the
+          Initial Value, Output Design Value and Design Target as Z-Scores and
+          Raw Values.
         </p>
         <div
           className="px-2 h-fit rounded-sm w-fit text-sm text-muted-foreground hover:underline hover:-translate-y-px"
