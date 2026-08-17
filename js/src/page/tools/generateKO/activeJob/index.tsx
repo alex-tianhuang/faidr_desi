@@ -53,6 +53,7 @@ export default function GenerateKOActiveJob(props: {
     <div className="flex flex-col gap-2 p-4 border rounded-md border-primary">
       {designedSequence ? (
         <>
+          <p className="text-xl font-bold text-center">View your results</p>
           <DesignedSequence
             inputSequence={props.sequence}
             designedSequence={designedSequence}

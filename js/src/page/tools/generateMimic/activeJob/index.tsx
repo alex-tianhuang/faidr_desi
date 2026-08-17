@@ -32,11 +32,14 @@ export default function GenerateMimicActiveJob(props: {
   return (
     <div className="flex flex-col gap-2 p-4 border rounded-md border-primary">
       {designedSequence ? (
-        <DesignedSequence
-          inputSequence={props.sequence}
-          progressData={progressData}
-          designedSequence={designedSequence}
-        ></DesignedSequence>
+        <>
+          <p className="text-xl font-bold text-center">View your results</p>
+          <DesignedSequence
+            inputSequence={props.sequence}
+            progressData={progressData}
+            designedSequence={designedSequence}
+          ></DesignedSequence>
+        </>
       ) : (
         <DesignNotDone
           currentMutation={progressData.currentMutation}
