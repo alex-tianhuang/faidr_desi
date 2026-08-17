@@ -80,8 +80,8 @@ export function DesignIterationsTable(props: {
           : "Iterations will appear here"}
       </summary>
       {iterations.length > 0 ? (
-        <div className="flex flex-col gap-2 border rounded-md p-4 mt-2">
-          <p className="text-md font-bold underline">Design iterations</p>
+        <div className="text-base flex flex-col gap-2 border rounded-md p-4 mt-2">
+          <p className="font-bold underline">Design iterations</p>
           <p className="text-center text-muted-foreground">
             See the point mutations made by the greedy feature optimizer at each
             step.
