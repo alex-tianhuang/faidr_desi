@@ -139,12 +139,10 @@ export function DesignIterationsTable(props: {
                                       What is "feature distance"?
                                     </p>
                                     <p>
-                                      <span className="italic">
-                                        Feature Distance
-                                      </span>{" "}
-                                      - the euclidean distance between two
-                                      vectors of feature z-scores (feature
-                                      vectors) in {NUM_FEATURES} dimensions.
+                                      Feature distance is the euclidean distance
+                                      between two vectors of feature z-scores
+                                      (feature vectors) in {NUM_FEATURES}{" "}
+                                      dimensions.
                                     </p>
                                     <p>
                                       Our design approach for feature fitting
