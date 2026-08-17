@@ -68,9 +68,9 @@ export default function DesignedSequenceFeatures(props: {
         featureTargets={featureTargets}
         idrome={idrome}
       ></DesignedSequenceFeaturesTable>
-      <div className="flex flex-col gap-2 items-center">
+      <div className="flex flex-col gap-2 items-start">
         <div
-          className="px-2 h-fit rounded-sm w-fit text-sm text-muted-foreground hover:underline hover:-translate-y-px"
+          className="self-center px-2 h-fit rounded-sm w-fit text-sm text-muted-foreground hover:underline hover:-translate-y-px"
           onClick={scrollToFeatureMetadata}
         >
           What are these features?
