@@ -123,9 +123,9 @@ export function DesignIterationsTable(props: {
                                   className={cn(
                                     buttonVariants({
                                       variant: "default",
-                                      size: "icon-sm",
+                                      size: "icon-xs",
                                     }),
-                                    "ml-2",
+                                    "ml-2 text-xs",
                                   )}
                                 >
                                   ?
