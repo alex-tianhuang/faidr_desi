@@ -110,14 +110,7 @@ export default function GenerateKOArea(props: {
         defaultListState={[defaultList, setDefaultList]}
         disabled={freezeInputs}
       ></FeatureKOPicker>
-      <div
-        className={cn(
-          "flex flex-col gap-2 p-4 border rounded-md",
-          numFeaturesKO === 0 || freezeInputs
-            ? "border-input opacity-50"
-            : "border-primary",
-        )}
-      >
+      <div className="flex flex-col gap-2 p-4 border rounded-md border-primary">
         <p className="font-bold underline">Submit your design job</p>
         <p className="text-muted-foreground">
           Once you have selected your IDRome, input sequence, and features to
@@ -133,23 +126,23 @@ export default function GenerateKOArea(props: {
         >
           Click to design
         </Button>
-      </div>
-      {hasActiveJob ? (
-        <div className="flex flex-col gap-2 p-4 border rounded-md border-primary">
+        {hasActiveJob && (
           <Button onClick={() => setActiveJob(false)}>
             Change your design job (go back)
           </Button>
-          <GenerateKOActiveJob
-            sequence={sequence}
-            featureConfiguration={featureConfiguration}
-            initialFeatureVector={featureVector}
-            KOFeatureTargets={KOFeatureTargets}
-            featureWeights={featureWeights}
-            featureTargets={featureTargets}
-            reqTimestamp={reqTimestamp}
-            idrome={idrome}
-          ></GenerateKOActiveJob>
-        </div>
+        )}
+      </div>
+      {hasActiveJob ? (
+        <GenerateKOActiveJob
+          sequence={sequence}
+          featureConfiguration={featureConfiguration}
+          initialFeatureVector={featureVector}
+          KOFeatureTargets={KOFeatureTargets}
+          featureWeights={featureWeights}
+          featureTargets={featureTargets}
+          reqTimestamp={reqTimestamp}
+          idrome={idrome}
+        ></GenerateKOActiveJob>
       ) : (
         <div className="p-4 border rounded-md border-input text-muted-foreground">
           {numFeaturesKO > 0

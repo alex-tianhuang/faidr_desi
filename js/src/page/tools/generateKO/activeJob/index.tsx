@@ -50,7 +50,7 @@ export default function GenerateKOActiveJob(props: {
     );
   }
   return (
-    <>
+    <div className="flex flex-col gap-2 p-4 border rounded-md border-primary">
       {designedSequence ? (
         <>
           <DesignedSequence
@@ -76,6 +76,6 @@ export default function GenerateKOActiveJob(props: {
       <DesignIterationsTable
         iterations={progressData.iterations}
       ></DesignIterationsTable>
-    </>
+    </div>
   );
 }
