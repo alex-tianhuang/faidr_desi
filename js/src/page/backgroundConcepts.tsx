@@ -529,10 +529,18 @@ export default function BackgroundConcepts() {
               </p>
               <p>
                 We use IDRomes to standardize the mean and standard deviation of
-                sequence features to z-scores. This way, features with different
-                natural ranges (e.g. composition, which are fractions between
-                0-1, versus motif counts, which are any positive integer) can be
-                compared on the same scale.
+                sequence features to feature z-scores. This way, features with
+                different natural ranges (e.g. composition, which are fractions
+                between 0-1, versus motif counts, which are any positive
+                integer) can be compared on the same scale.
+              </p>
+            </div>
+            <div className="gap-2 flex flex-col bg-accent shadow-sm rounded-md p-2">
+              <p>
+                <span className="italic">Feature Z-Score</span> - the raw
+                feature value, minus the mean of the feature's value over a
+                reference IDRome, divided by the standard deviation of the
+                feature's value over a reference IDRome.
               </p>
             </div>
             <div className="gap-2 flex flex-col bg-accent shadow-sm rounded-md p-2">
