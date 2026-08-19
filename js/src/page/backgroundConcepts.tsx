@@ -475,7 +475,7 @@ export default function BackgroundConcepts() {
           </summary>
           <div className="gap-2 flex flex-col px-2.5 pt-2">
             <p>
-              By starting with a random seed sequence and iteratively making
+              By starting with a random initial sequence and iteratively making
               point mutations which minimize a "feature distance" (see glossary)
               to given a target feature vector, sequences that fit a given
               sequence feature profile can be generated. Two variants of

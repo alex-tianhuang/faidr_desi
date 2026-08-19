@@ -40,9 +40,10 @@ export default function RngPicker(props: {
             RNG Seed
           </span>
           <span className="text-muted-foreground">
-            You can input your own seed for the RNG or click the button on the
-            right to generate an example seed. If you do nothing, the current
-            time will be used to generate a seed for you.
+            In order to generate the random initial sequence for design, we use
+            a seedable RNG. You can input your own seed for the RNG or click the
+            button on the right to generate an example seed. If you do nothing,
+            the current time will be used to generate a seed for you.
           </span>
           <div className="flex flex-row gap-3 items-center">
             <Input
