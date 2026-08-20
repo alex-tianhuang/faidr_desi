@@ -264,11 +264,11 @@ export default function BackgroundConcepts() {
                       </div>
                       <p>
                         is defined as the number of non-overlapping occurrences
-                        of the regex pattern "S..([ST])".
+                        of the regex "S..([ST])".
                       </p>
                     </div>
                     <p>
-                      The above regex pattern can be more simply described as a
+                      The above regex can be more simply described as a
                       serine or threonine preceded by a serine 3 position
                       before. As described in the{" "}
                       <Link
@@ -290,12 +290,12 @@ export default function BackgroundConcepts() {
                       </div>
                       <p>
                         is defined as the number of non-overlapping occurrences
-                        of the regex pattern
+                        of the regex
                         "(P[LVIPME][DENS][LM][VASTRG])|(G[LVIPME][DENS][LM][VASTRG]((K)|(.[KR])))".
                       </p>
                     </div>
                     <p>
-                      The above regex pattern can be approximately described as
+                      The above regex can be approximately described as
                       a "PxDLS" consensus pattern with more specific additional
                       constraints. As described in the{" "}
                       <Link

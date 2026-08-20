@@ -24,9 +24,9 @@ const TOOLTIP_CONTENTS = {
         className="font-bold text-md text-background"
         href="https://en.wikipedia.org/wiki/Regular_expression"
       >
-        regex
+        regular expressions
       </Link>{" "}
-      patterns).
+      , a.k.a. regexes).
     </span>
   ),
   ["Motif Span"]: (
@@ -47,9 +47,9 @@ const TOOLTIP_CONTENTS = {
         className="font-bold text-md text-background"
         href="https://en.wikipedia.org/wiki/Regular_expression"
       >
-        regex
+        regular expressions
       </Link>{" "}
-      patterns).
+      , a.k.a. regexes).
     </span>
   ),
   Composition: (
