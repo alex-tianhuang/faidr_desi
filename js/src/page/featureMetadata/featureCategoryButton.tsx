@@ -32,7 +32,7 @@ const TOOLTIP_CONTENTS = {
   ["Motif Span"]: (
     <span>
       Features from the "Motif Span" category are computed by counting the
-      residues <span className="italic">spanned</span> by (i.e. the number of
+      residues <span className="italic">spanned</span> by (i.e., the number of
       residues that are a part of) occurrences of motifs from the{" "}
       <Link
         inline
@@ -55,8 +55,8 @@ const TOOLTIP_CONTENTS = {
   Composition: (
     <span>
       Features from the "Composition" category describe the percentage of a
-      sequence comprised of a particular kind of amino acid, or combinations of
-      them.
+      sequence comprised of a particular kind of amino acid, combinations of
+      them, or physical properties derived from them.
     </span>
   ),
   ["Residue Clustering"]: (

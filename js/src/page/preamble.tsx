@@ -27,7 +27,7 @@ export default function Preamble() {
       <p>
         This app uses {NUM_FEATURES} sequence features consisting of amino acid
         composition, residue patterning statistics, and short linear interaction
-        motifs (SLiMs), .{" "}
+        motifs (SLiMs).{" "}
         <span
           className="font-semibold hover:underline"
           onClick={scrollToFeatureMetadata}
