@@ -59,7 +59,6 @@ export default function GenerateMimic(props: {
   return (
     <div className="flex flex-col gap-2">
       <Header />
-      <Faqs />
       <IdromePicker
         disabled={freezeInputs}
         forKO={false}
@@ -104,6 +103,7 @@ export default function GenerateMimic(props: {
           Click the button above and design results will be displayed here.
         </div>
       )}
+      <Faqs />
     </div>
   );
 }

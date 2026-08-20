@@ -100,7 +100,6 @@ export default function GenerateKOArea(props: {
   return (
     <div className="flex flex-col gap-2">
       <Header />
-      <Faqs />
       <IdromePicker
         disabled={freezeInputs}
         forKO={true}
@@ -153,6 +152,7 @@ export default function GenerateKOArea(props: {
             : "Design results will be displayed here once you choose some features to knockout."}
         </div>
       )}
+      <Faqs />
     </div>
   );
 }
