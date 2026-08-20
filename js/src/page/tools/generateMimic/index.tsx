@@ -9,6 +9,7 @@ import Header from "./header";
 import { parseRngHint } from "./utils";
 import GenerateMimicActiveJob from "./activeJob";
 import { Button } from "@/components/ui/button";
+import Faqs from "./faqs";
 
 export default function GenerateMimic(props: {
   sequence: string;
@@ -58,6 +59,7 @@ export default function GenerateMimic(props: {
   return (
     <div className="flex flex-col gap-2">
       <Header />
+      <Faqs />
       <IdromePicker
         disabled={freezeInputs}
         forKO={false}

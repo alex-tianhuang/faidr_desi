@@ -1,0 +1,44 @@
+export default function Faqs() {
+  return (
+    <div className="flex flex-col border border-primary rounded-md p-4 gap-2">
+      <p className="font-semibold underline">FAQs</p>
+      <div className="border border-muted rounded-md bg-card p-2 text-muted-foreground">
+        <details>
+          <summary className="text-sm hover:text-foreground">
+            Why is it useful to make designs that knock out features?
+          </summary>
+          <p className="pt-2 px-2.5 text-justify">
+            It has been shown (see Background Concepts) that sequence features
+            can be predictive of IDR function. Therefore, it is natural to
+            hypothesize that in some biological or experimental systems,
+            sequence features are <span className="italic">necessary</span> to
+            determine an IDR's behaviour. By selecting a subset of features and
+            mutating away those selected features of your input sequence,{" "}
+            <span className="underline">
+              one expects that "feature knockout" sequences{" "}
+              <span className="italic">would not</span> recapitulate functional
+              properties of your input sequence.
+            </span>
+          </p>
+        </details>
+      </div>
+      <div className="border border-muted rounded-md bg-card p-2 text-muted-foreground">
+        <details>
+          <summary className="text-sm hover:text-foreground">
+            Why is there an IDRome involved?
+          </summary>
+          <p className="pt-2 px-2.5 text-justify">
+            When our algorithm matches the designed sequence's features to your
+            input sequence's features, we minimize over a Euclidean distance in
+            feature space between the two feature vectors. IDRomes to
+            standardize the mean and standard deviation of sequence features to
+            feature z-scores. This way, features with different natural ranges
+            (e.g. composition, which are fractions between 0-1, versus motif
+            counts, which are any positive integer) can be compared on the same
+            scale.
+          </p>
+        </details>
+      </div>
+    </div>
+  );
+}

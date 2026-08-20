@@ -10,6 +10,7 @@ import GenerateKOActiveJob from "./activeJob";
 import type { FeatureCardData } from "@/types/generateKO";
 import FeatureKOPicker from "./featureKOPicker";
 import { Button } from "@/components/ui/button";
+import Faqs from "./faqs";
 
 export default function GenerateKOArea(props: {
   sequence: string;
@@ -91,6 +92,7 @@ export default function GenerateKOArea(props: {
     return (
       <div className="flex flex-col gap-2">
         <Header />
+        <Faqs />
         <Loading>Computing input sequence's features</Loading>
       </div>
     );
@@ -98,6 +100,7 @@ export default function GenerateKOArea(props: {
   return (
     <div className="flex flex-col gap-2">
       <Header />
+      <Faqs />
       <IdromePicker
         disabled={freezeInputs}
         forKO={true}
