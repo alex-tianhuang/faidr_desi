@@ -46,7 +46,7 @@ export function FeaturizeHelp() {
       <p className="text-sm max-w-xs leading-relaxed">
         This tool computes {NUM_FEATURES} sequence features, like motifs,
         residue composition, and residue patterning statistics (see papers at
-        the bottom). This tool also shows the features as a Z-score compared to
+        the bottom). This tool also shows the features as a z-score compared to
         the mean and variance of raw sequence features in a reference (human or
         yeast) IDRome.
       </p>
