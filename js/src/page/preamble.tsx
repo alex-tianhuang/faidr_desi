@@ -21,13 +21,13 @@ export default function Preamble() {
           this 2023 preprint
         </Link>{" "}
         from the groups of Julie Forman-Kay and Alan Moses, who are using
-        sequence feature-based design as a framework for testing the hypotheses
-        of the importance of features for IDR function.
+        sequence feature-based design as a framework for testing hypotheses of
+        the importance of specific features for IDR function.
       </p>
       <p>
-        This app uses {NUM_FEATURES} sequence features consisting of short
-        linear interaction motifs (SLiMs), amino acid composition, and residue
-        patterning statistics.{" "}
+        This app uses {NUM_FEATURES} sequence features consisting of amino acid
+        composition, residue patterning statistics, and short linear interaction
+        motifs (SLiMs), .{" "}
         <span
           className="font-semibold hover:underline"
           onClick={scrollToFeatureMetadata}
