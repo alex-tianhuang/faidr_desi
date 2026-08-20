@@ -555,6 +555,21 @@ export default function BackgroundConcepts() {
                 target feature vector.
               </p>
             </div>
+            <div className="bg-accent shadow-sm rounded-md p-2">
+              <span className="italic">Feature mimics</span> - synthetic
+              sequences with a feature vector close to a target (wild-type,
+              extant) sequence. These synthetic sequences are expected to behave
+              similarly to the target sequence if features are sufficient to
+              determine IDR function.
+            </div>
+            <div className="bg-accent shadow-sm rounded-md p-2">
+              <span className="italic">Feature knockouts</span> - sequence
+              variants of reference sequences whose feature vector perturbs a
+              subset of features while keeping the remaining features close to
+              their original (reference) value. These synthetic sequences are
+              expected to behave differently if the features perturbed are
+              necessary for the function of the sequence.
+            </div>
           </div>
         </details>
       </div>
