@@ -30,12 +30,12 @@ export default function Faqs() {
           <p className="pt-2 px-2.5 text-justify">
             When our algorithm matches the designed sequence's features to your
             input sequence's features, we minimize over a Euclidean distance in
-            feature space between the two feature vectors. IDRomes to
+            feature space between the two feature vectors. We use IDRomes to
             standardize the mean and standard deviation of sequence features to
             feature z-scores. This way, features with different natural ranges
-            (e.g., composition, which are fractions between 0-1, versus motif
-            counts, which are any positive integer) can be compared on the same
-            scale.
+            (e.g., composition, which is a fraction between 0-1, and motif
+            count, which can be any non-negative integer) can be compared on the
+            same scale.
           </p>
         </details>
       </div>
