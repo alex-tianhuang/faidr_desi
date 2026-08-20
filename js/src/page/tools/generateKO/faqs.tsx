@@ -1,6 +1,6 @@
 export default function Faqs() {
   return (
-    <div className="flex flex-col border border-primary rounded-md p-4 gap-2">
+    <div className="flex flex-col border border-input rounded-md p-4 gap-2">
       <p className="font-semibold underline">FAQs</p>
       <div className="border border-muted rounded-md bg-card p-2 text-muted-foreground">
         <details>
