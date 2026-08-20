@@ -30,7 +30,7 @@ export default function BackgroundConcepts() {
               href="https://doi.org/10.1038/s41580-023-00673-0"
               className="text-md text-muted-foreground"
             >
-              Holehouse and Kragelund, 2023. (Nature)
+              Holehouse and Kragelund, Nature (2023)
             </Link>
             ]. Genetic variants in IDRs have been implicated in numerous
             diseases, including neurodevelopmental and neurodegenerative
@@ -40,7 +40,7 @@ export default function BackgroundConcepts() {
               className="text-md text-muted-foreground"
               href="https://doi.org/10.1016/j.cell.2020.11.050"
             >
-              Tsang <span className="italic">et al.</span>, 2020. (Cell)
+              Tsang <span className="italic">et al.</span>, Cell (2020)
             </Link>
             ].
           </div>
@@ -81,7 +81,7 @@ export default function BackgroundConcepts() {
                 className="text-md text-muted-foreground"
                 href="https://doi.org/10.1371/journal.pone.0288388"
               >
-                Riley <span className="italic">et al.</span>, 2023. (PLOS)
+                Riley <span className="italic">et al.</span>, PLOS (2023)
               </Link>
               ].{" "}
               <span
@@ -110,7 +110,7 @@ export default function BackgroundConcepts() {
                   className="text-md text-muted-foreground"
                   href="https://doi.org/10.1073/pnas.1304749110"
                 >
-                  Das and Pappu, 2013. (PNAS)
+                  Das and Pappu, PNAS (2013)
                 </Link>
                 ]. A couple illustrative examples are:
                 <ul className="pl-5 py-2 gap-2 flex flex-col">
@@ -133,8 +133,8 @@ export default function BackgroundConcepts() {
                         className="text-md text-muted-foreground"
                         href="https://www.nature.com/articles/s12276-022-00857-2"
                       >
-                        Lee <span className="italic">et al.</span>, 2013.
-                        (Nature)
+                        Lee <span className="italic">et al.</span>, Nature
+                        (2013)
                       </Link>
                       ]. For example, FG-Nucleoporins, which have IDRs that form
                       a condensed phase at the nuclear pore, are enriched in
@@ -149,7 +149,7 @@ export default function BackgroundConcepts() {
                         className="text-md text-muted-foreground"
                         href="https://doi.org/10.1016/j.cell.2007.06.024"
                       >
-                        Frey and Görlich, 2007. (Cell)
+                        Frey and Görlich, Cell (2007)
                       </Link>
                       ;{" "}
                       <Link
@@ -157,8 +157,8 @@ export default function BackgroundConcepts() {
                         className="text-md text-muted-foreground"
                         href="https://doi.org/10.1016/s0092-8674(00)00014-3"
                       >
-                        Bayliss <span className="italic">et al.</span>, 2000.
-                        (Cell)
+                        Bayliss <span className="italic">et al.</span>, Cell
+                        (2000)
                       </Link>
                       ].
                     </p>
@@ -188,8 +188,8 @@ export default function BackgroundConcepts() {
                         className="text-md text-muted-foreground"
                         href="https://www.pnas.org/doi/full/10.1073/pnas.1614787114"
                       >
-                        Zarin <span className="italic">et al.</span>, 2017.
-                        (PNAS)
+                        Zarin <span className="italic">et al.</span>, PNAS
+                        (2017)
                       </Link>
                       ]. Multiple studies have shown that charged residue
                       composition and clustering (see patterning section below)
@@ -200,8 +200,7 @@ export default function BackgroundConcepts() {
                         className="text-md text-muted-foreground"
                         href="https://doi.org/10.1016/j.jmb.2021.167373"
                       >
-                        Cohan <span className="italic">et al.</span>, 2022.
-                        (JMB)
+                        Cohan <span className="italic">et al.</span>, JMB (2022)
                       </Link>
                       ;{" "}
                       <Link
@@ -209,8 +208,8 @@ export default function BackgroundConcepts() {
                         className="text-md text-muted-foreground"
                         href="https://doi.org/10.1016/j.molcel.2015.01.013"
                       >
-                        Nott <span className="italic">et al.</span>, 2015.
-                        (Molecular Cell)
+                        Nott <span className="italic">et al.</span>, Molecular
+                        Cell (2015)
                       </Link>
                       ;{" "}
                       <Link
@@ -218,7 +217,7 @@ export default function BackgroundConcepts() {
                         className="text-md text-muted-foreground"
                         href="https://doi.org/10.1073/pnas.1304749110"
                       >
-                        Das and Pappu, 2013. (PNAS)
+                        Das and Pappu, PNAS (2013)
                       </Link>
                       ].
                     </p>
@@ -244,8 +243,8 @@ export default function BackgroundConcepts() {
                   className="text-md text-muted-foreground"
                   href="https://pubmed.ncbi.nlm.nih.gov/26589632/"
                 >
-                  Davey <span className="italic">et al.</span>, 2015. (Springer
-                  Nature)
+                  Davey <span className="italic">et al.</span>, Springer Nature
+                  ( 2015)
                 </Link>
                 ]. The collection of motifs used here are a curated subset of
                 motifs found at the{" "}
@@ -354,8 +353,7 @@ export default function BackgroundConcepts() {
                         className="text-md text-muted-foreground"
                         href="https://doi.org/10.1016/j.jmb.2021.167373"
                       >
-                        Cohan <span className="italic">et al.</span>, 2022.
-                        (JMB)
+                        Cohan <span className="italic">et al.</span>, JMB (2022)
                       </Link>
                       ;{" "}
                       <Link
@@ -363,8 +361,8 @@ export default function BackgroundConcepts() {
                         className="text-md text-muted-foreground"
                         href="https://doi.org/10.1016/j.molcel.2015.01.013"
                       >
-                        Nott <span className="italic">et al.</span>, 2015.
-                        (Molecular Cell)
+                        Nott <span className="italic">et al.</span>, Molecular
+                        Cell (2015)
                       </Link>
                       ;{" "}
                       <Link
@@ -372,7 +370,7 @@ export default function BackgroundConcepts() {
                         className="text-md text-muted-foreground"
                         href="https://doi.org/10.1073/pnas.1304749110"
                       >
-                        Das and Pappu, 2013. (PNAS)
+                        Das and Pappu, PNAS (2013)
                       </Link>
                       ]. Charge patterning was found to tune interaction
                       specificity in MED1's IDR [
@@ -381,8 +379,8 @@ export default function BackgroundConcepts() {
                         className="text-md text-muted-foreground"
                         href="https://doi.org/10.1016/j.cell.2022.12.013"
                       >
-                        Lyons <span className="italic">et al.</span>, 2024.
-                        (Cell)
+                        Lyons <span className="italic">et al.</span>, Cell
+                        (2024)
                       </Link>
                       ].
                     </p>
@@ -408,8 +406,8 @@ export default function BackgroundConcepts() {
                         className="text-md text-muted-foreground"
                         href="https://doi.org/10.1126/science.aaw8653"
                       >
-                        Martin <span className="italic">et al.</span>, 2020.
-                        (Science)
+                        Martin <span className="italic">et al.</span>, Science
+                        (2020)
                       </Link>
                       ].
                     </p>
@@ -437,7 +435,7 @@ export default function BackgroundConcepts() {
                   className="text-md text-muted-foreground"
                   href="https://doi.org/10.7554/eLife.46883"
                 >
-                  Zarin <span className="italic">et al.</span>, 2019 (eLife)
+                  Zarin <span className="italic">et al.</span>, eLife (2019)
                 </Link>
                 ].
               </li>
@@ -448,7 +446,7 @@ export default function BackgroundConcepts() {
                   className="text-md text-muted-foreground"
                   href="https://doi.org/10.7554/eLife.60220"
                 >
-                  Zarin <span className="italic">et al.</span>, 2021 (eLife)
+                  Zarin <span className="italic">et al.</span>, eLife (2021)
                 </Link>
                 ].
               </li>
@@ -460,7 +458,7 @@ export default function BackgroundConcepts() {
                   className="text-md text-muted-foreground"
                   href="https://doi.org/10.1073/pnas.2604562123"
                 >
-                  Pritišanac <span className="italic">et al.</span>, 2026 (PNAS)
+                  Pritišanac <span className="italic">et al.</span>, PNAS (2026)
                 </Link>
                 ].
               </li>
@@ -507,7 +505,7 @@ export default function BackgroundConcepts() {
                 className="text-md text-muted-foreground"
                 href="https://www.biorxiv.org/content/10.1101/2023.04.28.538739v1"
               >
-                Strome <span className="italic">et al.</span>, 2023 (BioRxiv)
+                Strome <span className="italic">et al.</span>, BioRxiv (2023)
               </Link>
               ]. Net charge knockouts of mitochondrial targeting signals which
               demonstrating that net charge is necessary for phase separation

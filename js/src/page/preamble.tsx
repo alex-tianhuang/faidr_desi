@@ -28,7 +28,10 @@ export default function Preamble() {
         This app uses {NUM_FEATURES} sequence features consisting of short
         linear interaction motifs (SLiMs), amino acid composition, and residue
         patterning statistics.{" "}
-        <span className="font-semibold hover:underline" onClick={scrollToFeatureMetadata}>
+        <span
+          className="font-semibold hover:underline"
+          onClick={scrollToFeatureMetadata}
+        >
           Click here to see what features are used in this app with some
           additional information about them
         </span>
@@ -39,7 +42,7 @@ export default function Preamble() {
           inline={true}
           className="text-md"
         >
-          Zarin <span className="italic">et al.</span>, 2021. (eLife)
+          Zarin <span className="italic">et al.</span>, eLife (2021)
         </Link>{" "}
         and{" "}
         <Link
@@ -47,7 +50,7 @@ export default function Preamble() {
           className="text-md"
           href="https://doi.org/10.1073/pnas.2604562123"
         >
-          Pritišanac <span className="italic">et al.</span>, 2026. (PNAS)
+          Pritišanac <span className="italic">et al.</span>, PNAS (2026)
         </Link>
         .
       </p>
