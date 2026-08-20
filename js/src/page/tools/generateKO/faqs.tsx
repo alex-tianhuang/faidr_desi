@@ -33,7 +33,7 @@ export default function Faqs() {
             feature space between the two feature vectors. IDRomes to
             standardize the mean and standard deviation of sequence features to
             feature z-scores. This way, features with different natural ranges
-            (e.g. composition, which are fractions between 0-1, versus motif
+            (e.g., composition, which are fractions between 0-1, versus motif
             counts, which are any positive integer) can be compared on the same
             scale.
           </p>

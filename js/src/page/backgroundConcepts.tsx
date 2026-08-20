@@ -528,7 +528,7 @@ export default function BackgroundConcepts() {
               <p>
                 We use IDRomes to standardize the mean and standard deviation of
                 sequence features to feature z-scores. This way, features with
-                different natural ranges (e.g. composition, which are fractions
+                different natural ranges (e.g., composition, which are fractions
                 between 0-1, versus motif counts, which are any positive
                 integer) can be compared on the same scale.
               </p>
