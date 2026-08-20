@@ -21,8 +21,8 @@ export default function BackgroundConcepts() {
             proteins without stable tertiary structure. (Intrinsically
             disordered proteins, IDPs, are full-length proteins without stable
             tertiary structure, and are often included in the broad definition
-            of IDRs.). IDRs are involved in subcellular localization targeting
-            (to membrane-bound and non-membrane-associated organelles), and in
+            of IDRs). IDRs are involved in subcellular localization targeting
+            (to membrane-bound and non-membrane-encapsulated organelles), and in
             regulating critical biological processes such as transcription,
             translation, and signaling [
             <Link
@@ -112,7 +112,7 @@ export default function BackgroundConcepts() {
                 >
                   Das and Pappu, PNAS (2013)
                 </Link>
-                ]. A couple illustrative examples are:
+                ]. A couple of illustrative examples are:
                 <ul className="pl-5 py-2 gap-2 flex flex-col">
                   <li>
                     <div className="flex flex-row gap-2">
@@ -255,7 +255,7 @@ export default function BackgroundConcepts() {
                 >
                   Eukaryotic Linear Motif (ELM) resource
                 </Link>
-                . A couple illustrative examples are:
+                . A couple of illustrative examples are:
                 <ul className="pl-5 py-2 gap-2 flex flex-col">
                   <li>
                     <div className="flex flex-row gap-2">
@@ -264,13 +264,13 @@ export default function BackgroundConcepts() {
                       </div>
                       <p>
                         is defined as the number of non-overlapping occurrences
-                        of the regex "S..([ST])".
+                        of the regular expression (regex) "S..([ST])".
                       </p>
                     </div>
                     <p>
-                      The above regex can be more simply described as a
-                      serine or threonine preceded by a serine 3 position
-                      before. As described in the{" "}
+                      The above regex can be more simply described as a serine
+                      or threonine preceded by a serine 3 position before. As
+                      described in the{" "}
                       <Link
                         inline
                         className="text-md text-muted-foreground"
@@ -290,13 +290,13 @@ export default function BackgroundConcepts() {
                       </div>
                       <p>
                         is defined as the number of non-overlapping occurrences
-                        of the regex
+                        of the regular expression (regex)
                         "(P[LVIPME][DENS][LM][VASTRG])|(G[LVIPME][DENS][LM][VASTRG]((K)|(.[KR])))".
                       </p>
                     </div>
                     <p>
-                      The above regex can be approximately described as
-                      a "PxDLS" consensus pattern with more specific additional
+                      The above regex can be approximately described as a
+                      "PxDLS" consensus motif with more specific additional
                       constraints. As described in the{" "}
                       <Link
                         inline
@@ -313,7 +313,7 @@ export default function BackgroundConcepts() {
                       >
                         CtBP family proteins
                       </Link>
-                      . The CtBP family are transcriptional corepressors which
+                      . The CtBP family are transcriptional corepressors that
                       are recruited to PxDLS motifs on transcriptional
                       regulators involved in diverse pathways.
                     </p>
@@ -475,7 +475,7 @@ export default function BackgroundConcepts() {
             <p>
               By starting with a random initial sequence and iteratively making
               point mutations which minimize a "feature distance" (see glossary)
-              to given a target feature vector, sequences that fit a given
+              to a given target feature vector, sequences that have a particular
               sequence feature profile can be generated. Two variants of
               designed sequences are particularly valuable:
             </p>
@@ -507,10 +507,10 @@ export default function BackgroundConcepts() {
               >
                 Strome <span className="italic">et al.</span>, BioRxiv (2023)
               </Link>
-              ]. Net charge knockouts of mitochondrial targeting signals which
-              demonstrating that net charge is necessary for phase separation
-              have also been created (soon-to-be-posted manuscript accompanying
-              this software).
+              ]. Net charge knockouts of mitochondrial targeting signals have
+              also been created, demonstrating that net charge is necessary for
+              localization (soon-to-be-posted manuscript accompanying this
+              software).
             </p>
           </div>
         </details>
@@ -528,14 +528,14 @@ export default function BackgroundConcepts() {
               <p>
                 We use IDRomes to standardize the mean and standard deviation of
                 sequence features to feature z-scores. This way, features with
-                different natural ranges (e.g., composition, which are fractions
-                between 0-1, versus motif counts, which are any positive
+                different natural ranges (e.g., composition, which is a fraction
+                between 0-1, and motif count, which can be any non-negative
                 integer) can be compared on the same scale.
               </p>
             </div>
             <div className="gap-2 flex flex-col bg-accent shadow-sm rounded-md p-2">
               <p>
-                <span className="italic">Feature Z-Score</span> - the raw
+                <span className="italic">Feature z-score</span> - the raw
                 feature value, minus the mean of the feature's value over a
                 reference IDRome, divided by the standard deviation of the
                 feature's value over a reference IDRome.
@@ -543,7 +543,7 @@ export default function BackgroundConcepts() {
             </div>
             <div className="gap-2 flex flex-col bg-accent shadow-sm rounded-md p-2">
               <p>
-                <span className="italic">Feature Distance</span> - the euclidean
+                <span className="italic">Feature distance</span> - the Euclidean
                 distance between two vectors of feature z-scores (feature
                 vectors) in {NUM_FEATURES} dimensions.
               </p>
@@ -555,10 +555,10 @@ export default function BackgroundConcepts() {
             </div>
             <div className="bg-accent shadow-sm rounded-md p-2">
               <span className="italic">Feature mimics</span> - synthetic
-              sequences with a feature vector close to a target (wild-type,
-              extant) sequence. These synthetic sequences are expected to behave
-              similarly to the target sequence if features are sufficient to
-              determine IDR function.
+              sequences with a feature vector close to a target (e.g.,
+              wild-type) sequence. These synthetic sequences are expected to
+              behave similarly to the target sequence if features are sufficient
+              to determine IDR function.
             </div>
             <div className="bg-accent shadow-sm rounded-md p-2">
               <span className="italic">Feature knockouts</span> - sequence

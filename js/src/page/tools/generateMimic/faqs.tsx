@@ -45,12 +45,12 @@ export default function Faqs() {
             Why is there a random initial sequence / RNG seed involved?
           </summary>
           <p className="pt-2 px-2.5 text-justify">
-            To remove the effect of sequence homology from this experiment, we
-            begin with a randomly generated initial amino acid string (which is
-            not expected to have any functional similarities to the input
-            sequence) and greedily match features. The designed sequence usually
-            has very low sequence homology to the input sequence when designing
-            this way.
+            To remove the effect of positional sequence identity from this
+            experiment, we begin with a randomly generated initial amino acid
+            string (which is not expected to have any functional similarities to
+            the input sequence) and greedily match features. The designed
+            sequence usually has very low positional sequence identity to the
+            input sequence when designing this way.
           </p>
         </details>
       </div>

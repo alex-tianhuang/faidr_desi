@@ -26,9 +26,9 @@ export function GenerateKOHelp() {
     <div className="flex flex-col">
       <p className="text-sm max-w-xs leading-relaxed">
         A "feature knockout" starts from a reference (input) sequence and uses
-        point mutations to try and drive a user-defined subset of features to
-        the IDRome minimum, while keeping the other sequence features unchanged.
-        This has been explored in this preprint:
+        point mutations to drive a user-defined subset of features to the IDRome
+        minimum, while keeping the other sequence features unchanged. This has
+        been explored in this preprint:
       </p>
       <Link
         href="https://www.biorxiv.org/content/10.1101/2023.04.28.538739v1"
