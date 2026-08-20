@@ -9,8 +9,8 @@ import { cn } from "@/lib/utils";
 const TOOLTIP_CONTENTS = {
   ["Motif Count"]: (
     <span>
-      "Motif Count" features usually refer to counting the number of occurrences
-      of sequence motifs from the{" "}
+      Features from the "Motif Count" category are computed by counting the
+      number of occurrences of sequence motifs from the{" "}
       <Link
         inline
         className="font-bold text-md text-background"
@@ -31,9 +31,9 @@ const TOOLTIP_CONTENTS = {
   ),
   ["Motif Span"]: (
     <span>
-      "Motif Count" features usually refer to counting the residues{" "}
-      <span className="italic">spanned</span> by (i.e. the number of residues
-      that are a part of) occurrences of sequence motifs from the{" "}
+      Features from the "Motif Span" category are computed by counting the
+      residues <span className="italic">spanned</span> by (i.e. the number of
+      residues that are a part of) occurrences of motifs from the{" "}
       <Link
         inline
         className="font-bold text-md text-background"
@@ -54,21 +54,23 @@ const TOOLTIP_CONTENTS = {
   ),
   Composition: (
     <span>
-      "Composition" features describe the percentage of a sequence comprised of
-      a particular kind of amino acid, or combinations of them.
+      Features from the "Composition" category describe the percentage of a
+      sequence comprised of a particular kind of amino acid, or combinations of
+      them.
     </span>
   ),
   ["Residue Clustering"]: (
     <span>
-      "Residue Clustering" features describe the degree that like residues
-      cluster together in a sequence.
+      Features from the "Residue Clustering" category describe the degree that
+      like residues cluster together in a sequence.
     </span>
   ),
   Repeats: (
     <span>
-      "Repeats" features detect the presence of stretches of consecutive similar
-      amino acids. This is done by counting the number of amino acids in a group
-      that are immediately followed by amino acids in that same group.
+      Features from the "Repeats" category detect the presence of stretches of
+      consecutive similar amino acids. These features are computed by counting
+      the number of amino acids in a group that are immediately followed by
+      amino acids in that same group.
     </span>
   ),
 };
