@@ -25,7 +25,7 @@ const TOOLTIP_CONTENTS = {
         href="https://en.wikipedia.org/wiki/Regular_expression"
       >
         regular expressions
-      </Link>{" "}
+      </Link>
       , a.k.a. regexes).
     </span>
   ),
@@ -48,7 +48,7 @@ const TOOLTIP_CONTENTS = {
         href="https://en.wikipedia.org/wiki/Regular_expression"
       >
         regular expressions
-      </Link>{" "}
+      </Link>
       , a.k.a. regexes).
     </span>
   ),
