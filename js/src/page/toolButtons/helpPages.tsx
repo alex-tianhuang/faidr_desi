@@ -28,14 +28,9 @@ export function GenerateKOHelp() {
         A "feature knockout" starts from a reference (input) sequence and uses
         point mutations to drive a user-defined subset of features to the IDRome
         minimum, while keeping the other sequence features unchanged. This has
-        been explored in this preprint:
+        been explored in a paper which is currently under revision [Huang{" "}
+        <span className="italic">et al.</span>, Bioinformatics. (2026)].
       </p>
-      <Link
-        href="https://www.biorxiv.org/content/10.1101/2023.04.28.538739v1"
-        inline={false}
-      >
-        BioRxiv (2023)
-      </Link>
     </div>
   );
 }
