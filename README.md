@@ -1,4 +1,4 @@
-Repository for an IDR design UI hosted on github [here](https://moses-lab.github.io/faidr_desi/).
+Repository for an IDR design UI hosted on github [here](https://moses-lab.github.io/faidr-desi/).
 
 Rust source code has the IDR design code, TS (in `./js` folder) has the UI code.
 
